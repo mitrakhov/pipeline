@@ -1,0 +1,60 @@
+### AEpremult v0.1
+### kostia@rukavitsin.com
+#
+#
+#! /opt/Nuke515_64/Nuke5 -nx
+version 5.1500
+Gizmo {
+ tile_color 0xa55cff
+ addUserKnob {20 bgcolor l "BG color"}
+ addUserKnob {41 color l Color T Constant1.color}
+ addUserKnob {41 format l Format T Constant1.format}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -468
+  ypos -151
+ }
+set N1eb2e650 [stack 0]
+push $N1eb2e650
+ Constant {
+  inputs 0
+  channels rgb
+  color 0.5
+  name Constant1
+  xpos -297
+  ypos -243
+ }
+ ShuffleCopy {
+  inputs 2
+  name ShuffleCopy1
+  xpos -297
+  ypos -151
+ }
+ Invert {
+  channels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name Invert1
+  xpos -297
+  ypos -122
+ }
+ Premult {
+  name Premult1
+  xpos -297
+  ypos -79
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  bbox B
+  Bchannels {rgba.red rgba.green rgba.blue -rgba.alpha}
+  name Merge1
+  xpos -297
+  ypos -50
+ }
+ Output {
+  name Output1
+  xpos -297
+  ypos -3
+ }
+end_group

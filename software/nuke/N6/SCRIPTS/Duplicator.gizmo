@@ -1,0 +1,215 @@
+version 5.1600
+Group {
+ name Duplicator1
+ inputs 3
+ addUserKnob {20 BBox}
+ addUserKnob {3 divsx l divisions}
+ divsx 5
+ addUserKnob {3 divsy l "" -STARTLINE}
+ divsy 1
+ addUserKnob {3 divsz l "" -STARTLINE}
+ divsz 5
+ addUserKnob {32 generate l "   generate   " t "Press this button every time you change divisions" -STARTLINE T "\n# clear all auto nodes\nforeach node \[nodes] \{\n if \{\[knob \$node.label]==\"auto\"\} \{delete \$node\}\n\}\ninput Scene1 1 0\n\n# build again...\nMergeGeo \{\n selectable 0\n label auto\n\}\nset merge2 \[stack 0]\ninput Scene1 1 \$merge2\n\nset id 0\nfor \{set i 0\} \{\$i<\[value divsx]\} \{incr i\} \{\n for \{set j 0\} \{\$j<\[value divsy]\} \{incr j\} \{\n  for \{set k 0\} \{\$k<\[value divsz]\} \{incr k\} \{\n  \n   Group \{\n    inputs 4\n    name Flock3DCore0\n    label auto\n    selected true\n    addUserKnob \{20 Core\}\n    addUserKnob \{3 _images\}\n    _images \{\{parent.images\}\}\n    addUserKnob \{3 _img_num\}\n    addUserKnob \{41 _time_offset T TimeOffset1.time_offset\}\n    addUserKnob \{41 _Horizontal T Mirror1.Horizontal\}\n    addUserKnob \{41 _Vertical T Mirror1.Vertical\}\n    addUserKnob \{41 _xform_order T TransformGeo1.xform_order\}\n    addUserKnob \{41 _rot_order T TransformGeo1.rot_order\}\n    addUserKnob \{41 _translate T TransformGeo1.translate\}\n    addUserKnob \{41 _rotate T TransformGeo1.rotate\}\n    addUserKnob \{41 _scaling T TransformGeo1.scaling\}\n    addUserKnob \{41 _uniform_scale T TransformGeo1.uniform_scale\}\n    addUserKnob \{20 Look\}\n    addUserKnob \{41 _look_axis T TransformGeo1.look_axis\}\n    addUserKnob \{41 _rotate_x T TransformGeo1.rotate_x\}\n    addUserKnob \{41 _rotate_y T TransformGeo1.rotate_y\}\n    addUserKnob \{41 _rotate_z T TransformGeo1.rotate_z\}\n    addUserKnob \{41 _look_strength T TransformGeo1.look_strength\}\n    addUserKnob \{41 _use_quaternions T TransformGeo1.use_quaternions\}\n   \}\n   Input \{\n    inputs 0\n    name look\n    number 2\n   \}\n   Input \{\n    inputs 0\n    name axis\n    number 3\n   \}\n   Input \{\n    inputs 0\n    name img\n    number 1\n   \}\n   Crop \{\n    box \{\{_img_num*width/_images i\} 0 \{this.x+width/_images i\} \{height i\}\}\n    reformat true\n    crop false\n    name Crop1\n   \}\n   TimeOffset \{\n    name TimeOffset1\n   \}\n   Mirror \{\n    name Mirror1\n   \}\n   Input \{\n    inputs 0\n    name geo\n   \}\n   ApplyMaterial \{\n    selectable false\n    inputs 2\n    name ApplyMaterial1\n   \}\n   TransformGeo \{\n    selectable false\n    inputs 3\n    name TransformGeo1\n   \}\n   Output \{\n    name Output1\n   \}\n   end_group\n\n   set core \[stack 0]\n   input \$core 0 geo_input\n   input \$core 1 img\n   input \$core 2 look_input\n   input \$core 3 Axis1\n   input \$merge2 \$id \$core\n   knob \$core._img_num \"\{int(_images*random(\$id+seed+img_seed))\}\"\n   knob \$core._time_offset \"\{int(time_offset_rand*(random(\$id+seed+time_offset_seed)*2-1))\}\"\n   knob \$core._translate \"\{Axis1.dx/2+cube.x+Axis1.dx*\$i+translate_rand.x*(random(\$id+seed+translate_seed)*2-1)\} \{Axis1.dy/2+cube.t+Axis1.dy*\$j+translate_rand.y*(random(\$id+seed+translate_seed+1)*2-1)\} \{Axis1.dz/2+cube.n+Axis1.dz*\$k+translate_rand.z*(random(\$id+seed+translate_seed+2)*2-1)\}\"\n   knob \$core._rotate \"\{rotate_rand.x*(random(\$id+seed+rotate_seed)*2-1)\} \{rotate_rand.y*(random(\$id+seed+rotate_seed+1)*2-1)\} \{rotate_rand.z*(random(\$id+seed+rotate_seed+2)*2-1)\}\"\n   knob \$core._scaling \"\{1+scale_rand.x*(random(\$id+seed+scale_seed)*2-1)\} \{1+scale_rand.y*(random(\$id+seed+scale_seed+1)*2-1)\} \{1+scale_rand.z*(random(\$id+seed+scale_seed+2)*2-1)\}\"\n   knob \$core._uniform_scale \"\{1+uscale_rand*(random(\$id+seed+uscale_seed)*2-1)\}\"\n   knob \$core._Horizontal \"\{\{horizmirror_rand*rint(random(\$id+seed+mirror_seed))\}\}\"\n   knob \$core._Vertical \"\{\{vertmirror_rand*rint(random(\$id+seed+mirror_seed+1))\}\}\"\n   knob \$core._xform_order \"\{xform_order2\}\"\n   knob \$core._rot_order \"\{rot_order2\}\"\n   knob \$core._look_axis \"\{parent.parent.look_axis\}\"\n   knob \$core._rotate_x \"\{parent.parent.rotate_x\}\"\n   knob \$core._rotate_y \"\{parent.parent.rotate_y\}\"\n   knob \$core._rotate_z \"\{parent.parent.rotate_z\}\"\n   knob \$core._look_strength \"\{parent.parent.look_strength\}\"\n   knob \$core._use_quaternions \"\{parent.parent.use_quaternions\}\"\n   incr id\n  \}\n \}\n\}"}
+ addUserKnob {32 clear l "   clear   " t "Delete all duplicated copies" -STARTLINE T "# clear all auto nodes\nforeach node \[nodes] \{\n if \{\[knob \$node.label]==\"auto\"\} \{delete \$node\}\n\}\ninput Scene1 1 0"}
+ addUserKnob {6 show_divs l "show divisions" +STARTLINE}
+ addUserKnob {26 "" l " " T "Press 'generate' button every time you change divisions"}
+ addUserKnob {26 ""}
+ addUserKnob {41 cube T Cube0.cube}
+ addUserKnob {41 import_chan l "import chan file" T Cube0.import_chan}
+ addUserKnob {41 export_chan l "export chan file" -STARTLINE T Cube0.export_chan}
+ addUserKnob {41 xform_order l "transform order" T Cube0.xform_order}
+ addUserKnob {41 rot_order l "" -STARTLINE T Cube0.rot_order}
+ addUserKnob {41 translate T Cube0.translate}
+ addUserKnob {41 rotate T Cube0.rotate}
+ addUserKnob {41 scaling l scale T Cube0.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T Cube0.uniform_scale}
+ addUserKnob {41 pivot T Cube0.pivot}
+ addUserKnob {20 variations l Variations}
+ addUserKnob {7 seed l "global seed" R 0 100}
+ addUserKnob {26 "" l <b>Images}
+ addUserKnob {3 images l "side-by-side (images)" t "How many images on 'img' input are merged side-by-side. This is for using different textures on every copy."}
+ images 1
+ addUserKnob {3 img_seed l "                                   seed " t "image num seed" -STARTLINE}
+ img_seed 1
+ addUserKnob {3 time_offset_rand l "time offset (frames)" t "Random sequence time offset for every copy"}
+ addUserKnob {3 time_offset_seed l "                                   seed " t "time offset seed" -STARTLINE}
+ time_offset_seed 2
+ addUserKnob {6 horizmirror_rand l "horiz mirror" t "Random horizontal mirror for every copy" +STARTLINE}
+ addUserKnob {6 vertmirror_rand l "vert mirror" t "Random vertical mirror for every copy" -STARTLINE}
+ addUserKnob {3 mirror_seed l "          seed " t "mirror seed" -STARTLINE}
+ mirror_seed 3
+ addUserKnob {26 "" l <b>Geometry}
+ addUserKnob {4 xform_order2 l xform_order M {SRT STR RST RTS TSR TRS}}
+ addUserKnob {4 rot_order2 l "" -STARTLINE M {XYZ XZY YXZ YZX ZXY ZYX}}
+ addUserKnob {13 translate_rand l translate}
+ addUserKnob {3 translate_seed l "   seed " t "translate seed" -STARTLINE}
+ translate_seed 4
+ addUserKnob {13 rotate_rand l rotate}
+ addUserKnob {3 rotate_seed l "   seed " t "rotate seed" -STARTLINE}
+ rotate_seed 5
+ addUserKnob {13 scale_rand l scale}
+ addUserKnob {3 scale_seed l "   seed " t "scale seed" -STARTLINE}
+ scale_seed 6
+ addUserKnob {7 uscale_rand l "uniform scale"}
+ addUserKnob {3 uscale_seed l "   seed " t "uniform scale seed" -STARTLINE}
+ uscale_seed 7
+ addUserKnob {20 Look}
+ addUserKnob {4 look_axis l "look axis" M {Z+ Z- Y+ Y- X+ X-}}
+ addUserKnob {6 rotate_x l "rotate X" -STARTLINE}
+ rotate_x true
+ addUserKnob {6 rotate_y l "rotate Y" -STARTLINE}
+ rotate_y true
+ addUserKnob {6 rotate_z l "rotate Z" -STARTLINE}
+ rotate_z true
+ addUserKnob {7 look_strength l "look strength"}
+ look_strength 1
+ addUserKnob {6 use_quaternions l "use quaternions" +STARTLINE}
+}
+ BackdropNode {
+  inputs 0
+  name Manipulator
+  tile_color 0x7c5b76ff
+  xpos -600
+  ypos -98
+  bdwidth 435
+  bdheight 264
+ }
+ Input {
+  inputs 0
+  name look
+  xpos -150
+  ypos -130
+  number 2
+ }
+ Dot {
+  name look_input
+  xpos -116
+  ypos -102
+ }
+ Input {
+  inputs 0
+  name img
+  xpos 70
+  ypos -274
+  number 1
+ }
+ Input {
+  inputs 0
+  name geo
+  xpos -40
+  ypos -202
+ }
+ Dot {
+  name geo_input
+  xpos -6
+  ypos -175
+ }
+ Axis2 {
+  inputs 0
+  display off
+  selectable false
+  xform_order {{parent.xform_order i}}
+  rot_order {{parent.rot_order i}}
+  translate {{parent.translate.x i} {parent.translate.y i} {parent.translate.z i}}
+  rotate {{parent.rotate.x i} {parent.rotate.y i} {parent.rotate.z i}}
+  scaling {{parent.scaling.x i} {parent.scaling.y i} {parent.scaling.z i}}
+  uniform_scale {{parent.uniform_scale i}}
+  pivot {{parent.pivot.x i} {parent.pivot.y i} {parent.pivot.z i}}
+  name Axis1
+  xpos -258
+  ypos -28
+  addUserKnob {20 User}
+  addUserKnob {7 dx}
+  dx {{(cube.r-cube.x)/parent.divsx i}}
+  addUserKnob {7 dy}
+  dy {{(cube.y-cube.t)/parent.divsy i}}
+  addUserKnob {7 dz}
+  dz {{(cube.f-cube.n)/parent.divsz i}}
+ }
+ Cube {
+  inputs 0
+  display wireframe
+  selectable false
+  render_mode off
+  rows {{parent.divsz i}}
+  columns 1
+  separate_faces false
+  cube {{Cube0.cube.x i} {Cube0.cube.n i} {-Cube0.cube.t i} {Cube0.cube.r i} {Cube0.cube.f i} {-Cube0.cube.y i}}
+  rotate {90 0 0}
+  name Cube3
+  label divsz
+  xpos -370
+  ypos -17
+  disable {{!show_divs i}}
+ }
+ Cube {
+  inputs 0
+  display wireframe
+  selectable false
+  render_mode off
+  rows {{parent.divsy i}}
+  columns 1
+  separate_faces false
+  cube {{Cube0.cube.x i} {Cube0.cube.y i} {Cube0.cube.n i} {Cube0.cube.r i} {Cube0.cube.t i} {Cube0.cube.f i}}
+  pivot {0 6 0}
+  name Cube2
+  label divsy
+  xpos -480
+  ypos -17
+  disable {{!show_divs i}}
+ }
+ Cube {
+  inputs 0
+  display wireframe
+  selectable false
+  render_mode off
+  rows {{parent.divsx i}}
+  columns 1
+  separate_faces false
+  cube {{Cube0.cube.y i} {-Cube0.cube.r i} {Cube0.cube.n i} {Cube0.cube.t i} {-Cube0.cube.x i} {Cube0.cube.f i}}
+  rotate {0 0 90}
+  name Cube1
+  label divsx
+  xpos -590
+  ypos -17
+  disable {{!show_divs i}}
+ }
+ MergeGeo {
+  inputs 3
+  selectable false
+  name MergeGeo1
+  xpos -480
+  ypos 74
+ }
+ TransformGeo {
+  inputs 2
+  selectable false
+  name TransformGeo
+  xpos -480
+  ypos 113
+ }
+ Scene {
+  selectable false
+  name Scene1
+  xpos -470
+  ypos 210
+ }
+ Output {
+  name Output1
+  xpos -480
+  ypos 350
+ }
+ Cube {
+  inputs 0
+  display wireframe
+  render_mode off
+  rows 1
+  columns 1
+  separate_faces false
+  rot_order XYZ
+  name Cube0
+  xpos -289
+  ypos 102
+  hide_input true
+ }
+end_group

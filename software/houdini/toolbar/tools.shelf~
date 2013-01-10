@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <toolshelf name="tools" label="Tools">
+    <memberTool name="addNodePrefix"/>
+    <memberTool name="switchXray"/>
+    <memberTool name="separateObject"/>
+    <memberTool name="FKcntrls"/>
+    <memberTool name="bakeObjectToWorld"/>
+    <memberTool name="loadCdl"/>
+    <memberTool name="updateCdl"/>
+    <memberTool name="NukeTrackers"/>
+    <memberTool name="SopsResizeFluid"/>
+    <memberTool name="TexturesToAbc"/>
+  </toolshelf>
+
+  <tool name="addNodePrefix" label="Add Node Prefix" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[def addNodePrefix(prefix):
+    oldname=hou.selectedNodes()
+    for n in hou.selectedNodes():
+        oldname = n.name()
+        n.setName(oldname+"_"+prefix)
+
+addNodePrefix("R")]]></script>
+  </tool>
+
+  <tool name="switchXray" label="Switch Xray" icon="PLASMA_App">
+    <helpText><![CDATA[import utils
+reload(utils)
+utils.separateObject()]]></helpText>
+    <script scriptType="python"><![CDATA[import utils
+reload(utils)
+utils.switchXray()]]></script>
+  </tool>
+
+  <tool name="separateObject()" label="Separate Object()" icon="PLASMA_App">
+    <script scriptType="python"><![CDATA[import utils
+reload(utils)
+utils.separateObject()()]]></script>
+  </tool>
+
+  <tool name="separateObject" label="Separate Object" icon="separateObject.png">
+    <toolMenuContext name="viewer">
+      <contextNetType>OBJ</contextNetType>
+    </toolMenuContext>
+    <script scriptType="python"><![CDATA[import utils
+reload(utils)
+utils.separateObject()]]></script>
+  </tool>
+
+  <tool name="bakeObjectToWorld" label="Bake Object To World" icon="bakeObjectToWorld">
+    <script scriptType="python"><![CDATA[import utils
+reload(utils)
+i, buff = hou.ui.readMultiInput("Input framerange", ("Start","End"),title="Bake object to world") 
+utils.bakeObjectToWorld(int(buff[0]),int(buff[1]))]]></script>
+  </tool>
+
+  <tool name="updateCdl" label="Update massive CDL" icon="updateCDL">
+    <helpText><![CDATA[esat setewtw]]></helpText>
+    <script scriptType="python"><![CDATA[import utils
+reload(utils)
+utils.updateCdl()]]></script>
+  </tool>
+
+  <tool name="FKcntrls" label="FK controls" icon="OBJ_null">
+    <script scriptType="python"><![CDATA[import rig
+
+rig.techrig_buildFKControlChain_Tool()]]></script>
+    <keywordList>
+      <keyword>FK controls</keyword>
+    </keywordList>
+  </tool>
+
+  <tool name="loadCdl" label="Load Data from Massive cdl" icon="loadCDL">
+    <script scriptType="python"><![CDATA[import utils
+reload(utils)
+utils.loadCdl()]]></script>
+  </tool>
+
+  <tool name="NukeTrackers" label="NukeTrackers" icon="OBJ_null">
+    <script scriptType="python"><![CDATA[for n in hou.selectedNodes():
+	parent = n.parent()
+	null = n.createNode("null")]]></script>
+    <keywordList>
+      <keyword>Create null objects for nuke's CameraTracker features</keyword>
+    </keywordList>
+  </tool>
+
+  <tool name="SopsResizeFluid" label="SopsResizeFluid" icon="DOP_resizefluid">
+    <script scriptType="python"><![CDATA[import doptoolutils 
+import adddoputils
+adddoputils.resizeFluidSops(kwargs)]]></script>
+    <keywordList>
+      <keyword>Resize fluid using sop container</keyword>
+    </keywordList>
+  </tool>
+  
+  <tool name="TexturesToAbc" label="TexToAbc" icon="loadTexToAlembic" help="Imports the textures from a pre-exported XML file on disk into Alembic Archive on the object level.">
+    <script scriptType="python"><![CDATA[import utils
+#utils.importDataFromXmlToAbc()
+# Import textures from XML file on disk to Alembic Archive
+import hou
+import toolutils
+import re
+from xml.dom.minidom import parse, getDOMImplementation
+import os.path
+
+def lastSelectedNode():
+    '''Return the last selected node, or None if there isn't one.'''
+    selected_nodes = hou.selectedNodes()
+    return (selected_nodes[-1] if len(selected_nodes) > 0 else None)
+
+def importDataFromXmlToAbc():
+    print "----------------------------------------------"
+# select Alembic archive #    
+    abc = lastSelectedNode()
+    if abc is None:
+	hou.ui.setStatusMessage("Select one root Alembic Archive node.")
+	hou.ui.displayMessage("No root Alembic Archive node has been selected. Select one.", title="Attention, monsieur!")
+	return None
+    if abc.type() == hou.nodeType(hou.objNodeTypeCategory(), 'alembicarchive'):
+	print "Alembic Archive found"
+    else:
+	print "No Alembic Archive selected"
+
+# XML stuff #
+    #file_name = "/home/max/exported_data.xml"
+    hou.ui.setStatusMessage("Choose XML file to import textures from.")
+    file_name = hou.ui.selectFile(start_directory="/mnt/karramba/", title="Choose XML", pattern="*.xml")
+    if file_name == "":
+	return None
+    file_name = os.path.expandvars(file_name)
+    xml = parse(file_name)
+    xmlobjects = xml.getElementsByTagName("object")
+    
+# parse and assign textures #	
+    stat_assigned = 0
+    stat_noshader = 0
+    for obj in xmlobjects:
+        object_name = obj.getElementsByTagName("object_name")[0]
+        object_path = object_name.childNodes[0].data
+	object_path = object_path.replace('|', '/')
+        object_fullpath = abc.path() + object_path
+	print object_fullpath
+	
+	object_texture_color = obj.getElementsByTagName("texture_color")[0]
+	texture_path_color = object_texture_color.childNodes[0].data
+	if texture_path_color == " ":
+	    texture_path_color = ""
+	print texture_path_color
+	
+	object_texture_spec = obj.getElementsByTagName("texture_spec")[0]
+	texture_path_spec = object_texture_spec.childNodes[0].data
+	if texture_path_spec == " ":
+	    texture_path_spec = ""
+	print texture_path_spec
+	
+	object_texture_bump = obj.getElementsByTagName("texture_bump")[0]
+	texture_path_bump = object_texture_bump.childNodes[0].data
+	if texture_path_bump == " ":
+	    texture_path_bump = ""
+	print texture_path_bump
+
+        if hou.parm(str(object_fullpath) + "/shop_materialpath") is not None:
+	    object_shader = hou.parm(str(object_fullpath) + "/shop_materialpath").evalAsString()
+	    print object_shader
+	    #object_shader = hou.node(str(object_fullpath)).evalParm("shop_materialpath")
+	    if hou.node(object_shader) is not None:
+		hou.node(object_shader).parm("baseColorMap").set(str(texture_path_color))
+		if hou.node(object_shader).parm("baseSpecMap") is not None:
+		    hou.node(object_shader).parm("baseSpecMap").set(str(texture_path_spec))
+		if hou.node(object_shader).parm("specMap1") is not None:
+		    hou.node(object_shader).parm("specMap1").set(str(texture_path_spec))
+		if hou.node(object_shader).parm("baseDispMap") is not None:
+		    hou.node(object_shader).parm("baseDispMap").set(str(texture_path_bump))
+		stat_assigned = stat_assigned + 1
+	    else:
+		print object_fullpath + ": No shader found. Could not assign the texture."
+		stat_noshader = stat_noshader + 1
+#	else:
+	    #print "Could not find assigned shader on " + object_fullpath
+	    #continue
+	print "==="
+
+    print str(stat_assigned) + " textures assigned successfully."
+    print str(stat_noshader) + " destination shaders not found."
+importDataFromXmlToAbc()]]></script>
+    <keywordList>
+      <keyword>Import textures from XML file on disk to Alembic Archive</keyword>
+    </keywordList>
+  </tool>
+</shelfDocument>

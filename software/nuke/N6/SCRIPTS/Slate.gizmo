@@ -1,0 +1,240 @@
+#! /mnt/opt/Nuke5.2v3/Nuke5.2 -nx
+version 5.2300
+Gizmo {
+ lock_connections true
+ addUserKnob {20 slateInfo l "Shot info"}
+ addUserKnob {41 pInfo l "" +STARTLINE T project_shot.message}
+ addUserKnob {41 sInfo l "" +STARTLINE T extra_info.message}
+ addUserKnob {20 slateFormatTab l Format}
+ addUserKnob {41 type T Reformat1.type}
+ addUserKnob {41 format l "output format" T Reformat1.format}
+ addUserKnob {41 scale T Reformat1.scale}
+ addUserKnob {41 resize l "resize type" T Reformat1.resize}
+ addUserKnob {41 black_outside l "black outside" T Reformat1.black_outside}
+}
+ Transform {
+  inputs 0
+  center {1024 778}
+  name TransformAll
+  xpos -13
+  ypos 267
+ }
+ Constant {
+  inputs 0
+  color {0 0 0 0}
+  format "960 540 0 0 960 540 1 HDHalf"
+  name Constant3
+  xpos 658
+  ypos 142
+ }
+set N29ea420 [stack 0]
+ Text {
+  message "frame: \[frame]"
+  font /usr/share/fonts/dejavu/DejaVuSansCondensed.ttf
+  size 23
+  xjustify center
+  yjustify center
+  box {1152.5 497 1446.5 598.5}
+  translate {-473 -499}
+  center {1290 546}
+  name Text3
+  xpos 811
+  ypos 301
+ }
+ Constant {
+  inputs 0
+  color {0 0 0 1}
+  format "960 540 0 0 960 540 1 HDHalf"
+  name Constant2
+  xpos 777
+  ypos 180
+ }
+ Crop {
+  box {763 22 889.5 74.5}
+  name Crop1
+  xpos 777
+  ypos 254
+ }
+push $N29ea420
+ Merge2 {
+  inputs 2
+  mix 0.61
+  name Merge2
+  xpos 658
+  ypos 254
+ }
+ Merge2 {
+  inputs 2
+  name Merge3
+  xpos 658
+  ypos 301
+ }
+ Transform {
+  translate {-5 22}
+  center {824 45}
+  name Transform2
+  xpos 658
+  ypos 329
+ }
+ Reformat {
+  format "960 540 0 0 960 540 1 HDHalf"
+  scale 0.5
+  black_outside true
+  name Reformat1
+  xpos 658
+  ypos 357
+ }
+ set C29f06d0 [stack 0]
+ Dot {
+  name Dot2
+  xpos 692
+  ypos 412
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos 492
+  ypos 221
+ }
+clone $C29f06d0 {
+  xpos 492
+  ypos 249
+  selected false
+ }
+ Shuffle {
+  alpha white
+  name Shuffle2
+  xpos 492
+  ypos 291
+ }
+ Merge2 {
+  inputs 2
+  name Merge4
+  xpos 492
+  ypos 407
+ }
+ Read {
+  inputs 0
+  file /mnt/bigboy/Work/terminal_fx/Chimney_logo/Chimney_logo.jpg
+  format "400 400 0 0 400 400 1 "
+  on_error checkerboard
+  name Read1
+  xpos 263
+  ypos 75
+ }
+ Shuffle {
+  alpha white
+  name Shuffle1
+  xpos 263
+  ypos 163
+ }
+ Transform {
+  translate {-43 215}
+  scale 0.364
+  center {162 214}
+  name Transform1
+  xpos 263
+  ypos 191
+ }
+ Dot {
+  name Dot1
+  xpos 297
+  ypos 219
+ }
+ Constant {
+  inputs 0
+  color 0.28
+  format "960 540 0 0 960 540 1 HDHalf"
+  name Constant1
+  xpos 154
+  ypos -5
+ }
+ Radial {
+  invert true
+  area {-222 -90 1208 619}
+  color 0.125
+  name Radial1
+  xpos 154
+  ypos 69
+ }
+ Text {
+  message "Project: DR2\nVFX shot: 33_H-23\nVersion: 12\n\n"
+  font /usr/share/fonts/dejavu/DejaVuSansCondensed-Bold.ttf
+  size 28
+  leading 0.3
+  yjustify top
+  Transform 1
+  box {240 318 766.5 405}
+  translate {8 88}
+  center {358 326.5}
+  color 0
+  name project_shot
+  xpos 154
+  ypos 97
+ }
+ Text {
+  message "Shot description: rig removal, CG grenades\nNotes: animation approval\nArtist: Denis Syplenko\nResolution: HD 1920x1080\nTotal frame count: 134 frames\nFrame Rate: 24 fps\nDate of submission: 21.09.01"
+  font /usr/share/fonts/dejavu/DejaVuSansCondensed.ttf
+  size 28
+  leading 0.2
+  yjustify top
+  Transform 1
+  box {240 210 918 419.5}
+  translate {-182 -125}
+  center {358 326.5}
+  color 0
+  name extra_info
+  xpos 154
+  ypos 125
+ }
+ Transform {
+  center {177 230}
+  name Transform3
+  xpos 154
+  ypos 167
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 154
+  ypos 214
+ }
+clone $C29f06d0 {
+  xpos 154
+  ypos 356
+  selected false
+ }
+ Retime {
+  input.first 0
+  input.first_lock true
+  input.last 0
+  input.last_lock true
+  output.first 0
+  output.first_lock true
+  output.last 0
+  output.last_lock true
+  before black
+  after black
+  name Retime1
+  xpos 154
+  ypos 481
+ }
+ AppendClip {
+  inputs 2
+  lastFrame 24
+  name AppendClip1
+  xpos 492
+  ypos 481
+ }
+ Output {
+  name Output1
+  xpos 492
+  ypos 509
+ }
+ Viewer {
+  fps 25
+  name Viewer1
+  xpos 154
+  ypos 588
+ }
+end_group
