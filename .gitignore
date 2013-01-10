@@ -3,6 +3,37 @@
 # C extensions
 *.so
 
+# cg
+*.orig
+*.rej
+*~
+*.obj
+*.o
+*.os
+*.so
+*.dylib
+*.ER
+*.OU
+*.ui
+*.backup
+*.otl
+*.lic
+*.pdf
+*.ofx
+*.sdl
+*.jpg
+*.png
+*.icon
+*.svg
+*.html
+*.psd
+*.css
+
+# folders
+lib/openVDB*
+lib/tbb41_20121003oss*
+lib/shotgun*
+
 # Packages
 *.egg
 *.egg-info
@@ -10,12 +41,10 @@ dist
 build
 eggs
 parts
-bin
 var
 sdist
 develop-eggs
 .installed.cfg
-lib
 lib64
 
 # Installer logs
