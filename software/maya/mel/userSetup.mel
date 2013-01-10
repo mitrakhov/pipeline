@@ -1,7 +1,0 @@
-//source "InitDeadlineSubmitter.mel";
-//print("InitDeadlineSubmitter.mel");
-{CMenu;}
-//source CMenu.mel;
-
-if(!`pluginInfo -query -l -n AbcImport`) loadPlugin "AbcImport";
-if(!`pluginInfo -query -l -n AbcExport`) loadPlugin "AbcExport";
