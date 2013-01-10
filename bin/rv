@@ -1,0 +1,10 @@
+#!/bin/bash
+
+umask 0000
+
+
+OSNAME=`uname`                                                                                                                                                                                                                                   
+echo $OSNAME
+
+
+${PROGRAM_PATH}/rv-x86-64-3.12.17/bin/rv $*

@@ -1,0 +1,116 @@
+#! c:/bin/Nuke5/Nuke5.exe -nx
+version 5.1000
+Gizmo {
+ addUserKnob {20 water l "Underwater Effect"}
+ addUserKnob {41 uv_scale l Power T IDistort1.uv_scale}
+ addUserKnob {41 blur_scale l "Lens blur" T IDistort1.blur_scale}
+ addUserKnob {26 "" l Pattern}
+ addUserKnob {6 preview l "Preview pattern" +STARTLINE}
+ addUserKnob {41 type l Type T Noise1.type}
+ addUserKnob {41 size l "Wave length" T Noise1.size}
+ addUserKnob {41 zoffset l Offset T Noise1.zoffset}
+ addUserKnob {41 octaves l Frequency T Noise1.octaves}
+ addUserKnob {41 lacunarity l Granularity T Noise1.lacunarity}
+ addUserKnob {41 gain l Whites T Noise1.gain}
+ addUserKnob {41 gamma l Blacks T Noise1.gamma}
+}
+ Input {
+  inputs 0
+  name img
+  xpos -855
+  ypos 210
+ }
+set N103b85f0 [stack 0]
+ Noise {
+  replace true
+  size 250
+  octaves 2
+  lacunarity 3
+  gain 0.85
+  center {360 288}
+  name Noise1
+  xpos -745
+  ypos 317
+ }
+set Nf1a0b50 [stack 0]
+ Noise {
+  replace true
+  type {{parent.Noise1.type i}}
+  size {{parent.Noise1.size i}}
+  zoffset {{parent.Noise1.zoffset+1 i}}
+  octaves {{parent.Noise1.octaves i}}
+  lacunarity {{parent.Noise1.lacunarity i}}
+  gain {{parent.Noise1.gain i}}
+  gamma {{parent.Noise1.gamma i}}
+  center {360 288}
+  name Noise2
+  xpos -745
+  ypos 356
+ }
+push $Nf1a0b50
+push $N103b85f0
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.u
+  from1 -rgba.green
+  to1 -forward.v
+  name Copy1
+  xpos -855
+  ypos 311
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 forward.v
+  from1 -rgba.green
+  to1 -forward.v
+  name Copy2
+  selected true
+  xpos -855
+  ypos 350
+ }
+set N10a3c0d8 [stack 0]
+ Shuffle {
+  in motion
+  blue black
+  alpha black
+  name Shuffle1
+  xpos -745
+  ypos 418
+ }
+ Shuffle {
+  alpha white
+  name Shuffle2
+  xpos -745
+  ypos 445
+ }
+ Crop {
+  box {{width/2 i} 0 {width i} {height i}}
+  name Crop2
+  xpos -745
+  ypos 472
+ }
+push $N10a3c0d8
+ IDistort {
+  uv motion
+  uv_scale 10
+  blur forward.u
+  blur_scale 5
+  name IDistort1
+  xpos -855
+  ypos 433
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos -855
+  ypos 472
+  disable {{!preview i x10 1}}
+ }
+ Output {
+  name Output1
+  xpos -855
+  ypos 572
+ }
+end_group

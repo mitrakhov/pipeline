@@ -1,0 +1,49 @@
+### kostia@rukavitsin.com 
+#! /opt/Nuke51/Nuke5 -nx
+version 5.100
+Gizmo {
+ tile_color 0x99ffff
+ addUserKnob {20 synthtab l SynthEyes}
+ addUserKnob {41 file T SyntEyesObj1.file}
+ addUserKnob {41 reload -STARTLINE T SyntEyesObj1.reload}
+ addUserKnob {41 update_mode l "update mode" T SyntEyesObj1.update_mode}
+ addUserKnob {41 full_geometry_frame l "primitives frame" T SyntEyesObj1.full_geometry_frame}
+ addUserKnob {41 read_texture_w_coord l "read texture w coord" T SyntEyesObj1.read_texture_w_coord}
+ addUserKnob {26 ""}
+ addUserKnob {41 display T SyntEyesObj1.display}
+ addUserKnob {41 selectable -STARTLINE T SyntEyesObj1.selectable}
+ addUserKnob {41 render_mode l render T SyntEyesObj1.render_mode}
+ addUserKnob {26 ""}
+ addUserKnob {41 import_chan l "import chan file" T SyntEyesObj1.import_chan}
+ addUserKnob {41 export_chan l "export chan file" -STARTLINE T SyntEyesObj1.export_chan}
+ addUserKnob {41 xform_order l "transform order" T SyntEyesObj1.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T SyntEyesObj1.rot_order}
+ addUserKnob {26 "" -STARTLINE T "Must be in XZY"}
+ addUserKnob {13 synthpos l "Synth position"}
+ addUserKnob {13 synthrot l "Synth rotation"}
+ addUserKnob {41 scaling l scale T SyntEyesObj1.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T SyntEyesObj1.uniform_scale}
+ addUserKnob {41 skew T SyntEyesObj1.skew}
+ addUserKnob {41 pivot T SyntEyesObj1.pivot}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 760
+  ypos 208
+ }
+ ReadGeo {
+  rot_order XZY
+  translate {{synthpos.x i} {synthpos.z i} {synthpos.y*(-1) i}}
+  rotate {{synthrot.y i} {synthrot.x i} {synthrot.z*(-1) i}}
+  name SyntEyesObj1
+  selected true
+  xpos 760
+  ypos 282
+ }
+ Output {
+  name Output1
+  xpos 760
+  ypos 340
+ }
+end_group

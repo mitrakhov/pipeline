@@ -1,0 +1,64 @@
+#
+#  "example_21_prim_CVEX.vex" created on Mon Apr 12 19:49:26 2010
+#	with vcc
+#
+_name   example_21_prim_CVEX
+
+    _decl	P	vector	parm	0 0 0
+    _decl	N	vector	parm	0 0 0
+    _decl	v	vector	parm	0 0 0
+    _decl	Cd	vector	parm	0 0 0
+    _decl	Alpha	float	parm	0
+    _decl	pscale	float	parm	0
+    _decl	id	int	parm	0
+    _decl	inst_id	int	parm	0
+    _decl	mb_pass	int	parm	0
+    _decl	time	float	parm	0
+    _decl	POut	vector	export	0 0 0
+    _decl	vOut	vector	export	0 0 0
+    _decl	CdOut	vector	export	0 0 0
+    _decl	AlphaOut	float	export	0
+    _decl	&constcv0	vector	const	0.5 0.9 0.7
+    _decl	&constcv1	vector	const	1 1 0
+    _decl	&constcf0	float	const	1.15
+    _decl	&constcf1	float	const	0.1
+    _decl	&constcf2	float	const	0.95
+    _decl	&constci0	int	const	1
+    _decl	&constci1	int	const	0
+    _decl	%varuv0	vector	local
+    _decl	%varuv1	vector	local
+    _decl	%varvf0	float	local
+    _decl	%varvf1	float	local
+    _decl	%varvi0	int	local
+
+
+
+    set@VV	POut	P
+    getcomp@FVI	%varvf0	POut	&constci0
+    mul@FF	%varvf0	&constcf0
+    setcomp@FVFI	%varvf1	POut	%varvf0	&constci0
+    random@VI	%varuv0	inst_id
+    set@VV	%varuv1	v
+    mul@VV	%varuv1	%varuv0
+    set@FF	%varvf0	time
+    add@FF	%varvf0	&constcf1
+    mul@VF	%varuv1	%varvf0
+    set@VV	vOut	%varuv1
+    eq@III	%varvi0	mb_pass	&constci1
+    if@LI	:LABEL0	%varvi0
+        set@VV	%varuv0	&constcv0
+        mul@VV	%varuv0	Cd
+        set@VV	CdOut	%varuv0
+:LABEL0
+    else@LI	:LABEL1	%varvi0
+        set@VV	%varuv0	&constcv1
+        mul@VV	%varuv0	Cd
+        set@VV	CdOut	%varuv0
+:LABEL1
+    endel@I	%varvi0
+    set@FF	%varvf0	Alpha
+    mul@FF	%varvf0	&constcf2
+    set@FF	AlphaOut	%varvf0
+_code_end
+
+

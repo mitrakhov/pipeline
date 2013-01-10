@@ -1,0 +1,61 @@
+void testBound(string name)
+{
+    if (isbound(name))
+	printf("%s is bound\n", name);
+    else
+	printf("%s is not bound\n", name);
+}
+
+cvex clusterThis_prim_pre (
+     vector P=0;
+    export vector POut=0;
+     vector N=0;
+    export vector NOut=0;
+     vector v=0;
+    export vector vOut=0;
+     vector Cd=0;
+    export vector CdOut=0;
+     float Alpha=0;
+    export float AlphaOut=0;
+     float pscale=0;
+    export float pscaleOut=0;
+     int id=0;
+     int inst_id=0;
+     int mb_pass=0;
+)
+{
+//    printf("Running clusterThis_prim_pre.vex\n");
+/*  
+    testBound("P");
+    testBound("N");
+    testBound("v");
+    testBound("Cd");
+    testBound("Alpha");
+    testBound("pscale");
+    testBound("id");
+    testBound("inst_id");
+    testBound("mb_pass");
+*/
+
+//     printf("P: %g\tN: %g\tv: %g\tAlpha: %g\tpscale: %g\n", P, N, v, Alpha, pscale);
+     
+//    POut = P;  
+   POut = P * (random(inst_id) * N);
+
+   vOut = v * random(inst_id) * 3.0;    
+//   AlphaOut = Alpha * 0.95;    
+
+   pscaleOut = pscale * pow(random(inst_id), 3.33) * pow(random(inst_id), 2.37);
+//   pscaleOut *= 3.3;
+   
+//   NOut = N * random(inst_id);
+//   NOut = N * 1.0;
+   
+// printf("Cd: %g\tCdOut: %g\n", Cd, CdOut);    
+// printf("mb_pass: %g\n", mb_pass);    
+// printf("id: %g\n", id);    
+// printf("inst_id: %g\n", inst_id);    
+// printf("POut: %g\tNOut: %g\tAlphaOut: %g\tvOut: %g\tpscaleOut: %g\n", POut, NOut, AlphaOut, vOut, pscaleOut);
+
+
+}

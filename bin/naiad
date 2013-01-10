@@ -1,0 +1,6 @@
+#!/bin/bash
+NAIADPATH=/mnt/opt/naiad
+
+source ${NAIADPATH}/naiadvars.bash
+${NAIADPATH}/server/bin/naiad --verbose $*
+

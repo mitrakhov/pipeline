@@ -1,0 +1,3 @@
+#!/bin/sh
+cd /mnt/opt/hdrshop/
+wine /mnt/opt/hdrshop/HDRShop.exe

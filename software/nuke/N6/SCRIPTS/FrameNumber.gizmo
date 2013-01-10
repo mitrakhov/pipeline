@@ -1,0 +1,47 @@
+#! c:/bin/Nuke5/Nuke5.exe -nx
+version 5.0
+Gizmo {
+ name Frame1
+ selected true
+ xpos 504
+ ypos 34
+ addUserKnob {20 number_ctrl l Number}
+ addUserKnob {41 color T number1.color}
+ addUserKnob {41 translate T number1.translate}
+ addUserKnob {41 size T number1.size}
+ addUserKnob {26 "" l ""}
+ addUserKnob {41 font T number1.font}
+ addUserKnob {41 xjustify l justify T number1.xjustify}
+ addUserKnob {26 "" l ""}
+ addUserKnob {41 output T number1.output}
+ addUserKnob {41 opacity T number1.opacity}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos 432
+  ypos 31
+ }
+ Text {
+  message "\[format %05d \[frame]]"
+  Font 1
+  font //bigboy/D/tfxtools/Nuke/LiberMonoBold.ttf
+  size 40
+  xjustify right
+  translate {150 10}
+  color {1 0 0 0}
+  name number1
+  xpos 432
+  ypos 105
+ }
+ Output {
+  name Output1
+  xpos 432
+  ypos 171
+ }
+ Viewer {
+  name Viewer1
+  xpos 271
+  ypos 79
+ }
+end_group

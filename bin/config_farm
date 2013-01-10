@@ -1,0 +1,16 @@
+#!/bin/bash
+
+ssh tcp01 '/etc/init.d/afrender restart'
+ssh tcp02 '/etc/init.d/afrender restart'
+ssh tcp03 '/etc/init.d/afrender restart'
+ssh tcp04 '/etc/init.d/afrender restart'
+ssh tcp05 '/etc/init.d/afrender restart'
+ssh tcp06 '/etc/init.d/afrender restart'
+ssh tcp07 '/etc/init.d/afrender restart'
+ssh tcp08 '/etc/init.d/afrender restart'
+ssh tcp09 '/etc/init.d/afrender restart'
+ssh tcp10 '/etc/init.d/afrender restart'
+ssh tcp11 '/etc/init.d/afrender restart'
+ssh tcp12 '/etc/init.d/afrender restart'
+ssh tcp13 '/etc/init.d/afrender restart'
+ssh tcp14 '/etc/init.d/afrender restart'

@@ -1,0 +1,14 @@
+Tracker3Dto2D 1.0.0
+Stabilises images based on 3D data
+
+Author:  Howard Jones
+
+This Gizmo combines a tracker with 'reconcile3D' to extend the stabilise/ match move capabilities to more than one point. A use of which might be to stabilise a camera move so that an element can be roto'd easily before applying the match move back to go into the scene.
+
+Plug in the camera and the source image, copy the appropriate data points - 'create keys' - select tracker points and 'enable, t,r,s' etc, then choose stabilise/ match move/ jitter etc from the transform tab. Smoothing etc can be applied there as with a normal tracker node.
+
+Needs the camera solved thru a 3D tracker programme and the point cloud  x,y,z data. For example from pfTrack export a scene to Nuke using tagged auto/user points to get the camera and the x,y,z points for the points you are interested in. Go into the point cloud group in Nuke (cant remember exact name), copy and paste the positional data from each point into the 'Tracker3Dto2D' gizmo.
+
+Many thanks to Frank and Ean for sorting out the tcl buttons.
+
+This Gizmo was made on 5.1v2 -May work on previous versions but you would need to edit the version number in the Gizmo. No guarantees.
