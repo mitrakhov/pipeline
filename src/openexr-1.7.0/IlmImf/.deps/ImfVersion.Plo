@@ -1,0 +1,3 @@
+ImfVersion.lo: ImfVersion.cpp ImfVersion.h
+
+ImfVersion.h:

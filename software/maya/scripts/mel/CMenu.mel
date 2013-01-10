@@ -1,0 +1,16 @@
+global proc CMenu()
+{
+global string $showCMenuCtrl;
+if (`menu -exists $showCMenuCtrl`)
+   deleteUI $showCMenuCtrl;
+string $name = "Pipeline";
+global string $gMainWindow;
+$showCMenuCtrl = `menu -p $gMainWindow -to true -l $name`;
+//menuItem -p $showCMenuCtrl -l "Export selected to Abc with textures" -c ("source ".mel"; ");
+menuItem -l "Export selected to Abc with textures" -ecr 0 -c "python(\"import exportAbcXml; reload(exportAbcXml); from exportAbcXml import *; exportAbcXml();\");" -ann "exportAbcXml";
+}
+;
+editMenuUpdate MayaWindow|mainEditMenu;
+CMenu;
+setFocus `paneLayout -query -pane1 viewPanes`;
+editMenuUpdate MayaWindow|mainEditMenu;

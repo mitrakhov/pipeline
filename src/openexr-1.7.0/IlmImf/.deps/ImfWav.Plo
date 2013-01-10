@@ -1,0 +1,3 @@
+ImfWav.lo: ImfWav.cpp ImfWav.h
+
+ImfWav.h:

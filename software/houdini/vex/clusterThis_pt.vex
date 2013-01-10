@@ -1,0 +1,224 @@
+#
+#  "clusterThis_pt.vex" created on Fri Apr  9 13:45:52 2010
+#	with vcc
+#
+_name   clusterThis_pt
+
+    _decl	P	vector	parm	0 0 0
+    _decl	N	vector	parm	0 0 0
+    _decl	id	int	parm	0
+    _decl	inst_id	int	parm	0
+    _decl	mb_pass	int	parm	0
+    _decl	POut	vector	export	0 0 0
+    _decl	&constcv0	vector	const	1 1 1
+    _decl	&constcv1	vector	const	0 0 0
+    _decl	&constcf0	float	const	0.5
+    _decl	&constcf1	float	const	1.2
+    _decl	&constcf2	float	const	2
+    _decl	&constcf3	float	const	1
+    _decl	&constcf4	float	const	-1
+    _decl	&constcf6	float	const	6.2831852
+    _decl	&constcf7	float	const	0
+    _decl	&constci0	int	const	0
+    _decl	&constci1	int	const	1
+    _decl	&constcs0	string	const	"%s is bound\n"
+    _decl	&constcs1	string	const	"%s is not bound\n"
+    _decl	&constcs2	string	const	"Running clusterThis_prim.vex\n"
+    _decl	&constcs3	string	const	"P"
+    _decl	&constcs4	string	const	"N"
+    _decl	&constcs5	string	const	"v"
+    _decl	&constcs6	string	const	"Cd"
+    _decl	&constcs7	string	const	"Alpha"
+    _decl	&constcs8	string	const	"pscale"
+    _decl	&constcs9	string	const	"id"
+    _decl	&constcs10	string	const	"inst_id"
+    _decl	&constcs11	string	const	"mb_pass"
+    _decl	deformP	vector	local
+    _decl	f_p	vector	local
+    _decl	f_s	vector	local
+    _decl	f_r	vector	local
+    _decl	f_t	vector	local
+    _decl	%varuv5	vector	local
+    _decl	f_displace_sine	float	local
+    _decl	falloff	float	local
+    _decl	bound	float	local
+    _decl	y	float	local
+    _decl	freq	float	local
+    _decl	f_low_bound	float	local
+    _decl	f_high_bound	float	local
+    _decl	f_dropoff	float	local
+    _decl	f_wavelength	float	local
+    _decl	f_amp	float	local
+    _decl	f_offset	float	local
+    _decl	%varvf0	float	local
+    _decl	%varvf1	float	local
+    _decl	%varvf2	float	local
+    _decl	rOrd	int	local
+    _decl	xOrd	int	local
+    _decl	%varvi0	int	local
+    _decl	%varvi1	int	local
+    _decl	%varvi2	int	local
+    _decl	%varvi3	int	local
+    _decl	%varvi4	int	local
+    _decl	%varvi5	int	local
+    _decl	%varvi6	int	local
+    _decl	%varvi7	int	local
+    _decl	%varvi8	int	local
+    _decl	%varvi9	int	local
+    _decl	%varvi10	int	local
+    _decl	inv_dspace	matrix	local
+    _decl	dspace	matrix	local
+    _decl	inv_obj_origin	matrix	local
+    _decl	obj_origin	matrix	local
+    _decl	%varu44	matrix	local
+
+
+
+    printf@S	&constcs2
+    isbound@IS	%varvi0	&constcs3
+    if@LI	:LABEL0	%varvi0
+        printf@S	&constcs0	&constcs3
+:LABEL0
+    else@LI	:LABEL1	%varvi0
+        printf@S	&constcs1	&constcs3
+:LABEL1
+    endel@I	%varvi0
+    isbound@IS	%varvi1	&constcs4
+    if@LI	:LABEL2	%varvi1
+        printf@S	&constcs0	&constcs4
+:LABEL2
+    else@LI	:LABEL3	%varvi1
+        printf@S	&constcs1	&constcs4
+:LABEL3
+    endel@I	%varvi1
+    isbound@IS	%varvi2	&constcs5
+    if@LI	:LABEL4	%varvi2
+        printf@S	&constcs0	&constcs5
+:LABEL4
+    else@LI	:LABEL5	%varvi2
+        printf@S	&constcs1	&constcs5
+:LABEL5
+    endel@I	%varvi2
+    isbound@IS	%varvi3	&constcs6
+    if@LI	:LABEL6	%varvi3
+        printf@S	&constcs0	&constcs6
+:LABEL6
+    else@LI	:LABEL7	%varvi3
+        printf@S	&constcs1	&constcs6
+:LABEL7
+    endel@I	%varvi3
+    isbound@IS	%varvi4	&constcs7
+    if@LI	:LABEL8	%varvi4
+        printf@S	&constcs0	&constcs7
+:LABEL8
+    else@LI	:LABEL9	%varvi4
+        printf@S	&constcs1	&constcs7
+:LABEL9
+    endel@I	%varvi4
+    isbound@IS	%varvi5	&constcs8
+    if@LI	:LABEL10	%varvi5
+        printf@S	&constcs0	&constcs8
+:LABEL10
+    else@LI	:LABEL11	%varvi5
+        printf@S	&constcs1	&constcs8
+:LABEL11
+    endel@I	%varvi5
+    isbound@IS	%varvi6	&constcs9
+    if@LI	:LABEL12	%varvi6
+        printf@S	&constcs0	&constcs9
+:LABEL12
+    else@LI	:LABEL13	%varvi6
+        printf@S	&constcs1	&constcs9
+:LABEL13
+    endel@I	%varvi6
+    isbound@IS	%varvi7	&constcs10
+    if@LI	:LABEL14	%varvi7
+        printf@S	&constcs0	&constcs10
+:LABEL14
+    else@LI	:LABEL15	%varvi7
+        printf@S	&constcs1	&constcs10
+:LABEL15
+    endel@I	%varvi7
+    isbound@IS	%varvi8	&constcs11
+    if@LI	:LABEL16	%varvi8
+        printf@S	&constcs0	&constcs11
+:LABEL16
+    else@LI	:LABEL17	%varvi8
+        printf@S	&constcs1	&constcs11
+:LABEL17
+    endel@I	%varvi8
+    set@FF	f_offset	&constcf0
+    set@FF	f_amp	&constcf1
+    set@FF	f_wavelength	&constcf2
+    set@FI	f_dropoff	&constci0
+    set@FF	f_high_bound	&constcf3
+    set@FF	f_low_bound	&constcf4
+    set@VI	f_t	&constci0
+    set@VI	f_r	&constci0
+    set@VI	f_s	&constci1
+    set@VI	f_p	&constci0
+    set@II	xOrd	&constci0
+    set@II	rOrd	&constci0
+    ident@4	%varu44
+    set@44	obj_origin	%varu44
+    ident@4	%varu44
+    set@44	inv_obj_origin	%varu44
+    ident@4	%varu44
+    set@44	dspace	%varu44
+    ident@4	%varu44
+    set@44	inv_dspace	%varu44
+    maketransform@4IIVVVV	%varu44	xOrd	rOrd	P	N	&constcv0	&constcv1
+    set@44	obj_origin	%varu44
+    invert@44	%varu44	obj_origin
+    set@44	inv_obj_origin	%varu44
+    ptransform@VV4	%varuv5	P	inv_obj_origin
+    set@VV	deformP	%varuv5
+    set@FF	%varvf0	&constcf6
+    div@FF	%varvf0	f_wavelength
+    set@FF	freq	%varvf0
+    getcomp@FVI	%varvf0	deformP	&constci1
+    set@FF	y	%varvf0
+    clamp@FFFF	%varvf0	y	f_low_bound	f_high_bound
+    set@FF	y	%varvf0
+    ge@IFF	%varvi9	y	&constcf7
+    if@LI	:LABEL18	%varvi9
+        set@FF	%varvf0	f_high_bound
+:LABEL18
+    else@LI	:LABEL19	%varvi9
+        set@FF	%varvf0	f_low_bound
+:LABEL19
+    endel@I	%varvi9
+    set@FF	bound	%varvf0
+    abs@FF	%varvf1	y
+    abs@FF	%varvf2	bound
+    div@FF	%varvf1	%varvf2
+    set@FF	falloff	%varvf1
+    gt@IFF	%varvi10	f_dropoff	&constcf7
+    if@LI	:LABEL20	%varvi10
+        set@FF	%varvf1	&constcf3
+        sub@FF	%varvf1	falloff
+        set@FF	falloff	%varvf1
+:LABEL20
+    endif@I	%varvi10
+    abs@FF	%varvf1	f_dropoff
+    lerp@FFFF	%varvf2	&constcf3	falloff	%varvf1
+    set@FF	falloff	%varvf2
+    mul@FF	falloff	f_amp
+    set@FF	%varvf1	y
+    mul@FF	%varvf1	freq
+    set@FF	%varvf2	f_offset
+    mul@FF	%varvf2	freq
+    add@FF	%varvf1	%varvf2
+    sin@FF	%varvf2	%varvf1
+    set@FF	f_displace_sine	%varvf2
+    mul@FF	f_displace_sine	falloff
+    getcomp@FVI	%varvf1	deformP	&constci0
+    add@FF	%varvf1	f_displace_sine
+    setcomp@FVFI	%varvf2	deformP	%varvf1	&constci0
+    ptransform@VV4	%varuv5	deformP	dspace
+    set@VV	deformP	%varuv5
+    ptransform@VV4	%varuv5	deformP	obj_origin
+    set@VV	POut	%varuv5
+_code_end
+
+

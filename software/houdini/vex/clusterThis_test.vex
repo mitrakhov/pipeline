@@ -1,0 +1,93 @@
+#
+#  "clusterThis_test.vex" created on Mon Feb 22 19:08:59 2010
+#	with vcc
+#
+_name   clusterThis_test
+
+    _decl	P	vector	parm	0 0 0
+    _decl	N	vector	parm	0 0 0
+    _decl	v	vector	parm	0 0 0
+    _decl	Cd	vector	parm	0 0 0
+    _decl	Alpha	float	parm	0
+    _decl	pscale	float	parm	0
+    _decl	weight	float	parm	0
+    _decl	id	int	parm	0
+    _decl	inst_id	int	parm	0
+    _decl	mb_pass	int	parm	0
+    _decl	POut	vector	export	0 0 0
+    _decl	NOut	vector	export	0 0 0
+    _decl	vOut	vector	export	0 0 0
+    _decl	CdOut	vector	export	0 0 0
+    _decl	AlphaOut	float	export	0
+    _decl	pscaleOut	float	export	0
+    _decl	weightOut	float	export	0
+    _decl	&constcv0	vector	const	0.5 0.9 0.7
+    _decl	&constcv1	vector	const	1 1 0
+    _decl	&constcf0	float	const	1.05
+    _decl	&constcf1	float	const	0.95
+    _decl	&constcf2	float	const	2
+    _decl	&constcf3	float	const	3.33
+    _decl	&constcf4	float	const	2.37
+    _decl	&constci0	int	const	1
+    _decl	&constci1	int	const	0
+    _decl	&constcs2	string	const	"weight"
+    _decl	%varuv0	vector	local
+    _decl	%varuv1	vector	local
+    _decl	%varvf0	float	local
+    _decl	%varvf1	float	local
+    _decl	%varvf2	float	local
+    _decl	%varvf3	float	local
+    _decl	%varvi0	int	local
+    _decl	%varvi1	int	local
+
+
+
+    getcomp@FVI	%varvf0	P	&constci0
+    mul@FF	%varvf0	&constcf0
+    setcomp@FVFI	%varvf1	POut	%varvf0	&constci0
+    set@VV	%varuv0	P
+    mul@VF	%varuv0	&constcf0
+    set@VV	POut	%varuv0
+    random@VI	%varuv0	inst_id
+    set@VV	%varuv1	v
+    mul@VV	%varuv1	%varuv0
+    set@VV	vOut	%varuv1
+    eq@III	%varvi0	mb_pass	&constci1
+    if@LI	:LABEL0	%varvi0
+        set@VV	%varuv0	&constcv0
+        mul@VV	%varuv0	Cd
+        set@VV	CdOut	%varuv0
+:LABEL0
+    else@LI	:LABEL1	%varvi0
+        set@VV	%varuv0	&constcv1
+        mul@VV	%varuv0	Cd
+        set@VV	CdOut	%varuv0
+:LABEL1
+    endel@I	%varvi0
+    set@FF	%varvf0	Alpha
+    mul@FF	%varvf0	&constcf1
+    set@FF	AlphaOut	%varvf0
+    set@VV	CdOut	&constcv1
+    isbound@IS	%varvi1	&constcs2
+    if@LI	:LABEL2	%varvi1
+        set@FF	%varvf0	weight
+        mul@FF	%varvf0	weight
+        set@FF	%varvf2	&constcf2
+        mul@FF	%varvf2	%varvf0
+        set@FF	weightOut	%varvf2
+:LABEL2
+    endif@I	%varvi1
+    random@FI	%varvf0	inst_id
+    pow@FFF	%varvf2	%varvf0	&constcf3
+    mul@FF	%varvf2	pscale
+    random@FI	%varvf0	inst_id
+    pow@FFF	%varvf3	%varvf0	&constcf4
+    mul@FF	%varvf2	%varvf3
+    set@FF	pscaleOut	%varvf2
+    random@VI	%varuv0	inst_id
+    set@VV	%varuv1	N
+    mul@VV	%varuv1	%varuv0
+    set@VV	NOut	%varuv1
+_code_end
+
+

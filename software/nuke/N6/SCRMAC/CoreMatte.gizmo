@@ -1,0 +1,59 @@
+#! c:/bin/Nuke502/nuke5.exe -nx
+version 5.0200
+Gizmo {
+ addUserKnob {20 corematte l "Matte controls"}
+ addUserKnob {41 size_eode l Erode T Erode1.size}
+ addUserKnob {41 size_blur l Blur T Blur1.size}
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -479
+  ypos 161
+ }
+set N11b411f8 [stack 0]
+ Dot {
+  name Dot3
+  xpos -445
+  ypos 236
+ }
+set N11402cc8 [stack 0]
+ Erode {
+  size 1.86843
+  name Erode1
+  xpos -382
+  ypos 226
+ }
+ Blur {
+  channels alpha
+  size 4
+  name Blur1
+  xpos -382
+  ypos 265
+ }
+ Dot {
+  name Dot4
+  xpos -348
+  ypos 324
+ }
+push $N11402cc8
+ Merge2 {
+  inputs 2
+  operation max
+  Bchannels alpha
+  name Max
+  xpos -479
+  ypos 320
+ }
+ Output {
+  name Output1
+  xpos -479
+  ypos 413
+ }
+push $N11b411f8
+ Viewer {
+  name Viewer1
+  xpos -479
+  ypos 188
+ }
+end_group

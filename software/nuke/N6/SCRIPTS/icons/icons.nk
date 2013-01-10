@@ -1,0 +1,306 @@
+#! /Applications/Nuke6.2v2/NukeX6.2v2.app/../Nuke6.2v2.app/Contents/MacOS/Nuke6.2v2 -nx
+version 6.2 v2
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="0" y="22" w="2559" h="1414" screen="0">
+        <splitter orientation="2">
+            <split size="823"/>
+            <splitter orientation="1">
+                <split size="783"/>
+                <splitter orientation="2">
+                    <split size="112"/>
+                    <dock id="" hideTitles="1" activePageId="Progress.1">
+                        <page id="Progress.1"/>
+                    </dock>
+                    <split size="707"/>
+                    <dock id="" activePageId="Properties.1">
+                        <page id="Properties.1"/>
+                    </dock>
+                </splitter>
+                <split size="1772"/>
+                <dock id="" activePageId="Viewer.1">
+                    <page id="Viewer.1"/>
+                    <page id="Curve Editor.1"/>
+                </dock>
+            </splitter>
+            <split size="565"/>
+            <dock id="" activePageId="DAG.1">
+                <page id="DAG.1"/>
+                <page id="Script Editor.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name /Volumes/ohufx/consulting/Foundry/MariNuke/icons/icons.nk
+ format "2048 878 0 0 2048 878 1 TDR_final"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ addUserKnob {20 commandPortTab l "Command Port"}
+ addUserKnob {3 socketPort l "socket port" R 0 50107}
+ addUserKnob {6 enableSocket l enable -STARTLINE}
+ addUserKnob {20 mariTab l Mari}
+ addUserKnob {2 mariLocation l "mari location" t "Path to Mari executable"}
+ mariLocation /usr/local/Mari1.2v1/mari
+ addUserKnob {2 mariDataDir l "mari data dir" t "Path to directory that will hold data to be sent to Mari (exrs, objs and fbx files). If this is left empty a \"mari\" directory will be created in the nk file's location"}
+ mariDataDir "\[file dirname \[value root.name]]/mariData"
+}
+Read {
+ inputs 0
+ file /Applications/Nuke6.2v2/Nuke6.2v2.app/Contents/MacOS/plugins/icons/NukeApp64.png
+ format "64 64 0 0 64 64 1 "
+ origset true
+ name Read1
+ xpos -353
+ ypos -108
+}
+Roto {
+ output alpha
+ premultiply rgba
+ curves {AnimTree: "" {
+ Version: 1.2
+ Flag: 0
+ RootNode: 1
+ Node: {
+  NodeName: "Root" {
+   Flag: 512
+   NodeType: 1
+   Transform: 0 0 S 0 0 S 0 0 S 0 0 S 0 1 S 0 1 S 0 0 S 0 32 S 0 32 
+   NumOfAttributes: 10
+   "vis" S 0 1 "opc" S 0 1 "mbo" S 0 1 "mb" S 0 1 "mbs" S 0 0.5 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 
+  }
+  NumOfChildren: 1
+  Node: {
+   NodeName: "Ellipse1" {
+    Flag: 576
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 0 0 S 0 0 S 0 0 S 0 1 S 0 1 S 0 0 S 0 35.1 S 0 29.9 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 0 -16.7342 S 0 0 0 0 S 0 32.1 S 0 1.6 0 0 S 0 16.7342 S 0 0 0 0 S 0 0 S 0 -16.7342 0 0 S 0 62.4 S 0 31.9 0 0 S 0 0 S 0 16.7342 0 0 S 0 16.7342 S 0 0 0 0 S 0 32.1 S 0 62.2 0 0 S 0 -16.7342 S 0 0 0 0 S 0 0 S 0 16.7342 0 0 S 0 1.8 S 0 31.9 0 0 S 0 0 S 0 -16.7342 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 0 -16.7342 S 0 0 0 0 S 0 0 S 0 0 0 0 S 0 16.7342 S 0 0 0 0 S 0 0 S 0 -16.7342 0 0 S 0 0 S 0 0 0 0 S 0 0 S 0 16.7342 0 0 S 0 16.7342 S 0 0 0 0 S 0 0 S 0 0 0 0 S 0 -16.7342 S 0 0 0 0 S 0 0 S 0 16.7342 0 0 S 0 0 S 0 0 0 0 S 0 0 S 0 -16.7342 0 
+     }
+     NumOfAttributes: 43
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "src" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 32 "spy" S 0 32 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 1 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 "tt" S 0 6 
+    }
+   }
+   NumOfChildren: 0
+  }
+ }
+}
+}
+ toolbox {selectAll {
+  { selectAll ssx 1 ssy 1 sf 1 }
+  { createBezier ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBSpline ssx 1 ssy 1 sf 1 sb 1 tt 5 }
+  { createEllipse ssx 1 ssy 1 sf 1 sb 1 tt 6 }
+  { createRectangle ssx 1 ssy 1 sf 1 sb 1 tt 7 }
+  { brush ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+ toolbar_brush_hardness 0.200000003
+ toolbar_lifetime_type all
+ toolbar_source_transform_scale {1 1}
+ toolbar_source_transform_center {320 240}
+ colorOverlay 0
+ lifetime_type "all frames"
+ motionblur_shutter_offset_type centred
+ source_black_outside true
+ name Roto1
+ xpos -353
+ ypos -26
+}
+Reformat {
+ type "to box"
+ box_width 24
+ name Reformat1
+ xpos -353
+ ypos 43
+}
+Write {
+ channels rgba
+ file /Volumes/ohufx/consulting/Foundry/MariNuke/icons/nukeIcon.png
+ file_type png
+ checkHashOnRead false
+ version 1
+ name Write1
+ xpos -353
+ ypos 67
+ addUserKnob {20 JobSystem}
+ addUserKnob {20 Advanced n 2}
+ addUserKnob {1 nameFormat l name}
+ nameFormat %(show)s_%(shot)s_%(label)s_v%(version)02d
+ addUserKnob {20 EnvCloseTab n -1}
+ addUserKnob {26 warning l "<font bgcolor=\"red\">warning</font>"}
+ addUserKnob {4 show l show/seq/shot M {TDR}}
+ addUserKnob {4 seq l "" -STARTLINE M {01 02 03 05 09 10 11 82 12 77 76}}
+ addUserKnob {4 shot l "" -STARTLINE M {01_GEN}}
+ addUserKnob {6 gen l GEN -STARTLINE}
+ addUserKnob {4 cat l category M {comp pre plates test}}
+ addUserKnob {1 usr_label l description}
+ usr_label comp
+ addUserKnob {3 ver l version/take}
+ ver 1
+ addUserKnob {3 take l "" -STARTLINE}
+ take 1
+ addUserKnob {4 ext l extension M {dpx exr jpg tif}}
+ addUserKnob {1 dirName l dir +DISABLED}
+ dirName /Volumes/ohufx/shows/TDR/shots/01/01_GEN/render/2d/comp/TDR_01_GEN_comp_v01
+ addUserKnob {22 create l "Create Output" -STARTLINE}
+ addUserKnob {1 fileName l file +DISABLED}
+ fileName TDR_01_GEN_comp_v01.%06d.dpx
+}
+Read {
+ inputs 0
+ file /Volumes/ohufx/consulting/Foundry/MariNuke/icons/mari.png
+ format "202 199 0 0 202 199 1 "
+ origset true
+ name Read2
+ xpos -193
+ ypos -155
+}
+Roto {
+ output alpha
+ premultiply rgba
+ curves {AnimTree: "" {
+ Version: 1.2
+ Flag: 0
+ RootNode: 1
+ Node: {
+  NodeName: "Root" {
+   Flag: 512
+   NodeType: 1
+   Transform: 0 0 S 0 0 S 0 0 S 0 0 S 0 1 S 0 1 S 0 0 S 0 101 S 0 99.5 
+   NumOfAttributes: 10
+   "vis" S 0 1 "opc" S 0 1 "mbo" S 0 1 "mb" S 0 1 "mbs" S 0 0.5 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 
+  }
+  NumOfChildren: 1
+  Node: {
+   NodeName: "Ellipse1" {
+    Flag: 576
+    NodeType: 3
+    CurveGroup: "" {
+     Transform: 0 0 S 0 0 S 0 0 S 0 0 S 0 1 S 0 1 S 0 0 S 0 115.6 S 0 90.8 
+     Flag: 0
+     NumOfCubicCurves: 2
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 0 -43.4096 S 0 0 0 0 S 0 109.687 S 0 14.1712 0 0 S 0 43.4096 S 0 0 0 0 S 0 0 S 0 -43.4096 0 0 S 0 188.288 S 0 92.7712 0 0 S 0 0 S 0 43.4096 0 0 S 0 43.4096 S 0 0 0 0 S 0 109.687 S 0 171.371 0 0 S 0 -43.4096 S 0 0 0 0 S 0 0 S 0 43.4096 0 0 S 0 31.0875 S 0 92.7712 0 0 S 0 0 S 0 -43.4096 0 
+     }
+     CubicCurve: "" {
+      Type: 0 Flag: 8192 Dim: 2
+      NumOfPoints: 12
+      0 S 0 -43.4096 S 0 0 0 0 S 0 0 S 0 0 0 0 S 0 43.4096 S 0 0 0 0 S 0 0 S 0 -43.4096 0 0 S 0 0 S 0 0 0 0 S 0 0 S 0 43.4096 0 0 S 0 43.4096 S 0 0 0 0 S 0 0 S 0 0 0 0 S 0 -43.4096 S 0 0 0 0 S 0 0 S 0 43.4096 0 0 S 0 0 S 0 0 0 0 S 0 0 S 0 -43.4096 0 
+     }
+     NumOfAttributes: 43
+     "vis" S 0 1 "r" S 0 1 "g" S 0 1 "b" S 0 1 "a" S 0 1 "ro" S 0 0 "go" S 0 0 "bo" S 0 0 "ao" S 0 0 "opc" S 0 1 "bm" S 0 0 "inv" S 0 0 "mbo" S 0 0 "mb" S 0 1 "mbs" S 0 0.5 "mbsot" S 0 0 "mbso" S 0 0 "fo" S 0 1 "fx" S 0 0 "fy" S 0 0 "ff" S 0 1 "ft" S 0 0 "src" S 0 0 "stx" S 0 0 "sty" S 0 0 "str" S 0 0 "sr" S 0 0 "ssx" S 0 1 "ssy" S 0 1 "ss" S 0 0 "spx" S 0 101 "spy" S 0 99.5 "stot" S 0 0 "sto" S 0 0 "sv" S 0 0 "sf" S 0 1 "sb" S 0 1 "nv" S 0 1 "view1" S 0 1 "ltn" S 0 1 "ltm" S 0 1 "ltt" S 0 0 "tt" S 0 6 
+    }
+   }
+   NumOfChildren: 0
+  }
+ }
+}
+}
+ toolbox {selectAll {
+  { selectAll ssx 1 ssy 1 sf 1 }
+  { createBezier ssx 1 ssy 1 sf 1 sb 1 tt 4 }
+  { createBSpline ssx 1 ssy 1 sf 1 sb 1 tt 5 }
+  { createEllipse ssx 1 ssy 1 sf 1 sb 1 tt 6 }
+  { createRectangle ssx 1 ssy 1 sf 1 sb 1 }
+  { brush ssx 1 ssy 1 sf 1 sb 1 }
+  { eraser src 2 ssx 1 ssy 1 sf 1 sb 1 }
+  { clone src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { reveal src 3 ssx 1 ssy 1 sf 1 sb 1 }
+  { dodge src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { burn src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { blur src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { sharpen src 1 ssx 1 ssy 1 sf 1 sb 1 }
+  { smear src 1 ssx 1 ssy 1 sf 1 sb 1 }
+} }
+ toolbar_brush_hardness 0.200000003
+ toolbar_lifetime_type all
+ toolbar_source_transform_scale {1 1}
+ toolbar_source_transform_center {320 240}
+ colorOverlay 0
+ lifetime_type "all frames"
+ motionblur_shutter_offset_type centred
+ source_black_outside true
+ name Roto2
+ xpos -193
+ ypos -73
+}
+Crop {
+ box {29.80000019 13 190 172.8000031}
+ reformat true
+ crop false
+ name Crop1
+ xpos -193
+ ypos -39
+}
+Reformat {
+ type "to box"
+ box_width 24
+ name Reformat2
+ xpos -193
+ ypos 47
+}
+Write {
+ channels rgba
+ file /Volumes/ohufx/consulting/Foundry/MariNuke/icons/mariIcon.png
+ file_type png
+ checkHashOnRead false
+ version 1
+ name Write2
+ xpos -195
+ ypos 71
+ addUserKnob {20 JobSystem}
+ addUserKnob {20 Advanced n 2}
+ addUserKnob {1 nameFormat l name}
+ nameFormat %(show)s_%(shot)s_%(label)s_v%(version)02d
+ addUserKnob {20 EnvCloseTab n -1}
+ addUserKnob {26 warning l "<font bgcolor=\"red\">warning</font>"}
+ addUserKnob {4 show l show/seq/shot M {TDR}}
+ addUserKnob {4 seq l "" -STARTLINE M {01 02 03 05 09 10 11 82 12 77 76}}
+ addUserKnob {4 shot l "" -STARTLINE M {01_GEN}}
+ addUserKnob {6 gen l GEN -STARTLINE}
+ addUserKnob {4 cat l category M {comp pre plates test}}
+ addUserKnob {1 usr_label l description}
+ usr_label comp
+ addUserKnob {3 ver l version/take}
+ ver 1
+ addUserKnob {3 take l "" -STARTLINE}
+ take 1
+ addUserKnob {4 ext l extension M {dpx exr jpg tif}}
+ addUserKnob {1 dirName l dir +DISABLED}
+ dirName /Volumes/ohufx/shows/TDR/shots/01/01_GEN/render/2d/comp/TDR_01_GEN_comp_v01
+ addUserKnob {22 create l "Create Output" -STARTLINE}
+ addUserKnob {1 fileName l file +DISABLED}
+ fileName TDR_01_GEN_comp_v01.%06d.dpx
+}
+Viewer {
+ inputs 2
+ frame 1
+ input_process false
+ gl_lighting true
+ name Viewer1
+ xpos -337
+ ypos 171
+}

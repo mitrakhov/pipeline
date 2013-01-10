@@ -1,0 +1,80 @@
+void testBound(string name)
+{
+    if (isbound(name))
+	printf("%s is bound\n", name);
+    else
+	printf("%s is not bound\n", name);
+}
+
+cvex clusterThis_test(
+     vector P=0;
+    export vector POut=0;
+     vector N=0;
+    export vector NOut=0;
+     vector v=0;
+    export vector vOut=0;
+     vector Cd=0;
+    export vector CdOut=0;
+     float Alpha=0;
+    export float AlphaOut=0;
+     float pscale=0;
+    export float pscaleOut=0;
+     float weight=0;           
+    export float weightOut=0;           
+     int id=0;
+     int mb_pass=0;
+)
+{
+   // printf("Running clusterThis_test.vex\n");
+  
+  /*
+    testBound("P");
+    testBound("N");
+    testBound("v");
+    testBound("Cd");
+    testBound("Alpha");
+    testBound("id");
+    testBound("pscale");
+    testBound("weight");
+   testBound("mb_pass");
+  */
+     
+
+//     printf("P: %g\tN: %g\tAlpha: %g\tpscale: %g\n", P, N, Alpha, pscale);
+     
+//   vector objP = wo_space(P);
+     
+//    POut = P * (v / 10);
+//    POut.y *= 1.5;
+    
+//    vOut = v * 1.25;
+    
+    CdOut = Cd;
+
+//    CdOut = Cd * random(id);
+
+//   if(mb_pass == 0) {
+//      CdOut = {.5, 0.9, 0.7} * Cd;
+//      CdOut = 1.0 * Cd;
+ //     printf("CdOut: %g\n", CdOut);    
+      }
+   else {
+//      CdOut = {1, 0, 0};
+//      CdOut = {1, 0, 0}  * Cd;
+//      printf("CdOut: %g\n", CdOut);    
+      }
+    
+//    AlphaOut = Alpha * 0.95;    
+    
+//    weightOut = 2.0 * weight;
+
+   pscaleOut = pscale * pow(random(id), 3.33) * pow(random(id), 2.37);
+   
+//   NOut = N * random(id);
+   NOut = N ;
+
+ printf("mb_pass: %g\n", mb_pass);    
+ printf("id: %g\n", id);    
+//   printf("POut: %g\tNOut: %g\tAlphaOut: %g\tpscaleOut: %g\n", POut, NOut, AlphaOut, pscaleOut);
+
+}

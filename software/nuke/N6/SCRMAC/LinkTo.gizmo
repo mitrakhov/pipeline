@@ -1,0 +1,18 @@
+#! /opt/Nuke5/Nuke5 -nx
+Gizmo {
+help "Links to a root directory that will automatically link all those missing files. Footage should have this in name [knob LinkTo.pathbase]"
+ inputs 0
+ name LinkTo
+ addUserKnob {20 User}
+ addUserKnob {2 pathbase l "Project's Root Directory" t "This should point to the root folder that you created for the images and scripts. "}
+ pathbase "Read nodes like [knob LinkTo.pathbase]/src/scan_%07d.dpx"
+ addUserKnob {1 path1 l Path1}
+ path1 "//server/share"
+ addUserKnob {1 path2 l Path2}
+ path2 "/mnt/share"
+ addUserKnob {1 path3 l Path3}
+ path3 "/Volumes/share"
+ addUserKnob {1 template l Template}
+ template "[knob LinkTo.pathbase]"
+ 
+}

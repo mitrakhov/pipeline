@@ -1,0 +1,627 @@
+Group {
+ name TriWrite1
+ selected true
+ xpos 10
+ ypos -184
+ addUserKnob {20 triwrite l TriWrite}
+ addUserKnob {26 file_to_render l render T ""}
+ addUserKnob {6 write_result l RESULT -STARTLINE +DISABLED}
+ addUserKnob {6 write_dailies l DAILIES -STARTLINE +DISABLED}
+ write_dailies true
+ addUserKnob {4 passthru l "pass thru" M {DAILIES RESULT}}
+ addUserKnob {6 text_info l "text info" +STARTLINE}
+ text_info true
+ addUserKnob {4 aspect l "" -STARTLINE M {1.33 1.37 1.78 1.85 2.35 2.40}}
+ aspect 2.35
+ addUserKnob {6 format_marker l "format markers on images" +STARTLINE}
+ format_marker true
+ addUserKnob {1 notes}
+ addUserKnob {1 artist}
+ addUserKnob {26 render_div l "" +STARTLINE}
+ addUserKnob {22 _render l Render +DISABLED T "_tri_render_panel((nuke.thisNode().node(\"result\"), nuke.thisNode().node(\"dailies\")))" +STARTLINE}
+ addUserKnob {6 slate l "render stale" -STARTLINE +DISABLED}
+ slate true
+ addUserKnob {26 ""}
+ addUserKnob {41 _dailies_format l "dailies format" T ScaleToDailies.format}
+ addUserKnob {26 triwrite_gizmo l INVISIBLE +INVISIBLE T ""}
+}
+ BackdropNode {
+  inputs 0
+  name ScriptInfo
+  tile_color 0x8e8e3800
+  note_font_size 42
+  xpos 154
+  ypos -774
+  bdwidth 101
+  bdheight 215
+ }
+ BackdropNode {
+  inputs 0
+  name ColorStrip
+  tile_color 0x7171c600
+  note_font_size 42
+  xpos 440
+  ypos -1001
+  bdwidth 220
+  bdheight 240
+ }
+ BackdropNode {
+  inputs 0
+  name GrayStrip
+  tile_color 0x8e8e3800
+  note_font_size 42
+  xpos 684
+  ypos -1002
+  bdwidth 239
+  bdheight 355
+ }
+ BackdropNode {
+  inputs 0
+  name ColorAndGrey
+  tile_color 0x8e8e3800
+  note_font_size 42
+  xpos 452
+  ypos -676
+  bdheight 136
+ }
+ BackdropNode {
+  inputs 0
+  name AspectsRectangles
+  tile_color 0x8e8e3800
+  note_font_size 42
+  xpos 606
+  ypos -610
+  bdwidth 359
+  bdheight 369
+ }
+ BackdropNode {
+  inputs 0
+  name FrameInfo
+  tile_color 0x7171c600
+  note_font_size 42
+  xpos 588
+  ypos -76
+  bdwidth 245
+  bdheight 203
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -58
+  ypos -388
+ }
+set N7b456d8 [stack 0]
+ Constant {
+  inputs 0
+  channels rgb
+  format "1024 778 0 0 1024 778 1 TriSlate"
+  name Base1
+  xpos 663
+  ypos -537
+ }
+set N7b45880 [stack 0]
+ Rectangle {
+  output {rgba.red rgba.green rgba.blue rgba.alpha}
+  invert true
+  area {14 {"int((height - width / \[expr \{\[value aspect] >= 2.35 ? 1.85 : 1.37\}]) / 2)" i} 1010 {"778 - area.main.y" i}}
+  name Mask185
+  xpos 875
+  ypos -380
+ }
+ EdgeDetectWrapper {
+  channels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name EdgeDetectWrapper2
+  xpos 875
+  ypos -354
+ }
+ Dilate {
+  channels alpha
+  size {-1 -1.5}
+  name Dilate2
+  xpos 875
+  ypos -316
+ }
+ Shuffle {
+  red white
+  green white
+  blue white
+  name Shuffle2
+  xpos 875
+  ypos -272
+ }
+push $N7b45880
+ Rectangle {
+  output {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  invert true
+  area {14 {"int((height - width / \[value aspect]) / 2)" i} 1010 {"778 - area.main.y" i}}
+  name Mask235
+  xpos 764
+  ypos -405
+ }
+set N7b47300 [stack 0]
+ EdgeDetectWrapper {
+  channels {-rgba.red -rgba.green -rgba.blue rgba.alpha}
+  name EdgeDetectWrapper1
+  xpos 764
+  ypos -367
+ }
+ Dilate {
+  channels alpha
+  size -1.5
+  name Dilate1
+  xpos 764
+  ypos -321
+ }
+ Shuffle {
+  red white
+  green white
+  blue white
+  name Shuffle1
+  xpos 659
+  ypos -315
+ }
+push $N7b47300
+ Dot {
+  name Dot3
+  xpos 717
+  ypos -395
+ }
+ Dot {
+  name Dot4
+  xpos 717
+  ypos -352
+ }
+push $N7b45880
+ Text {
+  opacity 0.15
+  message "\[value aspect]"
+  font "/usr/pipeline/software/nuke/N6/SCRIPTS/trigraph/Anonymous Pro B.ttf"
+  size 25
+  yjustify top
+  Transform 1
+  box {19 0 768 {"height - int((height - width / \[value aspect]) / 2 + width / \[value aspect]) - 3" i}}
+  center {512 389}
+  name textAspect
+  xpos 616
+  ypos -392
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "1024 778 0 0 1024 778 1 TriSlate"
+  name Base3
+  xpos 267
+  ypos -484
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "20 778 0 0 20 778 1 GrayStripe"
+  name Constant3
+  xpos 764
+  ypos -975
+ }
+ Ramp {
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  replace true
+  p0 {0 0}
+  p1 {{width i} 0}
+  type plinear
+  color {1 1 1 0}
+  name Ramp1
+  xpos 764
+  ypos -903
+ }
+ Reformat {
+  format "1024 778 0 0 1024 778 1 TriSlate"
+  filter Impulse
+  black_outside true
+  name Reformat2
+  xpos 764
+  ypos -877
+ }
+ Expression {
+  name Expression1
+  xpos 764
+  ypos -839
+ }
+ Transform {
+  translate {0 180}
+  scale {0.86 0.05}
+  center {512 389}
+  filter Impulse
+  name Transform2
+  xpos 809
+  ypos -805
+ }
+set N7b9f9c0 [stack 0]
+ EdgeDetectWrapper {
+  name EdgeDetectWrapper4
+  xpos 710
+  ypos -811
+ }
+ Mirror {
+  Horizontal true
+  name Mirror1
+  xpos 710
+  ypos -773
+ }
+ Shuffle {
+  red white
+  green white
+  blue white
+  name Shuffle4
+  xpos 710
+  ypos -747
+ }
+ Dilate {
+  channels alpha
+  size {-1 -1.5}
+  name Dilate3
+  xpos 710
+  ypos -721
+ }
+push $N7b9f9c0
+ Merge2 {
+  inputs 2
+  operation matte
+  mix 0.02
+  name Merge11
+  xpos 773
+  ypos -676
+ }
+ ColorBars {
+  inputs 0
+  format "1024 778 0 0 1024 778 1 TriSlate"
+  PAL true
+  name ColorBars1
+  xpos 513
+  ypos -965
+ }
+ Transform {
+  translate {0 -180}
+  scale {0.86 0.05}
+  center {512 389}
+  filter Impulse
+  name Transform1
+  xpos 570
+  ypos -863
+ }
+set N7bc6598 [stack 0]
+ EdgeDetectWrapper {
+  name EdgeDetectWrapper3
+  xpos 450
+  ypos -869
+ }
+ Shuffle {
+  red white
+  green white
+  blue white
+  name Shuffle3
+  xpos 450
+  ypos -831
+ }
+push $N7bc6598
+ Merge2 {
+  inputs 2
+  operation matte
+  mix 0.02
+  name Merge10
+  xpos 523
+  ypos -792
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  format "1024 778 0 0 1024 778 1 TriSlate"
+  name Base2
+  xpos 164
+  ypos -748
+ }
+ Text {
+  message "\[python os.path.basename(nuke.value('root.name'))]\n\n\[value artist]\n\n\n\[value notes]\n\n\n\n\[python sceneLenght()]"
+  font "/usr/pipeline/software/nuke/N6/SCRIPTS/trigraph/Anonymous Pro B.ttf"
+  size 24
+  leading -0.44
+  yjustify top
+  Transform 1
+  box {256 243 944 393}
+  center {512 389}
+  name textinfo1
+  xpos 164
+  ypos -676
+ }
+ Text {
+  message "\[python sceneName()]"
+  font "/usr/pipeline/software/nuke/N6/SCRIPTS/trigraph/Anonymous Pro B.ttf"
+  size 56
+  leading 1
+  yjustify top
+  Transform 1
+  box {256 183 768 465}
+  scale {1 1}
+  center {512 389}
+  name textName
+  xpos 164
+  ypos -650
+ }
+ Text {
+  message "\[python sceneVer()]"
+  font "/usr/pipeline/software/nuke/N6/SCRIPTS/trigraph/Anonymous Pro B.ttf"
+  size 68
+  leading 1
+  xjustify right
+  yjustify top
+  Transform 1
+  box {680 185 941 469}
+  center {512 389}
+  name textVersion
+  xpos 164
+  ypos -622
+ }
+ Text {
+  message "\[python getDate('%a %d/%m/%Y %H:%M')]\n\n\n\n\n\n\n\n\n\\\[\[python startFrame()]-\[python lastFrame()]\\]"
+  font "/usr/pipeline/software/nuke/N6/SCRIPTS/trigraph/Anonymous Pro B.ttf"
+  size 24
+  leading -0.44
+  xjustify right
+  yjustify top
+  Transform 1
+  box {625 185 941 393}
+  center {512 389}
+  name textDate
+  xpos 164
+  ypos -596
+ }
+ Read {
+  inputs 0
+  file /usr/pipeline/software/nuke/N6/SCRIPTS/trigraph/TriSlate.tiff
+  format "1024 778 0 0 1024 778 1 TriSlate"
+  version 1
+  colorspace sRGB
+  name TriSlate
+  xpos 296
+  ypos -761
+ }
+ Shuffle {
+  alpha white
+  name Shuffle5
+  xpos 296
+  ypos -663
+ }
+ Merge2 {
+  inputs 2
+  name Merge12
+  xpos 296
+  ypos -596
+ }
+ Merge2 {
+  inputs 2
+  bbox B
+  name Merge8
+  xpos 462
+  ypos -596
+  disable true
+ }
+ Merge2 {
+  inputs 2
+  bbox B
+  name Merge9
+  xpos 462
+  ypos -570
+  disable true
+ }
+ Switch {
+  inputs 2
+  which {{"frame - root.first_frame >= 0"}}
+  name Switch3
+  xpos 377
+  ypos -461
+ }
+set N7bb2308 [stack 0]
+ Merge2 {
+  inputs 2
+  name Merge5
+  xpos 469
+  ypos -392
+ }
+ Merge2 {
+  inputs 2
+  mix 0.6
+  name MergeMask
+  xpos 469
+  ypos -356
+ }
+ Merge2 {
+  inputs 2
+  operation matte
+  bbox B
+  mix 0.25
+  name Merge235
+  selected true
+  xpos 469
+  ypos -315
+ }
+ Merge2 {
+  inputs 2
+  operation matte
+  bbox B
+  mix 0.03
+  name Merge185
+  xpos 469
+  ypos -272
+ }
+push $N7bb2308
+ Switch {
+  inputs 2
+  which {{"format_marker || frame - root.first_frame < 0" i}}
+  name Switch4
+  xpos 377
+  ypos -207
+ }
+set N7c5ecf0 [stack 0]
+ Reformat {
+  type "to box"
+  box_width {{Input1.width i}}
+  box_height {{Input1.height i}}
+  box_fixed true
+  box_pixel_aspect {{Input1.pixel_aspect i}}
+  resize fill
+  name ReformatSlateR
+  label "Result\n"
+  xpos 245
+  ypos -213
+ }
+ Switch {
+  inputs 2
+  which {{"frame - root.first_frame >= 0" i}}
+  name Switch2
+  xpos -203
+  ypos 192
+ }
+ Dot {
+  name Dot1
+  xpos -169
+  ypos 309
+ }
+set N7c51058 [stack 0]
+ Write {
+  checkHashOnRead false
+  version 2
+  name result
+  xpos -205
+  ypos 375
+  disable {{"! \[value write_result]" i x1 1}}
+ }
+push $N7c51058
+ Read {
+  inputs 0
+  file /usr/pipeline/software/nuke/N6/SCRIPTS/trigraph/TriSlateBG.tiff
+  format "1024 778 0 0 1024 778 1 TriSlate"
+  version 2
+  name TriSlateBG
+  xpos 723
+  ypos -36
+ }
+ Text {
+  opacity 0.3
+  message "FRM:\[format \"%07d\" \[python currentSceneFrame()]]  \[python getDate('%a %d/%m/%Y')]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSOURCE \[python fr2tc(nuke.frame(), \[value fps])] (\[format \"%07d\" \[python currentFrame()]])"
+  font "/usr/pipeline/software/nuke/N6/SCRIPTS/trigraph/Anonymous Pro.ttf"
+  size 25
+  xjustify right
+  yjustify bottom
+  Transform 1
+  box {0 34 992 778}
+  center {512 389}
+  name Text3
+  xpos 723
+  ypos 50
+ }
+ Text {
+  opacity 0.3
+  message "\[python sceneName()]\[expr \[python sceneVer() != None] ? \{\[python sceneVer(\"_\")]\} : \{\" \"\}]\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+  font "/usr/pipeline/software/nuke/N6/SCRIPTS/trigraph/Anonymous Pro.ttf"
+  size 25
+  yjustify bottom
+  Transform 1
+  box {35 34 992 778}
+  center {512 389}
+  name Text4
+  xpos 723
+  ypos 76
+ }
+ Reformat {
+  type "to box"
+  box_width {{ScaleToDailies.width i}}
+  box_height {{ScaleToDailies.height i}}
+  box_fixed true
+  box_pixel_aspect {{ScaleToDailies.pixel_aspect i}}
+  resize distort
+  name ReformatInfoD
+  label "Dailies\n"
+  xpos 613
+  ypos 70
+ }
+push $N7c5ecf0
+ Reformat {
+  type "to box"
+  box_width {{ScaleToDailies.width i}}
+  box_height {{ScaleToDailies.height i}}
+  box_fixed true
+  box_pixel_aspect {{ScaleToDailies.pixel_aspect i}}
+  resize fill
+  name ReformatSlateD
+  label "Dailies\n"
+  xpos 377
+  ypos -118
+ }
+set N7c51d98 [stack 0]
+ Merge2 {
+  inputs 2
+  name Merge13
+  xpos 377
+  ypos 76
+ }
+push $N7b456d8
+ Reformat {
+  format "720 576 0 0 720 576 1.09 PAL"
+  box_width 1024
+  box_height 436
+  box_fixed true
+  filter Rifman
+  black_outside true
+  name ScaleToDailies
+  xpos -3
+  ypos -249
+ }
+ Merge2 {
+  inputs 2
+  name Merge1
+  xpos 113
+  ypos 76
+  disable {{"! \[value text_info]" i}}
+ }
+push $N7c51d98
+ Switch {
+  inputs 2
+  which {{"frame - root.first_frame >= 0" i}}
+  name Switch1
+  xpos 113
+  ypos 204
+ }
+ Dot {
+  name Dot2
+  xpos 147
+  ypos 309
+ }
+set N7c52930 [stack 0]
+ Switch {
+  inputs 2
+  which {{"\[numvalue passthru]" x1 0}}
+  name result_switch
+  xpos -59
+  ypos 305
+  cached true
+ }
+ Output {
+  name Output1
+  xpos -59
+  ypos 409
+ }
+push $N7c52930
+ Write {
+  checkHashOnRead false
+  version 2
+  name dailies
+  xpos 113
+  ypos 380
+  disable {{"! \[value write_dailies]" i x1 1}}
+ }
+ Viewer {
+  inputs 0
+  input_process false
+  name Viewer1
+  xpos -54
+  ypos 227
+ }
+end_group

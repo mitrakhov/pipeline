@@ -1,0 +1,52 @@
+#
+#  "clusterThis_prim_pre.vex" created on Sun Apr 11 23:37:57 2010
+#	with vcc
+#
+_name   clusterThis_prim_pre
+
+    _decl	P	vector	parm	0 0 0
+    _decl	N	vector	parm	0 0 0
+    _decl	v	vector	parm	0 0 0
+    _decl	Cd	vector	parm	0 0 0
+    _decl	Alpha	float	parm	0
+    _decl	pscale	float	parm	0
+    _decl	id	int	parm	0
+    _decl	inst_id	int	parm	0
+    _decl	mb_pass	int	parm	0
+    _decl	POut	vector	export	0 0 0
+    _decl	NOut	vector	export	0 0 0
+    _decl	vOut	vector	export	0 0 0
+    _decl	CdOut	vector	export	0 0 0
+    _decl	AlphaOut	float	export	0
+    _decl	pscaleOut	float	export	0
+    _decl	&constcf0	float	const	3
+    _decl	&constcf1	float	const	3.33
+    _decl	&constcf2	float	const	2.37
+    _decl	%varuv0	vector	local
+    _decl	%varuv1	vector	local
+    _decl	%varvf0	float	local
+    _decl	%varvf1	float	local
+    _decl	%varvf2	float	local
+
+
+
+    random@VI	%varuv0	inst_id
+    mul@VV	%varuv0	N
+    set@VV	%varuv1	P
+    mul@VV	%varuv1	%varuv0
+    set@VV	POut	%varuv1
+    random@VI	%varuv0	inst_id
+    set@VV	%varuv1	v
+    mul@VV	%varuv1	%varuv0
+    mul@VF	%varuv1	&constcf0
+    set@VV	vOut	%varuv1
+    random@FI	%varvf0	inst_id
+    pow@FFF	%varvf1	%varvf0	&constcf1
+    mul@FF	%varvf1	pscale
+    random@FI	%varvf0	inst_id
+    pow@FFF	%varvf2	%varvf0	&constcf2
+    mul@FF	%varvf1	%varvf2
+    set@FF	pscaleOut	%varvf1
+_code_end
+
+
