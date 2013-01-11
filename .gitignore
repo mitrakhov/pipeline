@@ -38,7 +38,7 @@ lib/shotgun/*
 software/houdini/dso/*
 software/houdini/gallery/*
 software/houdini/icons/*
-software/houdini/otl/*
+software/houdini/otl*
 software/houdini/presets/*
 
 
