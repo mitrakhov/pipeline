@@ -34,6 +34,7 @@ lib/openVDB/
 lib/tbb41_20121003oss/
 lib/shotgun/
 
+#src folders
 src/
 
 #houdini folders
@@ -43,6 +44,8 @@ software/houdini/icons/
 software/houdini/otl/
 software/houdini/presets/
 
+#nuke folders
+software/nuke/LIC/
 
 # Packages
 *.egg
