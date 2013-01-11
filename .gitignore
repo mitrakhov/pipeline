@@ -34,6 +34,8 @@ lib/openVDB/*
 lib/tbb41_20121003oss/*
 lib/shotgun/*
 
+src/*
+
 #houdini folders
 software/houdini/dso/*
 software/houdini/gallery/*
