@@ -46,7 +46,7 @@ software/houdini/presets/
 
 #nuke folders
 software/nuke/LIC/
-software/nuke/N6/SCRIPTS/icons
+software/nuke/N6/SCRIPTS/icons/
 
 # Packages
 *.egg
