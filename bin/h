@@ -1,0 +1,21 @@
+#!/bin/bash
+umask 0000
+
+OSNAME=`uname`                                                                                                                                                                                                                                   
+#echo $OSNAME
+
+
+if [ $OSNAME == "Darwin" ] 
+	then
+      	#source ${CPIPELINE}/software/houdini/houdini.var
+	/Applications/Houdini\ 12.1.125/Houdini\ FX.app/Contents/MacOS/hmaster 
+	
+fi	
+
+
+
+if [ $OSNAME == "Linux" ] 
+	then
+	source ${CPIPELINE}/software/houdini/houdini.var
+	${PROGRAM_PATH}/hfs/bin/hmaster "$@"
+fi

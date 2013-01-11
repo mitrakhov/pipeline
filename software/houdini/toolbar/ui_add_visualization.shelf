@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <tool name="ui_add_visualization" label="Add Attribute Visualization" icon="MISC_visualize">
+    <helpText><![CDATA[#icon: MISC/visualize
+
+= Add Attribute Visualization =
+
+"""Add custom attribute visualzation to the viewport based on geometry."""
+
+This tool creates attribute visualization options for the viewer by choosing specific attributes
+on geometry.  You can add 1 or more attribute entries directly from any geometry node.
+
+For additional information about attribute visualization see the [Attribute Visualization|/basics/attributevisualization] 
+documentation.
+
+== Using Add Attribute Visualization ==
+            
+    # Click the [Icon:MISC/visualize]Add Attribute Visualization tool on the __TD Tools__ tab.
+                
+    # Select the SOP node whose attributes to choose from and hit Accept.
+    
+    # Choose the attribute(s) to visualize and press Accept.]]></helpText>
+    <toolMenuContext name="viewer">
+      <contextNetType>SOP</contextNetType>
+    </toolMenuContext>
+    <toolSubmenu>Viewing</toolSubmenu>
+    <script scriptType="python"><![CDATA[#
+# Produced by:
+#       Graham Thompson
+#       captainhammy@gmail.com
+#       www.captainhammy.com
+#
+# Name:         ui_add_visualization.shelf
+#
+# Comments:     Interactively add viewport attribute visualization.
+#
+# Version:      1.0
+#
+# Compatibility: Houdini 10.0
+#
+
+import viewportutils
+
+selected = hou.selectedNodes()
+
+init_node = None
+# Check for selected nodes to use as the initial chooser node.
+if len(selected) > 0:
+    # Grab the last selected node.
+    init_node = hou.selectedNodes()[-1]
+    # If the node is a Geometry object then set the initial node as its
+    # display node.
+    if init_node.type() == hou.nodeType(hou.objNodeTypeCategory(), "geo"):
+        init_node = init_node.displayNode()
+
+# Select a SOP node to read attributes from.
+node_path = hou.ui.selectNode(None, init_node, hou.nodeTypeFilter.Sop)
+
+# If a valid node was picked.
+if node_path is not None:
+    sopnode = hou.node(node_path)
+    # Get the geometry to check for attributes.
+    geo = sopnode.geometry()
+
+    attr_info = []
+    # These can already be visualized.
+    attribs_to_skip = ("P", "Pw")
+
+    # Get a list of existing visualizations.
+    existing = hou.hscript("viewoptls")[0].split('\n')
+
+    # For each attribute type set the display_class variable the
+    # name and get a list of attributes for that type.
+    for attrib_type in (hou.attribType.Point, hou.attribType.Vertex, hou.attribType.Prim):
+        if attrib_type == hou.attribType.Point:
+            attributes = geo.pointAttribs()
+        elif attrib_type == hou.attribType.Vertex:
+            attributes = geo.vertexAttribs()
+        elif attrib_type == hou.attribType.Prim:
+            attributes = geo.primAttribs()
+
+        display_class = attrib_type.name().lower()
+        display_title = display_class.title()
+
+        # For each attribute in the list of attributes.
+        for attribute in attributes:
+            attrib_name = attribute.name()
+            # If the attribute name is in the list to skip then continue.
+            if attrib_name in attribs_to_skip:
+                continue
+
+            # Create a string to represent the visualization.
+            option_name = "%s (%s)" % (attrib_name, display_title)
+            # If the string is in the list of existing visualizations continue.
+            if option_name in existing:
+                continue
+
+            # Appent the info to the info list.
+            attr_info.append( (attrib_name, display_class, attribute.isTransformedAsNormal()) )
+
+    # Create a list of strings containing all the information to choose from.
+    attrib_name_list = ["%s (%s) <%s>" % (info[0], info[1].title(), ("text", "vector")[info[2]])
+                           for info in attr_info]
+
+    # Choose which attributes to visualize.
+    choices = hou.ui.selectFromList(attrib_name_list,
+                                    default_choices=(),
+                                    message="Select attribute to visualize.",
+                                    title="Create Attribute Visualization")
+
+    # Attributes we are going to visualize.
+    attribs_to_add = [attr_info[i] for i in choices]
+
+    # Build the viewer path.
+    view_path = viewportutils.buildViewPath(kwargs)
+
+    for info in attribs_to_add:
+        # Extract the details from the info.
+        attrib_name, attrib_class, xform_as_vector = info
+
+        # Handle vector types.
+        display_type = ("text", "vector")[xform_as_vector]
+            
+        # Create the display option.
+        option_name = viewportutils.createAttributeVisualization(attrib_name, attrib_class, display_type)
+        
+        # Enable the display option.
+        viewportutils.enableAttributeVisualization(view_path, option_name)]]></script>
+  </tool>
+</shelfDocument>

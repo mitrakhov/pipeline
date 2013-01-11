@@ -1,0 +1,9 @@
+    parm {
+	name	vm_ifdcode
+	label	"IFD Code"
+	parmtag	{ spare_category "Geometry" }
+	parmtag	{ filechooser_mode  "write" }
+	type	file
+	default	{ "" }
+	help	"Insert this IFD code and ignore SOP's geometry and procedural"
+    }

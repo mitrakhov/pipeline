@@ -1,0 +1,107 @@
+#! /opt/Nuke502/Nuke5 -nx
+version 5.0200
+Gizmo {
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -935
+  ypos 56
+ }
+ Dot {
+  name Dot54
+  xpos -901
+  ypos 121
+ }
+set Nc6f23c8 [stack 0]
+ Dot {
+  name Dot55
+  xpos -977
+  ypos 121
+ }
+ Bezier {
+  cliptype bbox
+  replace true
+  maskChannel -rgba.alpha
+  points {{
+{-1769 -4111 0 2.64}
+{-1411.6 77428.5 0 0.48}
+{147560 77340 0 -0.5}
+{147605 -4111.6 0 -2.66}
+}}
+  shape {}
+  center {512 256}
+  color 0.5
+  name Bezier1
+  xpos -1011
+  ypos 139
+ }
+set Nc6f2628 [stack 0]
+ Viewer {
+  fps 25
+  name Viewer1
+  xpos -1174
+  ypos 139
+ }
+push $Nc6f23c8
+ Dot {
+  name Dot48
+  xpos -901
+  ypos 180
+ }
+set Nc940b08 [stack 0]
+ Dot {
+  name Dot49
+  xpos -901
+  ypos 288
+ }
+set Ne4fdb28 [stack 0]
+ Dot {
+  name Dot53
+  xpos -901
+  ypos 324
+ }
+push $Ne4fdb28
+push $Nc940b08
+push $Nc6f2628
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy1
+  xpos -1011
+  ypos 168
+ }
+ Invert {
+  channels alpha
+  name Invert1
+  xpos -1011
+  ypos 211
+ }
+ Premult {
+  name Premult1
+  xpos -1011
+  ypos 254
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge1
+  xpos -1011
+  ypos 283
+ }
+ Copy {
+  inputs 2
+  from0 rgba.alpha
+  to0 rgba.alpha
+  name Copy2
+  xpos -1011
+  ypos 312
+ }
+ Output {
+  name Output1
+  selected true
+  xpos -1011
+  ypos 389
+ }
+end_group

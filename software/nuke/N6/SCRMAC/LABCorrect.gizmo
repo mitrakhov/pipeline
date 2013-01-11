@@ -1,0 +1,372 @@
+#! E:/Programs/Nuke5.1x64/Nuke5.1.exe -nx
+version 5.1300
+Gizmo {
+ addUserKnob {20 L l "  L  "}
+ addUserKnob {20 master l "L master" n 1}
+ addUserKnob {7 contrast R 0 2}
+ contrast 1
+ addUserKnob {7 gamma R 0 2}
+ gamma 1
+ addUserKnob {7 gain R 0 2}
+ gain 1
+ addUserKnob {7 offset R -1 1}
+ addUserKnob {20 endGroup_master l endGroup n -1}
+ addUserKnob {20 shadows l "L shadows" n 1}
+ shadows 0
+ addUserKnob {7 shadows_contrast l contrast R 0 2}
+ shadows_contrast 1
+ addUserKnob {7 shadows_gamma l gamma R 0 2}
+ shadows_gamma 1
+ addUserKnob {7 shadows_gain l gain R 0 2}
+ shadows_gain 1
+ addUserKnob {7 shadows_offset l offset R -1 1}
+ addUserKnob {20 endGroup_shadows l endGroup n -1}
+ addUserKnob {20 midtones l "L midtones" n 1}
+ midtones 0
+ addUserKnob {7 midtones_contrast l contrast R 0 2}
+ midtones_contrast 1
+ addUserKnob {7 midtones_gamma l gamma R 0 2}
+ midtones_gamma 1
+ addUserKnob {7 midtones_gain l gain R 0 2}
+ midtones_gain 1
+ addUserKnob {7 midtones_offset l offset R -1 1}
+ addUserKnob {20 endGroup_midtones l endGroup n -1}
+ addUserKnob {20 highlights l "L highlights" n 1}
+ highlights 0
+ addUserKnob {7 highlights_contrast l contrast R 0 2}
+ highlights_contrast 1
+ addUserKnob {7 highlights_gamma l gamma R 0 2}
+ highlights_gamma 1
+ addUserKnob {7 highlights_gain l gain R 0 2}
+ highlights_gain 1
+ addUserKnob {7 highlights_offset l offset R -1 1}
+ addUserKnob {20 endGroup_highlights l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 lsharpen l "L sharpen" n 1}
+ lsharpen 0
+ addUserKnob {41 minimum T L_Sharpen.minimum}
+ addUserKnob {41 maximum T L_Sharpen.maximum}
+ addUserKnob {41 amount T L_Sharpen.amount}
+ addUserKnob {41 size T L_Sharpen.size}
+ addUserKnob {20 endGroup_sharpen l endGroup n -1}
+ addUserKnob {20 A l "  A   "}
+ addUserKnob {20 amaster l "A master" n 1}
+ addUserKnob {7 amaster_magenta l magenta R 0 2}
+ amaster_magenta 1
+ addUserKnob {7 amaster_green l green R 0 2}
+ amaster_green 1
+ addUserKnob {7 amaster_offset l offset R -1 1}
+ addUserKnob {20 endGroup_amaster l endGroup n -1}
+ addUserKnob {20 asat l "A saturated" n 1}
+ asat 0
+ addUserKnob {7 asat_magenta l magenta R 0 2}
+ asat_magenta 1
+ addUserKnob {7 asat_green l green R 0 2}
+ asat_green 1
+ addUserKnob {7 asat_offset l offset R -1 1}
+ addUserKnob {20 endGroup_asat l endGroup n -1}
+ addUserKnob {20 aunsat l "A unsaturated" n 1}
+ aunsat 0
+ addUserKnob {7 aunsat_magenta l magenta R 0 2}
+ aunsat_magenta 1
+ addUserKnob {7 aunsat_green l green R 0 2}
+ aunsat_green 1
+ addUserKnob {7 aunsat_offset l offset R -1 1}
+ addUserKnob {20 endGroup_aunsat l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 ablur l "A blur" n 1}
+ ablur 0
+ addUserKnob {41 size_1 l size T A_Blur.size}
+ addUserKnob {41 filter T A_Blur.filter}
+ addUserKnob {41 quality l "" -STARTLINE T A_Blur.quality}
+ addUserKnob {41 crop l "crop to format" T A_Blur.crop}
+ addUserKnob {20 endGroup_ablur l endGroup n -1}
+ addUserKnob {20 B l "   B   "}
+ addUserKnob {20 bmaster l "B master" n 1}
+ addUserKnob {7 bmaster_yellow l "   yellow" R 0 2}
+ bmaster_yellow 1
+ addUserKnob {7 bmaster_blue l blue R 0 2}
+ bmaster_blue 1
+ addUserKnob {7 bmaster_offset l offset R -1 1}
+ addUserKnob {20 endGroup_bmaster l endGroup n -1}
+ addUserKnob {20 bsat l "B saturated" n 1}
+ bsat 0
+ addUserKnob {7 bsat_yellow l "   yellow" R 0 2}
+ bsat_yellow 1
+ addUserKnob {7 bsat_blue l blue R 0 2}
+ bsat_blue 1
+ addUserKnob {7 bsat_offset l offset R -1 1}
+ addUserKnob {20 endGroup_bsat l endGroup n -1}
+ addUserKnob {20 bunsat l "B unsaturated" n 1}
+ bunsat 0
+ addUserKnob {7 bunsat_yellow l "   yellow" R 0 2}
+ bunsat_yellow 1
+ addUserKnob {7 bunsat_blue l blue R 0 2}
+ bunsat_blue 1
+ addUserKnob {7 bunsat_offset l offset R -1 1}
+ addUserKnob {20 endGroup_bunsat l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 bblur l "B blur" n 1}
+ bblur 0
+ addUserKnob {41 size_2 l size T B_Blur.size}
+ addUserKnob {41 filter_1 l filter T B_Blur.filter}
+ addUserKnob {41 quality_1 l "" -STARTLINE T B_Blur.quality}
+ addUserKnob {41 crop_1 l "crop to format" T B_Blur.crop}
+ addUserKnob {20 endGroup_bblur l endGroup n -1}
+ addUserKnob {20 ranges l Ranges}
+ addUserKnob {4 show M {"corrected image" "luminance lookup" "saturation threshold" "LAB channels"}}
+ addUserKnob {20 luma_lookup l "luminance lookup" n 1}
+ luma_lookup 0
+ addUserKnob {41 lookup l "" -STARTLINE T L_Correct.lookup}
+ addUserKnob {20 endGroup_luma_lookup l endGroup n -1}
+ addUserKnob {20 sat_threshold l "saturation threshold" n 1}
+ sat_threshold 0
+ addUserKnob {41 range l "" -STARTLINE T SatKeyer.range}
+ addUserKnob {20 endGroup_sat_threshold l endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {41 maskChannelInput l mask -STARTLINE T NodeWrapper1.maskChannelInput}
+ addUserKnob {41 inject -STARTLINE T NodeWrapper1.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T NodeWrapper1.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T NodeWrapper1.fringe}
+ addUserKnob {41 mix T NodeWrapper1.mix}
+}
+ Input {
+  inputs 0
+  name Input
+  xpos -150
+  ypos -466
+ }
+set N750d1e0 [stack 0]
+add_layer {__mask __mask.saturation}
+ Keyer {
+  output __mask.saturation
+  operation "saturation key"
+  name SatKeyer
+  xpos -150
+  ypos -329
+ }
+ Colorspace {
+  colorspace_out CIE-Lab
+  name Colorspace1
+  xpos -150
+  ypos -239
+ }
+set N750e210 [stack 0]
+ Shuffle {
+  green red
+  blue red
+  name L
+  tile_color 0xff000000
+  xpos -260
+  ypos -131
+ }
+ ColorCorrect {
+  contrast {{parent.contrast i}}
+  gamma {{parent.gamma i}}
+  gain {{parent.gain i}}
+  offset {{parent.offset i}}
+  shadows.contrast {{parent.shadows_contrast i}}
+  shadows.gamma {{parent.shadows_gamma i}}
+  shadows.gain {{parent.shadows_gain i}}
+  shadows.offset {{parent.shadows_offset i}}
+  midtones.contrast {{parent.midtones_contrast i}}
+  midtones.gamma {{parent.midtones_gamma i}}
+  midtones.gain {{parent.midtones_gain i}}
+  midtones.offset {{parent.midtones_offset i}}
+  highlights.contrast {{parent.highlights_contrast i}}
+  highlights.gamma {{parent.highlights_gamma i}}
+  highlights.gain {{parent.highlights_gain i}}
+  highlights.offset {{parent.highlights_offset i}}
+  test {{parent.show==1 i}}
+  name L_Correct
+  xpos -260
+  ypos -82
+ }
+set N1c817cb0 [stack 0]
+ Dot {
+  name Dot1
+  xpos -226
+  ypos 570
+ }
+push $N750e210
+ Shuffle {
+  red blue
+  green blue
+  name B
+  tile_color 0xff00
+  xpos -40
+  ypos -131
+ }
+ ColorCorrect {
+  channels {-rgba.red -rgba.green rgba.blue}
+  offset {0 0 {parent.bmaster_offset} 0}
+  shadows.gain {0 0 {parent.bmaster_blue} 0}
+  highlights.gain {0 0 {parent.bmaster_yellow} 0}
+  lookup {shadow {curve L 1 x0 0}
+    midtone {}
+    highlight {curve L 0 x0 1}}
+  name B_master
+  xpos -40
+  ypos -91
+ }
+ ColorCorrect {
+  channels {-rgba.red -rgba.green rgba.blue}
+  offset {0 0 {parent.bsat_offset i} 0}
+  shadows.gain {0 0 {parent.bsat_blue i} 0}
+  highlights.gain {0 0 {parent.bsat_yellow i} 0}
+  lookup {shadow {curve L 1 x0 0}
+    midtone {}
+    highlight {curve L 0 x0 1}}
+  maskChannelInput __mask.saturation
+  name B_sat
+  xpos -40
+  ypos -50
+ }
+ ColorCorrect {
+  channels {-rgba.red -rgba.green rgba.blue}
+  offset {0 0 {parent.bunsat_offset i} 0}
+  shadows.gain {0 0 {parent.bunsat_blue i} 0}
+  highlights.gain {0 0 {parent.bunsat_yellow i} 0}
+  lookup {shadow {curve L 1 x0 0}
+    midtone {}
+    highlight {curve L 0 x0 1}}
+  maskChannelInput __mask.saturation
+  invert_mask true
+  name B_unsat
+  xpos -40
+  ypos -9
+ }
+push $N1c817cb0
+push $N750e210
+ Shuffle {
+  red green
+  blue green
+  name A
+  tile_color 0xff0000
+  xpos -150
+  ypos -131
+ }
+ ColorCorrect {
+  channels {-rgba.red rgba.green -rgba.blue}
+  offset {0 {parent.amaster_offset} 0 0}
+  shadows.gain {0 {parent.amaster_green} 0 0}
+  highlights.gain {0 {parent.amaster_magenta} 0 0}
+  lookup {shadow {curve L 1 x0 0}
+    midtone {}
+    highlight {curve L 0 x0 1}}
+  name A_master
+  xpos -150
+  ypos -90
+ }
+ ColorCorrect {
+  channels {-rgba.red rgba.green -rgba.blue}
+  offset {0 {parent.asat_offset i} 0 0}
+  shadows.gain {0 {parent.asat_green i} 0 0}
+  highlights.gain {0 {parent.asat_magenta i} 0 0}
+  lookup {shadow {curve L 1 x0 0}
+    midtone {}
+    highlight {curve L 0 x0 1}}
+  maskChannelInput __mask.saturation
+  name A_sat
+  xpos -150
+  ypos -49
+ }
+ ColorCorrect {
+  channels {-rgba.red rgba.green -rgba.blue}
+  offset {0 {parent.aunsat_offset i} 0 0}
+  shadows.gain {0 {parent.aunsat_green i} 0 0}
+  highlights.gain {0 {parent.aunsat_magenta i} 0 0}
+  lookup {shadow {curve L 1 x0 0}
+    midtone {}
+    highlight {curve L 0 x0 1}}
+  maskChannelInput __mask.saturation
+  invert_mask true
+  name A_unsat
+  xpos -150
+  ypos -8
+ }
+ Copy {
+  inputs 2
+  from0 rgba.red
+  to0 rgba.red
+  name Copy1
+  xpos -150
+  ypos 164
+ }
+ Copy {
+  inputs 2
+  from0 rgba.blue
+  to0 rgba.blue
+  name Copy2
+  xpos -40
+  ypos 247
+ }
+ Sharpen {
+  channels {rgba.red -rgba.green -rgba.blue}
+  amount 0
+  name L_Sharpen
+  xpos -40
+  ypos 295
+ }
+ Blur {
+  channels {-rgba.red rgba.green -rgba.blue}
+  name A_Blur
+  xpos -40
+  ypos 343
+ }
+ Blur {
+  channels {-rgba.red -rgba.green rgba.blue}
+  name B_Blur
+  xpos -40
+  ypos 391
+ }
+ Colorspace {
+  colorspace_in CIE-Lab
+  name Colorspace2
+  xpos -40
+  ypos 446
+  disable {{parent.show==3 i}}
+ }
+ Shuffle {
+  in __mask
+  red alpha
+  green alpha
+  blue alpha
+  out rgb
+  name Shuffle1
+  xpos -40
+  ypos 494
+  disable {{parent.show!=2 i}}
+ }
+ Switch {
+  inputs 2
+  which {{parent.show==1 i}}
+  name Switch1
+  xpos -40
+  ypos 566
+ }
+ Remove {
+  channels __mask
+  name Remove1
+  xpos -40
+  ypos 607
+ }
+push $N750d1e0
+ Dot {
+  name Dot2
+  xpos 143
+  ypos -462
+ }
+ NodeWrapper {
+  inputs 2
+  maskChannelMask none
+  name NodeWrapper1
+  xpos 109
+  ypos 679
+ }
+ Output {
+  name Output1
+  xpos 109
+  ypos 806
+ }
+end_group

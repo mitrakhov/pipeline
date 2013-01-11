@@ -1,0 +1,2 @@
+#!/bin/bash
+python /mnt/opt/cgru/utilities/afstarter/afstarter.py &

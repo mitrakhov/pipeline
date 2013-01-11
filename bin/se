@@ -1,0 +1,3 @@
+#!/bin/bash
+
+wine /mnt/opt/SynthEyes/SynthEyes64.exe $*

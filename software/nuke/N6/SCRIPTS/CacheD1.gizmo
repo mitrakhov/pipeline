@@ -1,0 +1,72 @@
+#! c:/bin/Nuke5/Nuke5.exe -nx
+version 5.0
+Gizmo {
+ name cache_D1
+ tile_color 0xff00ff
+ note_font "Verdana Bold"
+ note_font_size 14
+ selected true
+ addUserKnob {20 cache_controls l Controls}
+ addUserKnob {3 pan_v l "Vertical Pan"}
+ addUserKnob {3 cache l "Cache Size"}
+ cache 73
+ addUserKnob {41 color l "Cache Color" T Rectangle1.color}
+}
+ Input {
+  inputs 0
+  name Input1
+  xpos -552
+  ypos 245
+ }
+ Reformat {
+  type "to box"
+  box_width 720
+  box_height 576
+  box_fixed true
+  box_pixel_aspect 1.067
+  resize none
+  center false
+  name Reformat01
+  label "PAL D1"
+  xpos -552
+  ypos 309
+ }
+ set C10e75f90 [stack 0]
+ Transform {
+  translate {0 {pan_v i}}
+  center {{width/2 i} {height/2 i}}
+  name frame_shift
+  label "vertical movement"
+  xpos -552
+  ypos 348
+ }
+clone $C10e75f90 {
+  xpos -552
+  ypos 387
+  selected false
+ }
+ Rectangle {
+  output {rgba.red rgba.green rgba.blue -rgba.alpha}
+  cliptype bbox
+  invert true
+  invert_mask true
+  area {0 {cache i} 720 {height-this.y i}}
+  color 0
+  name Rectangle1
+  label "color cache"
+  xpos -552
+  ypos 426
+ }
+ Shuffle {
+  alpha white
+  name Shuffle01
+  label "erase alpha"
+  xpos -552
+  ypos 465
+ }
+ Output {
+  name Output1
+  xpos -552
+  ypos 550
+ }
+end_group
