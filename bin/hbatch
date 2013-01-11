@@ -1,4 +1,0 @@
-#!/bin/bash
-
-source ${CPIPELINE}/software/houdini/houdini.var
-${PROGRAM_PATH}/hfs/bin/hbatch "$@"

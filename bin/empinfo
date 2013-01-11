@@ -1,5 +1,0 @@
-#!/bin/bash
-NAIADPATH=/mnt/opt/naiad-0.6.0.51-x86_64
-
-source ${NAIADPATH}/naiadvars.bash
-${NAIADPATH}/server/bin/empinfo --verbose $*

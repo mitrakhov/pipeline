@@ -1,3 +1,0 @@
-#!/bin/bash
-
-${PROGRAM_PATH}/realflow-2012/bin/realflow "$@"

@@ -1,5 +1,0 @@
-#!/bin/bash
-NAIADPATH=/mnt/opt/naiad
-
-source ${NAIADPATH}/naiadvars.bash
-${NAIADPATH}/clients/nstudio/bin/nstudio $* &

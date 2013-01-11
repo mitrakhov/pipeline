@@ -1,6 +1,0 @@
-#!/bin/bash
-
-rm -R -f /home/$USER/.wine/drive_c/users/$USER/Application\ Data/Adobe/Photoshop/9.0
-
-cd /mnt/opt/PS2
-wine Photoshop.exe 

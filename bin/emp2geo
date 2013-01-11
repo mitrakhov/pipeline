@@ -1,6 +1,0 @@
-#!/bin/bash
-
-export NAIAD_PATH=/mnt/opt/naiad-0.6.0.51-x86_64
-
-export LD_LIBRARY_PATH=${NAIAD_PATH}/server/lib:/mnt/opt/hfs11.1.201/dsolib
-${NAIAD_PATH}/buddies/houdini/bin/emp2geo $*
