@@ -30,18 +30,18 @@
 *.css
 
 #lib folders
-lib/openVDB/*
-lib/tbb41_20121003oss/*
-lib/shotgun/*
+lib/openVDB/
+lib/tbb41_20121003oss/
+lib/shotgun/
 
 src/*
 
 #houdini folders
-software/houdini/dso/*
-software/houdini/gallery/*
-software/houdini/icons/*
-software/houdini/otl*
-software/houdini/presets/*
+software/houdini/dso/
+software/houdini/gallery/
+software/houdini/icons/
+software/houdini/otl/
+software/houdini/presets/
 
 
 # Packages
