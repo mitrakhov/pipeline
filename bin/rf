@@ -1,3 +1,3 @@
 #!/bin/bash
 
-${PROGRAM_PATH}/realflow-2012/bin/realflow "$@"
+${PROGRAM_PATH}/realflow64_6.0.2.0085/bin/realflow "$@"
