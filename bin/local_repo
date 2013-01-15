@@ -1,4 +1,2 @@
 #!/bin/bash
-export CPIPELINE=$HOME/git/pipeline
-
-echo $CPIPELINE
+CPIPELINE=$HOME/git/pipeline
