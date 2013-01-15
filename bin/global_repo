@@ -1,2 +1,4 @@
 #!/bin/bash
 export CPIPELINE=/usr/pipeline
+
+echo $CPIPELINE
