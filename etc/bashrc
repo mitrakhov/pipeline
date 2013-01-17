@@ -39,6 +39,8 @@ export CGRU_VERSION=1.6.5
 	export DL_PROCEDURALS_PATH=/mnt/opt/massive/bin
 	export SHADERDL_OPTIONS="-I ${DELIGHT}/include"
 	
+	########### realflow
+	export RF_2012_PATH=/mnt/opt/realflow64_6.0.2.0085
 
 	########### Afanasy
 	

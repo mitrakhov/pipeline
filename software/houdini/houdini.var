@@ -44,7 +44,7 @@ export PYTHONPATH=$HOUDINI_AF_PATH:$PYTHONPATH
 # Define OTL scan path:
 HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
 
-
+export HSITE=/home/vlad/houdini12.1
 
 export HOUDINI_PATH=${HOME}/${HOUDINI_HOME_DIR}:${PIPEH}:${HFS}/houdini
 export HOUDINI_OTLSCAN_PATH=${PIPEH}/otl:${PIPEH}/otl/dop:${PIPEH}/otl/obj:${PIPEH}/otl/rop:${PIPEH}/otl/shop:${PIPEH}/otl/shop/delight:${PIPEH}/otl/sop:${PIPEH}/otl/pop:${PIPEH}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
@@ -52,7 +52,7 @@ export HOUDINI_OTLSEARCH_PATH=${PIPEH}/otl/shop
 export HOUDINI_SCRIPT_PATH=${PIPEH}/scripts:${HOME}/${HOUDINI_HOME_DIR}/scripts:${HFS}/houdini/scripts
 export HOUDINI_TOOLBAR_PATH=${PIPEH}/toolbar:${HOME}/${HOUDINI_HOME_DIR}:${HFS}/houdini
 export HOUDINI_GALLERY_PATH=${PIPEH}/gallery:${HOME}/${HOUDINI_HOME_DIR}/gallery:${HFS}/houdini/gallery
-export HOUDINI_SOHO_PATH=${PIPEH}/soho:${HOME}/${HOUDINI_HOME_DIR}/soho:${HFS}/houdini/soho
+#export HOUDINI_SOHO_PATH=${PIPEH}/soho:${HOME}/${HOUDINI_HOME_DIR}/soho:${HFS}/houdini/soho
 export HOUDINI_VEX_PATH=${PIPEH}/vex:${PIPEH}/vex/include:${HOME}/${HOUDINI_HOME_DIR}/vex/include:${HFS}/houdini/vex/include:${HFS}/houdini/vex/Fog
 export HOUDINI_DSO_PATH=${PIPEH}/dso:${HOME}/${HOUDINI_HOME_DIR}/dso:${HFS}/houdini/dso
 export HOUDINI_DESK_PATH=$HOME/${HOUDINI_HOME_DIR}/desktop:${HFS}/houdini/desktop
