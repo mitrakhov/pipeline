@@ -1,0 +1,2002 @@
+/*
+ *  Houdini Parameters for mantra
+ */
+
+//
+// This document is under CC-3.0 Attribution-Share Alike 3.0
+//       http://creativecommons.org/licenses/by-sa/3.0/
+//  Attribution:  There is no requirement to attribute the author.
+
+#include "CommonMacros.ds"
+
+#define VEX_QUANTIZE_MENU	\
+	menu { \
+	    "8"		"8 bit integer" \
+	    "16"	"16 bit integer" \
+	    "half"	"16 bit float" \
+	    "float"	"32 bit float" \
+	}
+
+// Other pixel filters:
+//	"ubox"			- Special unit box filter
+#define VEX_PIXEL_FILTERS \
+	    "box 1 1"		"Unit Box Filter" \
+	    "gaussian 2 2"	"Gaussian 2x2" \
+	    "gaussian 3 3"	"Gaussian 3x3 (softer)" \
+	    "bartlett 2 2"	"Bartlett (triangle)" \
+	    "catrom 2 2"	"Catmull-Rom" \
+	    "hanning 2 2"	"Hanning" \
+	    "blackman 2 2"	"Blackman" \
+	    "sinc 2 2"		"Sinc (sharpening)" \
+	    "minmax min"	"Closest Sample Filtering" \
+	    "minmax max"	"Farthest Sample Filtering" \
+	    "minmax edge"	"Disable Edge Antialiasing" \
+	    "minmax ocover"	"Object With Most Pixel Coverage" \
+	    "minmax idcover"	"Object With Most Pixel Coverage (no filtering)" \
+
+#define VEX_PIXEL_FILTER_MENU	\
+	menureplace { \
+	    VEX_PIXEL_FILTERS \
+	}
+
+#define VEX_AUX_PIXEL_FILTER_MENU	\
+	menureplace { \
+	    ""			"Inherit from main plane" \
+	    VEX_PIXEL_FILTERS \
+	}
+
+#define VEX_FILTER_MENU	\
+	menu { \
+	    "box"		"Box Filter" \
+	    "gaussian"		"Gaussian" \
+	    "bartlett"		"Bartlett (triangle)" \
+	    "catrom"		"Catmull-Rom" \
+	    "hanning"		"Hanning" \
+	    "blackman"		"Blackman" \
+	    "sinc"		"Sinc (sharpening)" \
+	}
+
+#define VEX_VAR_MENU	\
+	menureplace { \
+	    "Cf"	"Cf (color)" \
+	    "Of"	"Of (opacity)" \
+	    "Af"	"Af (alpha)" \
+	    "P"		"P (position)" \
+	    "Pz"	"Pz (position-z)" \
+	    "N"		"N (normal)" \
+	    "mask1"		"Mask 1" \
+	    "mask2"		"Mask 2" \
+	    "mask3"		"Mask 3" \
+	    "Render_Time"	"Diagnostic: Render Time" \
+	    "Op_Id"		"Diagnostic: Node Id" \
+	    "Prim_Id"		"Diagnostic: Primitive Id" \
+	    "Shading_Samples"	"Diagnostic: Shading Samples" \
+	    "Opacity_Samples"	"Diagnostic: Opacity Samples" \
+	    "direct_diffuse"	"Direct diffuse" \
+	    "direct_reflect"	"Direct reflect" \
+	    "direct_refract"	"Direct refract" \
+	    "direct_volume"	"Direct volume" \
+	    "direct_emission"	"Direct emission" \
+	    "direct_noshadow"	"Direct unshadowed" \
+	    "direct_shadow"	"Direct shadow matte" \
+	    "direct_reflectivity"	"Direct reflectivity" \
+	    "indirect_diffuse"	"Indirect diffuse" \
+	    "indirect_reflect"	"Indirect reflect" \
+	    "indirect_refract"	"Indirect refract" \
+	    "indirect_volume"	"Indirect volume" \
+	    "indirect_emission"	"Indirect emission" \
+	    "indirect_noshadow"	"Indirect unshadowed" \
+	    "indirect_shadow"	"Indirect shadow matte" \
+	    "all_diffuse"	"Combined diffuse" \
+	    "all_reflect"	"Combined reflect" \
+	    "all_refract"	"Combined refract" \
+	    "all_volume"	"Combined volume" \
+	    "all_emission"	"Combined emission" \
+	    "direct"		"Combined direct" \
+	    "indirect"		"Combined indirect" \
+	    "sss_single"	"Single scattering" \
+	    "sss_multi"		"Multi scattering" \
+	    "level"		"Ray-level" \
+	    "diffuselevel"	"Diffuse ray-level" \
+	    "specularlevel"	"Specular ray-level" \
+	    "volumelevel"	"Volume ray-level" \
+	    "direct_samples"	"Direct ray samples" \
+	    "indirect_samples"	"Indirect ray samples" \
+	}
+
+#define VEX_TYPE_MENU	\
+	menu { \
+	    "float"	"Float Type" \
+	    "vector"	"Vector Type" \
+	    "vector4"	"Vector4 Type" \
+	}
+
+#define VEX_DISABLE_AUXPLANE	\
+	disablewhen "{ \"vm_disable_plane#\" == 1 } { \"vm_variable_plane#\" == \"\" }"
+
+
+{
+    name	mantra
+    label	"Mantra"
+    parmtag	{ spare_opfilter	"!!SHOP/PROPERTIES!!" }
+
+#include "CommonControl.ds"
+#include "CommonView.ds"
+#include "CommonObject.ds"
+#include "Instance.ds"
+
+    parm {
+	SOHO_TOGGLE(vm_dof, "Enable Depth Of Field", "Sampling", 0)
+    }
+    parm {
+	SOHO_FLOAT(focus, "Focus Distance", "Sampling", 5)
+	range	{ 0.001 1000 }
+	disablewhen	"{ vm_dof == 0 }"
+    }
+    parm {
+	SOHO_FLOAT(fstop, "F-Stop",	"Sampling",	5.6)
+	range	{ 1.4 22 }
+	logarithmic
+	disablewhen	"{ vm_dof == 0 }"
+    }
+    parm {
+	// Not really a mantra parameter, but these since mantra
+	// parameters get added to objects by default, it's fairly easy
+	// to stick this parameter here (rather than creating a totally
+	// separate category for it)
+	SOHO_FLOAT(iconscale, "Icon Scale", "View", 1)
+	range	{ .001 10 }
+    }
+    parm {
+	SOHO_FLOAT(vm_curvature, "Lens Curvature",	"View", 0)
+	range	{ -2 2 }
+    }
+
+    //
+    //  Output Category
+    //
+    collection {
+	name	vm_picture_group
+	label	"Output Picture"
+	parmtag	{ spare_category	"Output" }
+
+	parm
+	{
+	    SOHO_FILE(vm_picture, "Output Picture", "Output", "ip")
+	    parmtag	{ filechooser_mode	"write" }
+	    menureplace {
+		[ "echo `pythonexprs(\"__import__('toolutils').parseDialogScriptMenu('FBrender')\")`" ]
+		[ ]
+	    }
+	}
+	parm {
+	    SOHO_STRING(vm_device, "Output Device", "Output", "")
+	    menu {
+		""		"Infer from filename"
+		"Houdini"	"Houdini .pic format"
+		"TIFF"		"Tagged Image File Format (TIFF)"
+		"OpenEXR"	"Open EXR"
+		"PNG"		"Portable Network Graphics (PNG)"
+		"JPEG"		"JPEG"
+		"RAT"		"Random Access Texture (RAT)"
+	    }
+	}
+    }
+    parm {
+	SOHO_STRING(vm_sfilter, "Sample Filter", "Output", "alpha")
+	menu	{
+	    "alpha"	"Opacity Filtering"
+	    "closest"	"Closest Surface"
+	}
+    }
+    
+    parm {
+	SOHO_STRING(vm_pfilter, "Pixel Filter", "Output",
+			"gaussian 2 2")
+	VEX_PIXEL_FILTER_MENU
+    }
+    parm {
+	SOHO_STRING(vm_saveoptions, "Save Settings", "Output Options",
+		    "camera:orthowidth camera:projection camera:zoom camera:clip image:crop image:pixelaspect image:samples image:window space:world")
+	help	"This is an advanced setting which can be used to control the settings which are saved to .rat/.tbf files."
+    }
+    parm {
+	SOHO_FLOAT(vm_gamma, "Gamma", "Output", 1)
+	range	{ 0.001 3 }
+    }
+    parm {
+	SOHO_FLOAT(vm_gain, "Gain", "Output", 1)
+	range	{ 0.001 10 }
+    }
+    parm {
+	SOHO_FLOAT(vm_dither, "Dither", "Output", 0.5)
+	range	{ 0 1 }
+    }
+    parm {
+	SOHO_STRING(vm_quantize, "Quantization", "Output", "half")
+	VEX_QUANTIZE_MENU
+    }
+    parm {
+	SOHO_FLOAT(vm_whitepoint, "White Point", "Output", 1)
+    }
+
+    collection {
+	name	background_parms
+	label	"Background Image"
+	parmtag	{ spare_category	"View" }
+
+	parm {
+	    SOHO_TOGGLE(vm_bgenable, "Enable Background Image", "View", 1)
+	    help	"Enable background image"
+	}
+	parm {
+	    SOHO_FILE(vm_background, "Background Image", "View", "")
+	    parmtag	{ filechooser_mode	"read" }
+	    help	"An map image used to set the background color on primary rays (may be a deep camera/shadow map)."
+	    disablewhen	"{ vm_bgenable == 0 }"
+	}
+    }
+    parm {
+	SOHO_TOGGLE(vm_backgroundmatte, "Background Image as Matte", "View", 0)
+	help	"Only meaningful for deep camera images.  Deep shadow images have this behaviour by default."
+    }
+    parm {
+	SOHO_STRING(vm_backgroundchannels, "Background Image Channels", "View", "*")
+	help	"A pattern to select image planes from the background image."
+    }
+    parm {
+	SOHO_TOGGLE(vm_bgscale, "Scale Background To Fill Image", "View", 1)
+    }
+
+    parm {
+	SOHO_STRING(vm_deepresolver, "Deep Resolver", "Output", "null")
+	default	{ "null" }
+	menu	{
+	    "null"	"No Deep Resolver"
+	    "shadow"	"Deep Shadow Map"
+	    "camera"	"Deep Camera Map"
+	}
+    }
+    parm
+    {
+	SOHO_FILE(vm_dcmfilename, "DCM Filename", "Output", "$HIP/dcm.rat")
+	parmtag	{ filechooser_mode	"read_and_write" }
+	disablewhen	"{ vm_deepresolver != camera }"
+    }
+    parm {
+	SOHO_STRING(vm_dcmdepthinterp, "DCM Interpolation", "Output",
+			"discrete")
+	menu {
+	    "discrete"		"Discrete Surfaces"
+	    "continuous"	"Continuous Volume"
+	}
+	disablewhen	"{ vm_deepresolver != camera }"
+    }
+    parm {
+	SOHO_INT(vm_dcmcompression, "DCM Compression", "Output", 5)
+	range	{ 0 10 }
+	disablewhen	"{ vm_deepresolver != camera }"
+    }
+    parm {
+	SOHO_STRING(vm_dcmofstorage, "DCM Of Storage", "Output", "real16")
+	menu {
+	    "real16"	"16 bit float"
+	    "real32"	"32 bit float"
+	    "real64"	"64 bit float"
+	}
+	disablewhen	"{ vm_deepresolver != camera }"
+    }
+    parm {
+	SOHO_STRING(vm_dcmpzstorage, "DCM Z Storage", "Output", "real32")
+	menu {
+	    "real16"	"16 bit float"
+	    "real32"	"32 bit float"
+	    "real64"	"64 bit float"
+	}
+	disablewhen	"{ vm_deepresolver != camera }"
+    }
+    parm {
+	SOHO_FLOAT(vm_dcmzbias,	"DCM Z-Bias", "Output", 0.005)
+	disablewhen	"{ vm_deepresolver != camera }"
+    }
+    parm {
+	SOHO_STRING(vm_dcmdepthmode, "DCM Z-Sample Filter", "Output", "nearest")
+	menu {
+	    "nearest"	"Nearest sample"
+	    "midpoint"	"Midpoint sampling"
+	    "farthest"	"Farthest sample"
+	}
+	disablewhen	"{ vm_deepresolver != camera }"
+    }
+
+    parm
+    {
+	SOHO_FILE(vm_dsmfilename, "DSM Filename", "Output", "$HIP/dsm.rat")
+	parmtag	{ filechooser_mode	"read_and_write" }
+	disablewhen	"{ vm_deepresolver != shadow }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_dsmoptimize, "DSM Optimize Shading", "Output", 1)
+	help	"When enabled, shading will be optimized to ignore color information.  This can eliminate many illumination and ray-tracing calls."
+	disablewhen	"{ vm_deepresolver != shadow }"
+    }
+    parm {
+	SOHO_STRING(vm_dsmdepthinterp, "DSM Interpolation", "Output",
+			"discrete")
+	menu {
+	    "discrete"		"Discrete Surfaces"
+	    "continuous"	"Continuous Volume"
+	}
+	disablewhen	"{ vm_deepresolver != shadow }"
+    }
+    parm {
+	SOHO_INT(vm_dsmcompression, "DSM Compression", "Output", 5)
+	range	{ 0 10 }
+	disablewhen	"{ vm_deepresolver != shadow }"
+    }
+    parm {
+	SOHO_STRING(vm_dsmofstorage, "DSM Of Storage", "Output", "real16")
+	menu {
+	    "real16"	"16 bit float"
+	    "real32"	"32 bit float"
+	    "real64"	"64 bit float"
+	}
+	disablewhen	"{ vm_deepresolver != shadow }"
+    }
+    parm {
+	SOHO_STRING(vm_dsmpzstorage, "DSM Z Storage", "Output", "real32")
+	menu {
+	    "real16"	"16 bit float"
+	    "real32"	"32 bit float"
+	    "real64"	"64 bit float"
+	}
+	disablewhen	"{ vm_deepresolver != shadow }"
+    }
+    parm {
+	SOHO_FLOAT(vm_dsmzbias,	"DSM Z-Bias", "Output", 0.005)
+	disablewhen	"{ vm_deepresolver != shadow }"
+    }
+    parm {
+	// SOHO will do the conversion of the string to an integer for us
+	SOHO_STRING(vm_dsmofsize,	"DSM Of Size", "Output", 3)
+	menu {
+	    "1"	"Monochrome"
+	    "3"	"Full Color"
+	}
+	disablewhen	"{ vm_deepresolver != shadow }"
+    }
+    parm {
+	SOHO_STRING(vm_dsmdepthmode, "DSM Z-Sample Filter", "Output", "nearest")
+	menu {
+	    "nearest"	"Nearest sample"
+	    "midpoint"	"Midpoint sampling"
+	    "farthest"	"Farthest sample"
+	}
+	disablewhen	"{ vm_deepresolver != shadow }"
+    }
+
+    multiparm {
+	name	vm_numaux
+	label	"Extra Image Planes"
+	parmtag	{ spare_category	"Output" }
+
+	parm {
+	    SOHO_TOGGLE("vm_disable_plane#", "Disable Plane #", "Output", 0)
+	}
+	parm {
+	    SOHO_STRING("vm_variable_plane#", "VEX Variable", "Output", "")
+	    VEX_VAR_MENU
+	    disablewhen	"{ \"vm_disable_plane#\" == 1 }"
+	    help	"The VEX variable (global or output parameter)"
+	    callback	"opparm . vm_vextype_plane$script_multiparm_index ( `ifs(index(\",Pz,Af,Render_Time,Op_Id,Prim_Id,Shading_Samples,Opacity_Samples,level,specularlevel,diffuselevel,direct_samples,indirect_samples,\", \",$script_value,\")>=0, \"float\", \"vector\")` ); opparm . vm_sfilter_plane$script_multiparm_index ( `ifs(index(\",direct_emission,Ce,\", \",$script_value,\")>=0, \"fullopacity\", \"alpha\")` )"
+	}
+	parm {
+	    SOHO_STRING("vm_vextype_plane#", "VEX Type", "Output", "vector")
+	    VEX_TYPE_MENU
+	    disablewhen	"{ \"vm_disable_plane#\" == 1 }"
+	    help	"The type associated with the VEX variable"
+	}
+	parm {
+	    SOHO_STRING("vm_channel_plane#", "Channel Name #", "Output", "")
+	    VEX_DISABLE_AUXPLANE
+	    help	"The channel name -- if left blank, this will use the variable name"
+	}
+	parm {
+	    SOHO_TOGGLE("vm_usefile_plane#", "Different File", "Output", 0)
+	    disablewhen	"{ \"vm_disable_plane#\" == 1 } { \"vm_variable_plane#\" == \"\" } { \"vm_picture\" == \"ip\" }"
+	    nolabel
+	    help "Save this deep raster plane to a different disk file than the main image.\nThis does *not* work when rendering to mplay."
+	    joinnext
+	}
+	parm {
+	    SOHO_FILE("vm_filename_plane#", "Different File", "Output", "")
+	    parmtag	{ filechooser_mode	"write" }
+	    disablewhen	"{ \"vm_disable_plane#\" == 1 } { \"vm_variable_plane#\" == \"\" } { \"vm_picture\" == \"ip\" } { \"vm_usefile_plane#\" == 0 }"
+	    menureplace {
+		[ "echo `pythonexprs(\"__import__('toolutils').parseDialogScriptMenu('FBrender')\")`" ]
+		[ ]
+	    }
+	    help "Save this deep raster plane to a different disk file than the main image.\nThis does *not* work when rendering to mplay."
+	}
+	parm {
+	    SOHO_STRING("vm_quantize_plane#", "Quantize", "Output", "float")
+	    VEX_QUANTIZE_MENU
+	    VEX_DISABLE_AUXPLANE
+	    help	"image:quantize"
+	}
+	parm {
+	    SOHO_STRING("vm_sfilter_plane#", "Sample Filter",
+			    "Output", "alpha")
+	    menu	{
+		"alpha"		"Opacity Filtering"
+		"fullopacity"	"Full Opacity Filtering"
+		"closest"	"Closest Surface"
+	    }
+	    VEX_DISABLE_AUXPLANE
+	    help	"image:sfilter"
+	}
+	parm {
+	    SOHO_STRING("vm_pfilter_plane#", "Pixel Filter",
+			    "Output", "")
+	    VEX_AUX_PIXEL_FILTER_MENU
+	    VEX_DISABLE_AUXPLANE
+	    help	"image:pfilter"
+	}
+	parm {
+	    SOHO_FLOAT("vm_gamma_plane#", "Gamma", "Output", 1)
+	    range	{ 0.001 3 }
+	    VEX_DISABLE_AUXPLANE
+	    help	"image:gamma"
+	}
+	parm {
+	    SOHO_FLOAT("vm_gain_plane#", "Gain", "Output", 1)
+	    range	{ 0.001 10 }
+	    VEX_DISABLE_AUXPLANE
+	    help	"image:gain"
+	}
+	parm {
+	    SOHO_FLOAT("vm_dither_plane#", "Dither", "Output", 0.5)
+	    range	{ 0 1 }
+	    VEX_DISABLE_AUXPLANE
+	    help	"image:dither"
+	}
+	parm {
+	    SOHO_FLOAT("vm_whitepoint_plane#", "White Point", "Output", 1)
+	    range	{ 0 1 }
+	    VEX_DISABLE_AUXPLANE
+	    help	"image:whitepoint"
+	}
+	parm {
+	    SOHO_INT("vm_lightexport#", "Light Exports",
+			    "", 0)
+	    menu {
+		"0"	"No light exports"
+		"1"	"Export variable for each light"
+		"2"	"Merge all lights into single channel"
+	    }
+	    VEX_DISABLE_AUXPLANE
+	}
+	parm {
+	    name	"vm_lightexport_scope#"
+	    label	"Light Mask"
+	    type	oplist
+	    default	{ "*" }
+	    parmtag	{ opfilter "!!OBJ/LIGHT!!" }
+	    parmtag	{ opexpand "1" }
+	    VEX_DISABLE_AUXPLANE
+	    disablewhen "{ \"vm_disable_plane#\" == 1 } { \"vm_variable_plane#\" == \"\" } { \"vm_lightexport#\" == 0 }"
+	}
+	parm {
+	    name	"vm_lightexport_select#"
+	    label	"Light Selection"
+	    type	string
+	    default	{ "*" }
+	    disablewhen "{ \"vm_disable_plane#\" == 1 } { \"vm_variable_plane#\" == \"\" } { \"vm_lightexport#\" == 0 }"
+	}
+#if 0
+	// Old method of single light export
+	parm {
+	    name	"vm_lightexport_plane#"
+	    label	"Light Export"
+	    type	oppath
+	    parmtag	{ opfilter "!!OBJ/LIGHT!!" }
+	    default	{ "" }
+	    VEX_DISABLE_AUXPLANE
+	    help	"image:lightexport"
+	}
+#endif
+    }
+
+    // Image format options
+    collection {
+	name	common_format_options
+	label	"Common Output Options"
+	parmtag	{ spare_category	"Output Options" }
+	parm	{
+	    SOHO_STRING(vm_image_artist, "Artist", "Output Options", "")
+	    help	"Used by many image formats to store the artist"
+	}
+	parm	{
+	    SOHO_STRING(vm_image_comment, "Comment", "Output Options", "")
+	    help	"Used by many image formats to store a comment"
+	}
+	parm	{
+	    SOHO_STRING(vm_image_hostname, "Hostname", "Output Options", "")
+	    help	"Used by many image formats to store the rendering host"
+	}
+    }
+
+    parm	{
+	SOHO_STRING(vm_image_tiff_compression, "TIFF Compression",
+			    "Output Options", "LZW")
+	menu {
+	    "None"			"No compression"
+	    "LZW"			"LZW Compression"
+	    "AdobeDeflate"		"Adobe Deflate"
+	    "PackBits"		"PackBits"
+	    "JPEG"			"JPEG"
+	    "PixarLog"		"Pixar Log"
+	    "SGILog"		"LogLuv"
+	    "SGILog24"		"LogLuv (24 bit)"
+	}
+    }
+    parm	{
+	SOHO_STRING(vm_image_tiff_predictor, "TIFF Predictor",
+			    "Output Options", "auto")
+	menu {
+	    "auto"		"Auto-detect based on format"
+	    "none"		"No prediction"
+	    "horizontal"	"Horizontal differencing"
+	}
+    }
+    parm	{
+	SOHO_STRING(vm_image_rat_compression, "RAT Compression",
+			    "Output Options", "deflate")
+	menu {
+	    "none"		"No compression"
+	    "deflate"	"GZip Deflate Compression"
+	}
+    }
+    parm	{
+	SOHO_TOGGLE(vm_image_rat_makemips, "RAT Generate MIP Maps",
+			    "Output Options", 1)
+    }
+
+    parm	{
+	SOHO_INT(vm_image_jpeg_quality, "JPEG Quality",
+		    "Output Options", 100)
+	range	{ 20 100 }
+    }
+
+    parm {
+	SOHO_STRING(vm_image_cineon_space, "Cineon Color Space",
+			    "Output Options", "lin")
+	menu {
+	    "lin"	"Linear"
+	    "log"	"Logarithmic (unconverted)"
+	}
+    }
+    parm {
+	SOHO_FILE(vm_image_cineon_lut, "Cineon LUT",
+			    "Output Options", "")
+	parmtag	{ filechooser_mode	"read" }
+    }
+    parm {
+	SOHO_INT(vm_image_cineon_whitepoint, "Cineon White Point",
+			    "Output Options", 685)
+	range	{ 0 1023 }
+    }
+    parm {
+	SOHO_FLOAT(vm_image_cineon_gamma, "Cineon Gamma",
+			    "Output Options", 0.6)
+	range	{ 0.001 4 }
+    }
+    parm	{
+	SOHO_STRING(vm_image_exr_compression, "EXR Compression",
+			    "Output Options", "piz")
+	menu {
+	    "none"		"No compression"
+	    "rle"		"Runlength Encoding"
+	    "zips"		"ZIP, Single scanline"
+	    "zip"		"ZIP, Multi-scanline blocks"
+	    "piz"		"PIZ Wavelet"
+	    "pix"		"PXR24 (32 bit float compression, lossy)"
+	}
+    }
+    parm	{
+	SOHO_STRING(vm_image_exr_storage, "EXR Storage",
+			    "Output Options", "scan")
+	menu {
+	    "scan"		"Scanline Storage"
+	    "tile"		"Tile Storage"
+	}
+    }
+    parm	{
+	SOHO_STRING(vm_image_png_frompremult, "PNG Premultiplied",
+		    "Output Options", "premult")
+	menu	{
+	    "premult"	"Premultiplied"
+	    "unpremult"	"Un-premultiplied"
+	}
+    }
+    parm {
+	SOHO_STRING(vm_image_mplay_rendermode, "MPlay Render Mode",
+		"Output Options", "current")
+	menu {
+	    "current"	"Render to current sequence"
+	    "new"		"Start new sequence"
+	}
+    }
+    parm {
+	SOHO_STRING(vm_image_mplay_framemode, "MPlay Frame Mode",
+		"Output Options", "append")
+	menu {
+	    "append"	"Append Frames To Sequence"
+	    "match"	"Match Houdini Frame Numbers (overwrite frame)"
+	}
+    }
+
+    parm {
+	name	vm_image_mplay_label
+	label	"MPlay Session Label"
+	parmtag { spare_category "Output Options" }
+	size	1
+	type	string
+	//default { "`pythonexprs(\"__import__('os').getpid()\")`" }
+	default { "" }
+	menureplace {
+	    "`pythonexprs(\"__import__('os').getpid()\")`" "One per Houdini Process"
+	    "$HIPNAME"	"One per Houdini File Name (.hip)"
+	    "$OS"	"One per Output Driver Name (ROP)"
+	    ""		"One MPlay session only"
+	}
+	help	"Use an MPlay session label for this output driver. This allows multiple active MPlay sessions, each with its own label. All images with the same session label are routed to the MPlay session with the matching label."
+    }
+    collection
+    {
+        name    vm_remote_mplay_display
+        label   "Remote MPlay Display"
+        parmtag { spare_category        "Output Options" }
+        parm
+        {
+            SOHO_STRING("vm_image_mplay_sockethost",
+                        "MPlay Remote Host", "Output Options", "")
+            help "(Advanced) The name of the remote host where mplay is running"
+        }
+        parm
+        {
+            SOHO_STRING("vm_image_mplay_socketport",
+                        "MPlay Remote Port", "Output Options", "")
+            help "(Advanced) The socket port number associated with mplay on the remote host (see mplay -K)"
+        }
+    }
+    parm {
+	SOHO_STRING(vm_image_mplay_direction, "MPlay Tile Order",
+		"Output Options", "middle")
+	menu {
+	    "middle"	"Interactive (starting in middle)"
+	    "top"		"Top down"
+	    "bottom"	"Bottom up"
+	    "hilbert"	"Hilbert Curve"
+	}
+    }
+    parm {
+	SOHO_FLOAT(vm_image_mplay_gamma, "MPlay Gamma",
+		"Output Options", 1)
+	range	{ 0.001	4 }
+    }
+    parm {
+	SOHO_FILE(vm_image_mplay_lut, "MPlay Display LUT",
+		"Output Options", "")
+	parmtag	{ filechooser_mode	"read" }
+    }
+
+    //
+    // Image parameters
+    collection {
+	name	override_resolution
+	label	"Override Res"
+	parmtag	{ spare_category	"Output" }
+	parm	{
+	    name	override_camerares
+	    label	"Override Camera Resolution"
+	    parmtag	{ spare_category	"Output" }
+	    type	toggle
+	    default	{ 0 }
+	}
+	parm {
+	    name	res_fraction
+	    label	"Resolution Scale"
+	    parmtag	{ spare_category	"Output" }
+	    type	string
+	    default	{ "specific" }
+	    menu	{
+		"0.1"		"1/10 (One Tenth Resolution)"
+		"0.2"		"1/5 (One Fifth Resolution)"
+		"0.25"		"1/4 (Quarter Resolution)"
+		"0.3333333"	"1/3 (One Third Resolution)"
+		"0.5"		"1/2 (Half Resolution)"
+		"0.6666666"	"2/3 (Two Thirds Resolution)"
+		"0.75"		"3/4 (Three Quarter Resolution)"
+		"specific"	"User Specified Resolution"
+	    }
+	    hidewhen	"{ override_camerares == 0 }"
+	}
+	parm {
+	    name	res_override
+	    label	Resolution
+	    parmtag	{ spare_category	"Output" }
+
+	    type	intvector2
+	    default	{ 640 480 }
+	    disablewhen	"{ res_fraction != \"specific\" }"
+	    hidewhen	"{ override_camerares == 0 }"
+	    joinnext
+	}
+	parm {
+	    name	res_overrideMenu
+	    label	"Choose Resolution"
+	    parmtag	{ spare_category	"Output" }
+	    type	button
+	    nolabel
+	    callback	"opparm . res_override ( `arg(\"$script_value\", 0)` `arg(\"$script_value\", 1)` aspect_override ( `arg(\"$script_value\", 2)` )"
+	    disablewhen	"{ res_fraction != \"specific\" }"
+	    hidewhen	"{ override_camerares == 0 }"
+	    menumini	{
+		RESOLUTION_MENU
+	    }
+	}
+	parm {
+	    name	aspect_override
+	    label	"Pixel Aspect Ratio"
+	    parmtag	{ spare_category "Output" }
+	    type	float
+	    size	1
+	    default	{ 1 }
+	    range	{ 0.05 2 }
+	    hidewhen	"{ override_camerares == 0 }"
+	}
+    }
+    collection
+    {
+	name	vm_tiled_rendering
+	label	"Tiled Renders"
+	parmtag	{ spare_category	"Output" }
+	parm	{
+	    name	vm_tile_render
+	    label	"Tiled Render"
+	    parmtag	{ spare_category	"Output" }
+	    type	toggle
+	    default	{ 0 }
+	}
+	parm
+	{
+	    SOHO_INT(vm_tile_count_x, "Horizontal Tiles", "Output", 4)
+	    range	{ 1! 8 }
+	    hidewhen	"{ vm_tile_render == 0 }"
+	}
+	parm
+	{
+	    SOHO_INT(vm_tile_count_y, "Vertical Tiles", "Output", 4)
+	    range	{ 1! 8 }
+	    hidewhen	"{ vm_tile_render == 0 }"
+	}
+	parm
+	{
+	    SOHO_INT(vm_tile_index, "Tile Index", "Output", 0)
+	    range	{ 0 63 }
+	    hidewhen	"{ vm_tile_render == 0 }"
+	}
+    }
+    parm
+    {
+	SOHO_STRING(vm_tile_filename_suffix,
+		    "Tile Suffix", "Output", "_tile%02d_")
+	hidewhen	"{ vm_tile_render == 0 }"
+    }
+    parm {
+	SOHO_TOGGLE(allowmotionblur, "Allow Motion Blur", "Sampling", 0)
+    }
+    parm {
+	SOHO_FLOAT(shutter, "Shutter Time", "Sampling", 0.5)
+	range	{ 0 1 }
+	disablewhen	"{ allowmotionblur == 0 }"
+    }
+    parm {
+	SOHO_FLOAT(shutteroffset, "Shutter Offset", "Sampling", 1.0)
+	range	{ -1 1 }
+	disablewhen	"{ allowmotionblur == 0 }"
+	help "Shifts the shutter center opening. 0 is motion blur around the current frame; -1 samples the motion blur from shutter time prior to current frame, up to the current frame; and 1 samples the motion blur for the shutter time starting from the current frame."
+    }
+    parm {
+	name	motionstyle
+	label	"Motion Blur Style"
+	parmtag	{ spare_category "Sampling" }
+	type	string
+	default	{ "trailing" }
+	menu	{
+	    "leading"	"Leading Blur"
+	    "centered"	"Frame Centered Blur"
+	    "trailing"	"Trailing Blur"
+	}
+	disablewhen	"{ allowmotionblur == 0 }"
+    }
+    parm {
+	SOHO_INT(xform_motionsamples, "Xform Time Samples", "Sampling", 2)
+	range	{ 1 10 }
+	disablewhen	"{ allowmotionblur == 0 }"
+    }
+    parm {
+	SOHO_INT(geo_motionsamples, "Geo Time Samples", "Sampling", 1)
+	range	{ 1 10 }
+	disablewhen	"{ allowmotionblur == 0 }"
+    }
+    parm {
+	SOHO_TOGGLE(geo_velocityblur, "Geometry Velocity Blur", "Sampling", 0)
+	disablewhen	"{ allowmotionblur == 0 }"
+    }
+    parm {
+	name	vm_samples
+	label	"Pixel Samples"
+	parmtag	{ spare_category "Sampling" }
+	type	intvector2
+	default	{ 3 3 }
+	range	{ 1 5 }
+    }
+        parm {
+	name	vm_samplesx
+	label	"Pixel Samples"
+	parmtag	{ spare_category "Sampling" }
+	type	intvector2
+	default	{ 3 3 }
+	range	{ 1 32 }
+    }
+        parm {
+	name	vm_samplesy
+	label	"Pixel Samples"
+	parmtag	{ spare_category "Sampling" }
+	type	intvector2
+	default	{ 3 3 }
+	range	{ 1 5 }
+    }
+    parm {
+	SOHO_TOGGLE(vm_dorayvariance, "Ray Variance Antialiasing", "Sampling", 1)
+	help	"Enables variance antialiasing for raytracing."
+    }
+    parm {
+	SOHO_INT(vm_minraysamples, "Min Ray Samples", "Sampling", 1)
+	range	{ 1 64 }
+	help	"Minimum number of raytracing samples per micropolygon or pixel sample"
+    }
+    parm {
+	SOHO_INT(vm_maxraysamples, "Max Ray Samples", "Sampling", 9)
+	range	{ 1 64 }
+	disablewhen "{ vm_dorayvariance == 0 }"
+	help	"Maximum number of raytracing samples per micropolygon or pixel sample"
+    }
+    parm {
+	SOHO_FLOAT(vm_variance, "Noise Level", "Sampling", 0.05)
+	range	{ 0 0.1 }
+	disablewhen "{ vm_dorayvariance == 0 }"
+	help	"Noise threshold used for ray variance antialiasing.  Lower values produce less noisy images."
+    }
+    parm {
+	SOHO_FLOAT(vm_samplingquality, "Sampling Quality", "Sampling", 1)
+	range	{ 0 10 }
+	help	"Sampling quality improvement factor.  Larger values will boost sampling quality on this object, while smaller values will decrease sampling quality.  Sampling adjustments are made relative to the ray sampling parameters."
+    }
+    parm {
+	SOHO_FLOAT(vm_jitter, "Jitter", "Sampling", 1)
+	range	{ 0 1 }
+    }
+    parm {
+	SOHO_TOGGLE(vm_subpixel, "Sub-Pixel Output", "Output", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_imagebatchmode, "Disable rendering to mplay",
+			"Output", 0)
+    }
+    parm {
+	SOHO_STRING(vm_renderengine, "Rendering Engine", "Render", "micropoly")
+	menu {
+	    "micropoly"		"Micropolygon Rendering"
+	    "raytrace"		"Ray Tracing"
+	    "pbrmicropoly"	"Micropolygon Physically Based Rendering"
+	    "pbrraytrace"	"Physically Based Rendering"
+	    "photon"		"Photon Map Generation"
+	}
+    }
+    parm {
+	SOHO_INT("vm_bucketsize", "Tile Size", "Render", 16)
+	range	{ 1 64 }
+    }
+    parm {
+	SOHO_INT(vm_randomseed, "Random Seed", "Sampling", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_samplelock, "Sample Lock", "Sampling", 1)
+	help "When enabled, mantra will use the same pixel sampling pattern across frames in an animation to eliminate flicker.  If the static noise pattern produced by locked samples is visually distracting, this parameter can be disabled to produce a varying sampling pattern between frames"
+    }
+    parm {
+	SOHO_FLOAT(vm_opacitythresh, "Opacity Threshold", "Render", 0)
+    }
+    parm {
+	SOHO_FLOAT(vm_opacitylimit, "Opacity Limit", "Render", 0.995)
+	range	{ 0 1 }
+    }
+    parm {
+	SOHO_FLOAT(vm_shadingfactor, "Shading Quality Multiplier", "Dicing", 1)
+    }
+    collection {
+	name	vm_cachelimit
+	parmtag	{ spare_category "Render" }
+	parm {
+	    SOHO_INT(vm_usecacheratio, "Cache Limit", "Render", 1)
+	    menu {
+		"0"		"Fixed Size"
+		"1"		"Proportion of Physical Memory"
+	    }
+	}
+	parm {
+	    SOHO_FLOAT(vm_cacheratio, "Cache Memory Ratio", "Render", 0.25)
+	    range	{ 0 1 }
+	    hidewhen "{ vm_usecacheratio != 1 }"
+	}
+	parm {
+	    SOHO_INT(vm_cachesize, "Cache Size (MB)", "Render", 1000)
+	    range	{ 100 100000 }
+	    logarithmic
+	    hidewhen "{ vm_usecacheratio == 1 }"
+	}
+    }
+    parm {
+	SOHO_TOGGLE(vm_hidden, "Enable Hiding", "Render", 1)
+    }
+    collection {
+	name	vm_threads
+	parmtag	{ spare_category "Render" }
+	parm {
+	    SOHO_TOGGLE(vm_usemaxthreads, "Use Max Processors", "Render", 1)
+	}
+	parm {
+	    SOHO_INT(vm_threadcount, "Thread Count", "Render", 1)
+	    range	{ 1 4 }
+	    disablewhen "{ vm_usemaxthreads == 1 }"
+	}
+    }
+    parm {
+	SOHO_STRING(vm_hippath, "Override HIP in IFD", "Render", "$HIP")
+    }
+    parm {
+	SOHO_TOGGLE("vm_inheritproperties", "Inherit Properties", "Render", 0)
+	help "When enabled, IFDs will be slightly smaller in size since property inheritance is performed in mantra instead of duplicating properties on each object."
+    }
+    parm {
+	name	declare_all_shops
+	label	"Declare Materials"
+	parmtag	{ spare_category "Render" }
+	type	ordinal
+	default	{ "off" }
+	menu {
+	    "off"	"Bypass Material Declaration"
+	    "on"	"Declare Material SHOPs"
+	    "all"	"Declare All SHOPS"
+	}
+	help	"Declaring materials will cause all material (and surface/displacement) SHOPs to be 'declared' in the IFD.  That is, if geometry archives make reference to SHOPs in the .hip file, the SHOPs should be found properly."
+    }
+    parm {
+	SOHO_TOGGLE(vm_otlfullpath, "Output OTLs with full paths", "Render", 0)
+	help	"Toggling this parameter on will expand any variables in OTL paths, breaking the dependency on Houdini environment variables, but possibly making the IFD less portable"
+    }
+    parm {
+	SOHO_TOGGLE(vm_embedvex, "Force VEX Shader Embedding", "Render", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_blurquality, "Enable Motion Blur", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_rayblurquality, "Enable Raytraced Motion Blur", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_dofquality, "Enable Depth of Field", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_rayquality, "Enable Raytracing", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_giquality, "Enable GI", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_preview, "Enable Preview", "Render", 0)
+    }
+    parm {
+	SOHO_STRING(vm_previewmode, "Preview Mode", "Render", "blur")
+
+	menu {
+	    "blur"		"Blur"
+	    "sharp"		"Sharp"
+	    "ordered"		"Ordered"
+	}
+    }
+    parm {
+	SOHO_FLOAT(vm_previewtime, "Preview Time", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_previewadaptive, "Enable Adaptive Preview", "Render", 0)
+    }
+    parm {
+	SOHO_FLOAT(vm_previewadaptivefactor, "Adaptive Preview Factor", "Render", 0.9)
+	range { 0 1 }
+    }
+    parm {
+	SOHO_FLOAT(vm_previewmousefactor, "Preview Mouse Factor", "Render", 0.9)
+	range { 0 1 }
+    }
+    parm {
+	SOHO_FLOAT(vm_previewmouseradius, "Preview Mouse Radius", "Render", 50.0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_renderinterrupt, "Enable Render Interrupt", "Render", 0)
+    }
+    parm {
+	SOHO_STRING(vm_octreestyle, "Ray Tracing Accelerator", "Render", "kdtree")
+	menu {
+	    "kdtree"		"KD-Tree"
+	    "bboxtree"		"Bounding Volume Hierarchy"
+	}
+    }
+    parm {
+	SOHO_FLOAT(vm_kdmemfactor, "KD-Tree Memory Factor", "Render", 1)
+	range	{ 0.001 2 }
+	disablewhen	"{ vm_octreestyle != kdtree }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_bboxenablelod, "Use Ray Level of Detail", "Render", 1)
+    }
+    parm {
+        SOHO_STRING(vm_pbrpathtype, "Allowable Paths", "PBR", "diffuse")
+        menu {
+            "diffuse"   "Specular, Diffuse Paths"
+            "all"       "All Paths"
+        }
+	disablewhen	"{ vm_renderengine == micropoly } { vm_renderengine == raytrace }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_pbrcachedirect,
+		    "Cache Stores Direct Lighting", "PBR", 1)
+	disablewhen	"{ vm_renderengine == micropoly } { vm_renderengine == raytrace }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_glossyphotons,
+		    "Use Photon Map for Glossy Bounces", "PBR", 1)
+	disablewhen	"{ vm_renderengine == micropoly } { vm_renderengine == raytrace }"
+    }
+    parm {
+	SOHO_FLOAT(vm_colorlimit, "Color Limit", "PBR", 10)
+	disablewhen "{ vm_renderengine != pbrraytrace vm_renderengine != pbrmicropoly }"
+	range	{ 0 20 }
+    }
+    parm {
+	SOHO_FLOAT(vm_pbrreflectratio, "Min Reflection Ratio", "PBR", 0)
+	range	{ 0 1 }
+	disablewhen	"{ vm_renderengine == micropoly } { vm_renderengine == raytrace }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_pbrmultilight, "Sample All Lights", "PBR", 1)
+	disablewhen	"{ vm_renderengine == micropoly } { vm_renderengine == raytrace }"
+    }
+    parm {
+	name	vm_pbrshader
+	label	"PBR Shader"
+	parmtag	{ spare_category "PBR" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/ATMOSPHERE!!" }
+	default	{ "" }
+	disablewhen	"{ vm_renderengine == micropoly } { vm_renderengine == raytrace }"
+    }
+    parm {
+	name	vm_pbrphotonshader
+	label	"PBR Photon Shader"
+	parmtag	{ spare_category "PBR" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/ATMOSPHERE!!" }
+	default	{ "" }
+	disablewhen	"{ vm_renderengine == micropoly } { vm_renderengine == raytrace }"
+    }
+
+    //
+    // Camera properties
+    //
+    parm {
+	name	vm_cameralist
+	label	"Render Cameras"
+	type	oplist
+	parmtag	{ opfilter	"!!OBJ/CAMERA!!" }
+	parmtag	{ oprelative	"/obj" }
+	parmtag	{ spare_category "Stereo" }
+	default	{ "" }
+	help	"Cameras to render through"
+    }
+
+    parm {
+	SOHO_STRING(vm_bokeh, "Bokeh", "Sampling", "radial")
+	menureplace {
+	    "radial"			"Radial Bokeh"
+	    "file"			"Image File Bokeh"
+	    "box"			"Box Filter Bokeh"
+	    "null"			"Disable Bokeh"
+	}
+    }
+    parm {
+	SOHO_PARM(vm_bokehfile, "Bokeh Image File", "Sampling", "image", 1, "default.pic")
+	parmtag	{ filechooser_mode	"read" }
+	disablewhen	"{ vm_bokeh != file }"
+    }
+    parm {
+	SOHO_FLOAT(vm_bokehrotation,	"Bokeh Rotation", "Sampling", 0)
+	range { 0 360 }
+	disablewhen	"{ vm_bokeh != file }"
+    }
+
+    parm {
+	SOHO_INT(vm_field, "Video Field", "Output", "0")
+	menu {
+	    "0"	"Both Fields"
+	    "1" "Odd Field"
+	    "2"	"Even Field"
+	}
+	range { 0 2 }
+    }
+    parm {
+	SOHO_INT(vm_vexprofile, "VEX Profiling", "Statistics", 0)
+	menu {
+	    "0"	"No VEX Profiling"
+	    "1"	"Execution profiling"
+	    "2"	"Profiling and NAN detection"
+	}
+    }
+    parm {
+	SOHO_INT(vm_verbose, "Verbose Level", "Statistics", 0)
+	range { 0 5 }
+    }
+    parm {
+	SOHO_TOGGLE(vm_alfprogress, "Alfred Style Progress", "Statistics", 0)
+    }
+    parm {
+	SOHO_FILE(vm_tilecallback, "Python Tile Callback", "Statistics", "")
+	parmtag	{ filechooser_mode	"read" }
+    }
+    parm {
+	SOHO_TOGGLE(vm_quickexit, "Quick Exit", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_fogbackground, "Add Background for Fog", "Fog", 1)
+    }
+    parm {
+	SOHO_STRING(vm_filenamesuffix, "Image File Suffix", "Stereo", "")
+    }
+    parm {
+	SOHO_TOGGLE(vm_s3dleftcamera, "Is Left Camera", "Stereo", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_s3drightcamera, "Is Right Camera", "Stereo", 0)
+    }
+    parm {
+	SOHO_STRING(subcamtag, "Sub Camera Tag", "Stereo", "")
+    }
+    parm {
+	SOHO_TOGGLE(viewmenu, "Include in Viewport Menu", "Stereo", 1)
+    }
+    parm {
+	SOHO_PARM(viewxformpath, "View Xform Node", "Stereo", oplist, 1, "")
+    }
+
+    //
+    // Object Properties
+    parm {
+	name	shop_propertiespath
+	label	"Rendering Properties"
+	parmtag	{ spare_category "Shaders" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/PROPERTIES!!" }
+	default	{ "" }
+    }
+    parm {
+	name	shop_surfacepath
+	label	"Surface Shader"
+	parmtag	{ spare_category "Shaders" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/SURFACE!!" }
+	default	{ "" }
+    }
+    parm {
+	SOHO_TOGGLE(shop_disable_surface_shader, 
+		    "Disable Surface Shader Rendering", "Shaders", 0)
+    }
+    parm {
+	name	shop_photonpath
+	label	"Photon Shader"
+	parmtag	{ spare_category "Shaders" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/PHOTON!!" }
+	default	{ "" }
+    }
+    parm {
+	name	shop_displacepath
+	label	"Displacement Shader"
+	parmtag	{ spare_category "Shaders" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/DISPLACEMENT!!" }
+	default	{ "" }
+    }
+    parm {
+	SOHO_TOGGLE(shop_disable_displace_shader, 
+		    "Disable Displace Shader Rendering", "Shaders", 0)
+    }
+    parm {
+	name	vm_matteshader
+	label	"Matte Shader"
+	parmtag	{ spare_category "Shaders" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/SURFACE!!" }
+	default	{ "" }
+    }
+    parm {
+	SOHO_FLOAT(vm_displacebound,	"Displacement Bound", "Shading", 0)
+    }
+    parm {
+	SOHO_STRING(vm_displacespace, "Displacement Space",
+			"Shading", "camera")
+	menu {
+	    "camera"	"Bounds specified in world space"
+	    "object"	"Bounds specified in object space"
+	}
+    }
+    parm {
+	SOHO_FLOAT(vm_velocitybound,	"Volume Velocity Bound", "Shading", 0)
+	help	"Maximum amount of displacement from velocity motion blur.  Used only for volume primitives."
+    }
+    parm {
+	SOHO_TOGGLE(vm_redice, "Re-Dice Displacements", "Shading", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_overridedetail, "Ignore Geometry Attribute Shaders",
+			"Geometry", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_matte, "Matte shading", "Shading", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_truedisplace, "True Displacements", "Shading", 1)
+    }
+    parm {
+	SOHO_FLOAT(vm_shadingquality, "Shading Quality", "Dicing", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_curvesurface, "Shade Curves As Surfaces", "Dicing", 0)
+    }
+    parm {
+	SOHO_STRING(vm_volumefilter, "Volume Filter", "Shading", "box")
+	VEX_FILTER_MENU
+    }
+    parm {
+	SOHO_FLOAT(vm_volumefilterwidth, "Volume Filter Width", "Shading", 1)
+	range	{ 0.001 5 }
+    }
+    parm {
+	SOHO_TOGGLE(vm_rayshade, "Raytrace Shading", "Shading", 0)
+	help	"Shade every sample rather than shading micropolygon vertices.  This setting enables the raytrace rendering engine on a per-object basis."
+    }
+    parm {
+	SOHO_FLOAT(vm_raybias, "Raytracing Bias", "Shading", 0.001)
+    }
+    parm {
+	SOHO_INT(vm_unshadedlimit, "Ray Unshaded Limit", "Shading", 32)
+	range	{ 1 32 }
+    }
+    parm {
+	SOHO_STRING(vm_colorspace, "Color Space", "Shading", "linear")
+	menu {
+	    "linear"		"Linear"
+	    "gamma"		"Gamma 2.2"
+	}
+	help	"Sampling color space for variance antialiasing.  Setting this to Gamma 2.2 will cause darker parts of the image to receive more samples."
+    }
+    parm {
+        SOHO_STRING(vm_raylimiteval, "At Ray Limit", "Shading", "none")
+        menu {
+            "none"      "Use Black Background"
+            "direct"    "Use Direct Lighting as Background Color"
+        }
+    }
+    parm {
+        SOHO_FLOAT(vm_rayderivbias, "Ray Derivative Bias", "Shading", 1.0)
+	range	{ 0.001 1 }
+    }
+    parm {
+	SOHO_FLOAT(vm_volumestepsize, "Volume Step Size", "Sampling", 0.1)
+	range	{ 0 1 }
+    }
+    parm {
+	SOHO_TOGGLE(vm_volumeuniform, "Uniform Volume", "Sampling", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_volumesurface, "Volume Surface", "Sampling", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_volumeiso, "Volume Isosurface", "Sampling", 0)
+    }
+    parm {
+	SOHO_FLOAT(vm_volumedensity, "Volume Density", "Sampling", 1.0)
+	range	{ 0.0 1000.0 }
+    }
+    parm {
+	SOHO_INT(vm_volumesamples, "Volume Samples", "Sampling", 1)
+	range	{ 0 1000 }
+    }
+    parm {
+	SOHO_FLOAT(vm_volumeshadowquality, "Volume Shadow Quality", "Sampling", 1)
+	range	{ 0 1 }
+	help	"A factor to proportionally decrease the sampling quality for volume shadows.  Smaller values will cause mantra to use a larger step size for shadow rays.  A value of 1 will produce equal quality for shadow rays and shading rays."
+    }
+    parm {
+	SOHO_FLOAT(vm_volumezerothresh, "Volume Zero Threshold", "Sampling", 0)
+	range	{ 0 0.01 }
+	help	"Specifies the minimum volume field value that is considered valid data for rendering.  Values smaller than the zero threshold may be clipped from the render to improve performance."
+    }
+    parm {
+	SOHO_TOGGLE(vm_transparent, "Stochastic Transparency", "Sampling", 1)
+    }
+    parm {
+	SOHO_INT(vm_transparentsamples, "Transparent Samples", "Sampling", 1)
+	range	{ 1 16 }
+	disablewhen	"{ vm_transparent == 0 }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_smoothcolor, "Smooth Grid Colors", "Shading", 1)
+	disablewhen	"{ vm_renderengine != micropoly vm_renderengine != pbrmicropoly }"
+    }
+    parm {
+	SOHO_INT(vm_reflectlimit, "Reflect Limit", "Shading", 10)
+    }
+    parm {
+	SOHO_INT(vm_refractlimit, "Refract Limit", "Shading", 10)
+    }
+    parm {
+	SOHO_INT(vm_diffuselimit, "Diffuse Limit", "Shading", 0)
+    }
+    parm {
+	SOHO_INT(vm_volumelimit, "Volume Limit", "Shading", 0)
+    }
+    parm {
+	SOHO_FLOAT(vm_rayweight, "Contribution Limit", "Shading", 0.001)
+    }
+
+    DEF_COMMON_OBJECT_CATEGORIES()
+    COMMON_OBJECT_LIGHTMASK( "Shading" )
+    COMMON_OBJECT_REFLECTMASK( "Shading" )
+    COMMON_OBJECT_REFRACTMASK( "Shading" )
+    COMMON_OBJECT_SHADOWMASK( "Shadow" )
+
+    parm {
+	SOHO_FLOAT(vm_motionfactor, "Motion Factor", "Sampling", 0)
+	range	{ 0 1 }
+	disablewhen	"{ allowmotionblur == 0 vm_dof == 0 }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_phantom, "Phantom", "Render", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_renderable, "Renderable", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_biasnormal, "Bias Along Normal", "Shading", 0)
+    }
+    collection {
+	name	vm_measuring
+	parmtag	{ spare_category "Dicing" }
+	parm {
+	    SOHO_STRING(vm_measure, "Geometry Measuring", "Dicing",
+			    "nonraster")
+	    menu {
+		"nonraster"	"Non-Raster Measuring"
+		"raster"	"Raster Space Measuring"
+		"uniform"	"Uniform Measuring"
+	    }
+	}
+	parm {
+	    SOHO_FLOAT(vm_measurezimportance, "Z-Importance", "Dicing", 0)
+	    disablewhen	"{ vm_measure != \"nonraster\" }"
+	}
+    }
+    parm {
+	SOHO_FLOAT(vm_geofilterwidth, "Geometry Filter Width", "Dicing", 0)
+	help 	"Sets a minimum width, in raster space, for curves.\nCurves with smaller width get their opacity adjusted to compensate."
+    }
+
+    // Light properties
+    parm {
+	// TODO:  This parameter is currently only required for
+	// ambient lights.  We need to fix this since it's a hack.
+	name	light_color
+	label	"Light Color"
+	parmtag	{ spare_category	"Light" }
+	type	color
+	size	3
+	default	{ .5 .5 .5 }
+    }
+    parm {
+	name	vm_export_prefix
+	label	"Export Plane Prefix"
+	parmtag	{ spare_category	"Light" }
+	type	string
+	default	{ "$OS" }
+	help	"This is the prefix given to per-light exports in deep raster planes"
+    }
+    parm {
+	name	vm_export_suffix
+	label	"Export Plane Suffix"
+	parmtag	{ spare_category	"Light" }
+	type	string
+	default	{ "" }
+	help	"This is the suffix given to per-light exports in deep raster planes"
+    }
+    parm {
+	name	shop_lightpath
+	label	"Light Shader"
+	parmtag	{ spare_category "Shaders" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/LIGHT!!" }
+	default	{ "" }
+    }
+    parm {
+	SOHO_TOGGLE(shop_disable_light_shader, 
+		    "Disable Light Shader Rendering", "Shaders", 0)
+    }
+    parm {
+	name	shop_shadowpath
+	label	"Shadow Shader"
+	parmtag	{ spare_category "Shaders" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/LIGHT_SHADOW!!" }
+	default	{ "" }
+    }
+    parm {
+	SOHO_TOGGLE(shop_disable_shadow_shader, 
+		    "Disable Shadow Shader Rendering", "Shaders", 0)
+    }
+    parm {
+	name	vm_areashape
+	label	"Area Shape"
+	parmtag	{ spare_category	"Light" }
+	type	string
+	menu	{
+	    "point"	"Point/Cone Light"
+	    "line"	"Line Light"
+	    "grid"	"Grid Light"
+	    "disk"	"Disk Light"
+	    "sphere"	"Spherical Light"
+	    "env"	"Environmental Light"
+	}
+    }
+    parm {
+	name	vm_areasize
+	label	"Area Size"
+	parmtag	{ spare_category	"Light" }
+	type	vector2
+	default	{ 0 0 }
+    }
+    parm {
+	name	vm_areamap
+	label	"Area Texture"
+	parmtag	{ spare_category	"Light" }
+	type	image
+	parmtag	{ filechooser_mode	"read" }
+	default	{ "" }
+    }
+    parm {
+	SOHO_TOGGLE(vm_areafullsphere, "Full Sphere Environment", "Light", 0)
+	disablewhen	"{ vm_areashape != \"env\" }"
+    }
+    parm {
+	SOHO_FLOAT(vm_importancelevels, "Light Importance Levels",
+			"Light", 8)
+    }
+    parm {
+	SOHO_TOGGLE(vm_surfaceshaders, "Light Uses Surface Shader", "Light", 0)
+    }
+    parm {
+	SOHO_FLOAT(vm_activeradius, "Active Radius", "Light", -1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_nondiffuse, "Non Diffuse Light", "Light", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_nonspecular, "Non Specular Light", "Light", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_lightcache, "Light Stores Cached Illumination", "Light", 0)
+	help	"This setting will cause the light to be moved to the start of mantra's internal light list so that it will be processed first during rendering.  This way, if the light contributes cached illumination representing other lights in the scene, it is possible to cancel execution of subsequent lights."
+    }
+    parm {
+	SOHO_TOGGLE(vm_raybackground, "Ray Tracing Background", "Light", 0)
+	help	"Causes the light to be rendered as a ray tracing background image rathan than direct lighting."
+    }
+    parm {
+	SOHO_FLOAT(vm_envangle, "Sun Angle", "Light", 5)
+	help	"The angle to use when rendering sun light types, specified as a the half cone angle in degrees."
+    }
+    parm {
+	SOHO_TOGGLE(render_viewcamera,
+		    "Create Image From Viewing Camera", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(render_any_shadowmap,
+		    "Auto-Generate Shadow Maps", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(render_any_envmap,
+		    "Auto-Generate Environment Maps", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(render_any_photonmap,
+		    "Auto-Generate Photon Maps", "Render", 1)
+    }
+    parm {
+	SOHO_TOGGLE(render_shadowmap,
+		    "Auto-Generate Shadow Map", "Render", 0)
+    }
+    parm {
+	SOHO_TOGGLE(render_envmap,
+		    "Auto-Generate Environment Map", "Render", 0)
+    }
+    parm {
+	SOHO_TOGGLE(render_photonmap,
+		    "Auto-Generate Photon Map", "Render", 0)
+    }
+    parm {
+	name	vm_objroot
+	label	"Object Root Path"
+	parmtag	{ spare_category "Render" }
+	type	oppath
+	default	{ "/obj" }
+    }
+    collection {
+	name	vm_textureunwrap
+	label	"Texture Unwrapping"
+	parmtag	{ spare_category	"Render" }
+	parm {
+	    name	vm_uvobject
+	    label	"UV Render Object"
+	    parmtag	{ spare_category "Render" }
+	    type	oppath
+	    default	{ "" }
+	    parmtag	{ opfilter "!!OBJ/GEOMETRY!!" }
+	    parmtag	{ oprelative "/obj" }
+	}
+	parm {
+	    SOHO_STRING(vm_uvattribute, "UV Attribute", "Render", "uv")
+	    disablewhen "{ vm_uvobject == \"\" }"
+	}
+    }
+
+    // Fog objects
+    parm {
+	name	shop_fogpath
+	label	"Fog Shader"
+	parmtag	{ spare_category "Shaders" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/ATMOSPHERE!!" }
+	default	{ "" }
+    }
+    parm {
+	SOHO_TOGGLE(shop_disable_fog_shader, 
+		    "Disable Fog Shader Rendering", "Shaders", 0)
+    }
+
+    // Geometry
+    parm {
+	name	shop_geometrypath
+	label	"Procedural Shader"
+	parmtag	{ spare_category "Geometry" }
+	type	oppath
+	parmtag	{ opfilter	"!!SHOP/GEOMETRY!!" }
+	default	{ "" }
+    }
+    parm {
+	SOHO_TOGGLE(shop_disable_geometry_shader, 
+		    "Disable Geometry Shader Rendering", "Shaders", 0)
+    }
+    parm {
+	name	vm_auto_archive
+	label	"Auto-Archiving"
+	parmtag	{ spare_category "Geometry" }
+	type	string
+	default	{ "off" }
+	menu	{
+	    "off"	"No auto-archiving"
+	    "exist"	"Create archive if missing on disk"
+	    "force"	"Overwrite archive always"
+	}
+	help	"This option will cause Houdini to create save the SOP's geometry to the disk file specified in the vm_archive parameter."
+    }
+    parm {
+	name	vm_archive
+	label	"Geometry Disk File"
+	parmtag	{ spare_category "Geometry" }
+	parmtag	{ filechooser_mode  "read_and_write" }
+	type	file
+	default	{ "" }
+	help	"Use geometry from this disk file instead of using the SOP's geometry"
+    }
+    parm {
+	SOHO_TOGGLE(vm_rendersubd, "Polygons As Subdivision (Mantra)", "Geometry", 0)
+    }
+    parm {
+	SOHO_INT(vm_renderpoints, "Render As Points (Mantra)", "Geometry", 0)
+	menu {
+	    "0"	"No Point Rendering"
+	    "1"	"Render Only Points"
+	    "2"	"Render Unconnected Points"
+	}
+    }
+    parm {
+	SOHO_TOGGLE(vm_usenforpoints, "Use N For Point Rendering", "Geometry", 0)
+	disablewhen "{ vm_renderpoints == 0 }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_metavolume, "Metaballs as Volume", "Geometry", 0)
+    }
+    parm {
+	SOHO_TOGGLE(vm_curveunitst, "Use Unit s/t for Curves", "Geometry", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_traceblur, "Raytrace Motion Blur", "Sampling", 0)
+	help	"Enables raytraced motion blur in micropolygon rendering"
+	disablewhen	"{ allowmotionblur == 0 } { vm_renderengine != micropoly vm_renderengine != pbrmicropoly }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_imageblur, "Allow Image Motion Blur", "Sampling", 1)
+	help	"This setting controls whether mantra computes motion blur for direct visibility.  When disabled, mantra will render without motion blur but still compute motion blurred positions so that you can use getBlurP() in shaders to export motion vectors."
+	disablewhen	"{ allowmotionblur == 0 }"
+    }
+    parm {
+	SOHO_TOGGLE(vm_forcegeometry, "Force Procedural Geometry Output", "Geometry", 1)
+    }
+    parm {
+	SOHO_INT(vm_coving, "Coving", "Geometry", 1)
+	menu {
+	    "0"	"Disable Coving"
+	    "1" "Coving for displacement/sub-d"
+	    "2" "Coving for all primitives"
+	}
+    }
+    parm {
+	SOHO_INT(vm_shadingqueuesize, "Shading Queue Size", "Shading", 256)
+	range	{ 1 256 }
+	help	"Set the size of mantra's micropolygon shading queue.  When set to a value larger than 1, mantra will attempt to queue up small polygons and shade them in batches."
+    }
+    parm {
+	SOHO_FLOAT(vm_flatness, "Dicing Flatness", "Dicing", 0.05)
+	range	{ 0 1 }
+    }
+    parm {
+	SOHO_INT(vm_raypredice, "Ray Predicing", "Dicing", 0)
+	menu {
+	    "off"	"Disable Predicing"
+	    "on"	"Full Predicing"
+	    "bounds"	"Precompute Bounds"
+	}
+    }
+    parm {
+	SOHO_TOGGLE(vm_rmbackface, "Backface Removal", "Geometry", 0)
+    }
+    parm {
+	SOHO_STRING(vm_geometrygroup, "Render Group", "Geometry", "")
+    }
+    parm {
+	SOHO_TOGGLE(vm_generate_opid, "Generate Op Ids for objects",
+			"Output", 0)
+	help	"Generate operator ids so that the object:id render setting will be initialized.  IFD files will be slightly larger.  This setting is enabled automatically when an Op_Id deep raster is present."
+    }
+
+    parm {
+	SOHO_TOGGLE(vm_computeN, "Automatically Compute Normals",
+			"Geometry", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_binarygeometry, "Save Binary Geometry",
+					  "Geometry", 1)
+    }
+    parm {
+	SOHO_TOGGLE(vm_savegroups, "Save Geometry Groups",
+					  "Geometry", 1)
+    }
+
+    parm {
+	SOHO_INT(vm_photoncount, "Photon Storage Count", "Photon", 100000)
+	range	{ 0 1000000 }
+	disablewhen	"{ vm_renderengine != photon }"
+    }
+    parm {
+	SOHO_FLOAT(vm_photonminratio, "Minimum Photon Storage Ratio", "Photon", 0.01)
+	range	{ 0 1 }
+    }
+    parm {
+	SOHO_FILE(vm_photongfile, "Global Photon File",
+				       "Photon", "$HIP/global.pmap")
+	parmtag	{ filechooser_mode	"read_and_write" }
+    }
+    parm {
+	SOHO_FILE(vm_photoncfile, "Caustic Photon File",
+				       "Photon", "$HIP/caustic.pmap")
+	parmtag	{ filechooser_mode	"read_and_write" }
+    }
+    parm {
+	SOHO_STRING(vm_photontarget, "Photon Target", "Photon", "*")
+    }
+    parm {
+	SOHO_FLOAT(vm_photonweight, "Photon Weight", "Photon", 1)
+    }
+
+    parm {
+	SOHO_TOGGLE(vm_gienable, "Enable Irradiance Cache", "Irradiance", 0)
+    }
+    parm {
+	SOHO_FILE(vm_gifile, "Irradiance Cache File", "Irradiance", "")
+	parmtag		{ filechooser_mode	"read_and_write" }
+	disablewhen	"{ vm_gienable != 1 }"
+    }
+    parm {
+	SOHO_STRING(vm_gifilemode, "Read/Write Mode", "Irradiance", "")
+	menu { \
+	    ""		"None"
+	    "r"		"Read"
+	    "w"		"Write"
+	    "rw"	"Read/Write"
+	}
+	disablewhen	"{ vm_gienable != 1 }"
+    }
+    parm {
+	SOHO_INT(vm_gisample, "Default Samples", "Irradiance", 256)
+	disablewhen	"{ vm_gienable != 1 }"
+    }
+    parm {
+	SOHO_FLOAT(vm_gierror, "Irradiance Error", "Irradiance", 0.1)
+	range	{ 0 1 }
+	disablewhen	"{ vm_gienable != 1 }"
+    }
+    parm {
+	SOHO_FLOAT(vm_giminspacing, "Min Spacing (Pixels)", "Irradiance", 1.5)
+	range	{ 0 20 }
+	disablewhen	"{ vm_gienable != 1 }"
+    }
+    parm {
+	SOHO_FLOAT(vm_gimaxspacing, "Max Spacing (Pixels)", "Irradiance", 20)
+	range	{ 0 20 }
+	disablewhen	"{ vm_gienable != 1 }"
+    }
+
+    multiparm {
+	name	vm_numuserattrib
+	label	"User Properties"
+	parmtag	{ spare_category	"User" }
+
+	parm {
+	    SOHO_STRING("vm_username#", "Property #", "User", "")
+	}
+	parm {
+	    SOHO_STRING("vm_usertype#", "Type #", "User", "float")
+	    menu {
+		"int"		"Integer/Bool"
+		"float"		"Float"
+		"vector"	"Vector"
+		"string"	"String"
+		"vector4"	"Vector 4"
+		// "matrix3"	"Matrix 3"
+		// "matrix4"	"Matrix 4"
+	    }
+	}
+	parm {
+	    SOHO_INT("vm_userint#", "Integer Value", "User", 0)
+	    disablewhen	"{ vm_usertype# != int }"
+	}
+	parm {
+	    SOHO_FLOAT("vm_userscalar#", "Float Value", "User", 0)
+	    disablewhen	"{ vm_usertype# != float }"
+	}
+	parm {
+	    name	"vm_user3tuple#"
+	    label	"Vector Value"
+	    size	3
+	    type	float
+	    default	{ 0 0 0 }
+	    disablewhen	"{ vm_usertype# != vector }"
+	}
+	parm {
+	    name	"vm_user4tuple#"
+	    label	"Vector4 Value"
+	    size	4
+	    type	float
+	    default	{ 0 0 0 0 }
+	    disablewhen	"{ vm_usertype# != vector4 }"
+	}
+	parm {
+	    SOHO_STRING("vm_userstring#", "String Value", "User", "")
+	    disablewhen	"{ vm_usertype# != string }"
+	}
+    }
+
+// This file will be included if it exists to provide additional
+// collections of parameters which are defined on a per job, site, etc.
+// basis.
+// The file will be searched for in $HOUDINI_PATH/soho, so it should
+// be prefixed with "parameters/"
+#sinclude "parameters/IFDmantra.user.ds"
+
+    // Default parameter lists for objects.
+
+#if !defined(USER_DEFINED_IFD_CAMERA_PARMS)
+    parm {
+	name	default_camera
+	label	"Default Camera"
+	parmtag	{ spare_category	"__spare_parmlist" }
+	parmtag	{ spare_parmlist	"iconscale resolution aspect projection focal_length aperture orthowidth near far background_parms shutter viewport_window viewport_crop focus fstop vm_bokeh vm_bokehfile vm_bokehrotation" }
+    }
+
+    parm {
+	name	default_stereocamera
+	label	"Default Stereo Camera"
+	parmtag	{ spare_category	"__spare_parmlist" }
+	parmtag	{ spare_parmlist	"iconscale resolution aspect projection focal_length aperture orthowidth near far shutter viewport_window viewport_crop focus fstop vm_bokeh vm_bokehfile vm_bokehrotation vm_cameralist" }
+    }
+
+#endif
+
+#if !defined(USER_DEFINED_IFD_LIGHT_PARMS)
+    parm {
+	name	default_light
+	label	"Default Light"
+	parmtag	{ spare_category	"__spare_parmlist" }
+	parmtag	{ spare_parmlist	"categories shop_lightpath shop_shadowpath shadowmask" }
+    }
+#endif
+
+#if !defined(USER_DEFINED_IFD_AMBIENT_PARMS)
+    parm {
+	name	default_ambient
+	label	"Default Ambient"
+	parmtag	{ spare_category	"__spare_parmlist" }
+	parmtag	{ spare_parmlist	"shop_lightpath light_color" }
+    }
+#endif
+
+#if !defined(USER_DEFINED_IFD_GEOMETRY_PARMS)
+    parm {
+	name	default_geometry
+	label	"Default Geometry"
+	parmtag	{ spare_category	"__spare_parmlist" }
+	parmtag	{ spare_parmlist	"categories reflectmask refractmask lightmask vm_phantom vm_renderable vm_volumefilter vm_volumefilterwidth vm_matte geo_velocityblur vm_shadingquality vm_flatness vm_raypredice vm_curvesurface vm_rayshade vm_rmbackface shop_geometrypath vm_forcegeometry vm_rendersubd vm_renderpoints vm_usenforpoints vm_metavolume vm_coving vm_computeN vm_overridedetail" }
+    }
+#endif
+
+#if !defined(USER_DEFINED_IFD_OUTPUT_PARMS)
+    parm {
+	name	default_output
+	label	"Default Output"
+	parmtag	{ spare_category	"__spare_parmlist" }
+	parmtag	{ spare_parmlist	"\
+	    vm_picture_group \
+	    vm_pfilter \
+	    vm_sfilter \
+	    vm_quantize \
+	    vm_whitepoint \
+	    vm_subpixel \
+	    res_fraction \
+	    override_resolution \
+	    vm_tiled_rendering \
+	    vm_deepresolver \
+	    vm_dcmfilename \
+	    vm_numaux \
+	    \
+	    common_format_options \
+	    vm_image_mplay_direction \
+	    vm_image_mplay_label \
+	    vm_image_mplay_gamma \
+	    vm_image_jpeg_quality \
+	    vm_image_tiff_compression \
+	    vm_image_exr_compression \
+	    \
+	    vm_renderengine \
+	    vm_bucketsize \
+	    vm_opacitylimit \
+	    vm_threads \
+	    vm_cachelimit \
+	    vm_octreestyle \
+	    vm_kdmemfactor \
+	    vm_textureunwrap \
+	    vm_hidden \
+	    render_viewcamera \
+	    render_any_shadowmap \
+	    render_any_envmap \
+	    render_any_photonmap \
+	    vm_otlfullpath \
+	    vm_embedvex \
+	    \
+	    vm_dof \
+	    allowmotionblur \
+	    vm_traceblur \
+	    vm_motionfactor \
+	    xform_motionsamples \
+	    geo_motionsamples \
+	    shutteroffset \
+	    vm_imageblur \
+	    vm_samples \
+	    vm_jitter \
+	    vm_samplelock \
+	    vm_dorayvariance \
+	    vm_minraysamples \
+	    vm_maxraysamples \
+	    vm_variance \
+	    vm_volumestepsize \
+	    vm_volumeshadowquality \
+	    vm_volumezerothreshold \
+	    vm_transparent \
+	    vm_transparentsamples \
+	    vm_randomseed \
+	    \
+	    vm_reflectlimit \
+	    vm_refractlimit \
+	    vm_diffuselimit \
+	    vm_volumelimit \
+	    vm_raybias \
+	    vm_biasnormal \
+	    vm_colorspace \
+	    vm_raylimiteval \
+	    vm_smoothcolor \
+	    \
+	    vm_pbrshader \
+	    vm_pbrphotonshader \
+	    vm_pbrpathtype \
+	    vm_colorlimit \
+	    vm_pbrreflectratio \
+	    \
+	    soho_spoolrenderoutput \
+	    vm_verbose \
+	    vm_vexprofile \
+	    vm_alfprogress \
+	    vm_tilecallback \
+	    \
+	    vm_shadingfactor \
+	    vm_measuring \
+	    \
+	    vm_binarygeometry \
+	    vm_savegroups \
+	    \
+	    vm_gienable \
+	    vm_gierror \
+	    vm_gimaxspacing \
+	    vm_giminspacing \
+	    vm_gifile \
+	    vm_gifilemode \
+	    " }
+    }
+#endif
+ 
+#if !defined(USER_DEFINED_IFD_FOG_PARMS)
+    parm {
+	name	default_fog
+	label	"Default Fog"
+	parmtag	{ spare_category	"__spare_parmlist" }
+	parmtag	{ spare_parmlist	"categories lightmask" }
+    }
+#endif
+}
+
+#undef VEX_QUANTIZE_MENU
+#undef VEX_PIXEL_FILTER_MENU
+#undef VEX_AUX_PIXEL_FILTER_MENU
+#undef VEX_FILTER_MENU
+#undef VEX_VAR_MENU
+#undef VEX_TYPE_MENU
+#undef VEX_DISABLE_AUXPLANE
