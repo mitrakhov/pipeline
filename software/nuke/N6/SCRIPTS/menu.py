@@ -29,7 +29,8 @@ n.addCommand('FrameHold2', "FrameHold()", "Ctrl+Alt+F")
 nuke.load("pythonhelp")
 nuke.load("TimeO")
 n.addCommand('TimeOffset2', "TimeOff()", "Ctrl+Shift+T")
-
+nuke.load("exrUnpack")
+n.addCommand('Unpack EXR', "exrUnpack", "Ctrl+Shift+E")
 nuke.load('dailies')
 n.addCommand('CreateDailies (old)', 'Dailies()')
 
