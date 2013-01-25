@@ -44,8 +44,6 @@ export PYTHONPATH=$HOUDINI_AF_PATH:$PYTHONPATH
 # Define OTL scan path:
 HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
 
-export HSITE=/home/vlad/houdini12.1
-
 export HOUDINI_PATH=${HOME}/${HOUDINI_HOME_DIR}:${PIPEH}:${HFS}/houdini
 export HOUDINI_OTLSCAN_PATH=${PIPEH}/otl:${PIPEH}/otl/dop:${PIPEH}/otl/obj:${PIPEH}/otl/rop:${PIPEH}/otl/shop:${PIPEH}/otl/shop/delight:${PIPEH}/otl/sop:${PIPEH}/otl/pop:${PIPEH}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
 export HOUDINI_OTLSEARCH_PATH=${PIPEH}/otl/shop
@@ -90,4 +88,26 @@ cd $wd
 #source setup_houdini.sh
 
 #${HFS}/bin/hmaster "$@"
+fi
+
+
+if [ $OSNAME == "Darwin" ] 
+	then
+
+export PIPEH=${CPIPELINE}/software/houdini
+
+# Setup CGRU houdini scripts location:
+export HOUDINI_CGRU_PATH=$CGRU_LOCATION/plugins/houdini
+
+# Set Afanasy houdini scripts and otls location:
+export HOUDINI_AF_PATH=$AF_ROOT/plugins/houdini
+
+# Set Python path to afanasy submission script:
+export PYTHONPATH=$HOUDINI_AF_PATH:$PYTHONPATH
+
+# Define OTL scan path:
+HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
+
+export HOUDINI_OTLSCAN_PATH=${PIPEH}/otl:${PIPEH}/otl/dop:${PIPEH}/otl/obj:${PIPEH}/otl/rop:${PIPEH}/otl/shop:${PIPEH}/otl/shop/delight:${PIPEH}/otl/sop:${PIPEH}/otl/pop:${PIPEH}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
+
 fi

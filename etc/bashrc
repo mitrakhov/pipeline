@@ -1,13 +1,29 @@
 #!/bin/sh
 
-export DEVMODE=0
+########### Common
+
 export REPO=/mnt/karramba
 export CPIPELINE=/usr/pipeline
-export PROGRAM_PATH=/mnt/opt
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CPIPELINE}/lib/openVDB/lib:${CPIPELINE}/lib/Field3D/lib
 export CGRU=${PROGRAM_PATH}/cgru
 export CGRU_LOCATION=${CGRU}
 export CGRU_VERSION=1.6.5
+
+########### Afanasy
+	
+export AF_ROOT=${CGRU}/afanasy
+export PATH=${AF_ROOT}/bin:${CGRU}/software_setup/bin:${PATH}
+export AF_PYTHON=${AF_ROOT}/bin:${AF_ROOT}/python
+export HOUDINI_CGRU_PATH=${CGRU}/plugins/houdini
+export PYTHONPATH=${AF_PYTHON}:${PYTHONPATH}
+
+
+
+if [ $OSNAME == "Linux" ] 
+	then
+	
+
+export PROGRAM_PATH=/mnt/opt
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CPIPELINE}/lib/openVDB/lib:${CPIPELINE}/lib/Field3D/lib
 
 
 	export PATH=${CPIPELINE}/bin:${PROGRAM_PATH}/3delight/bin:${PROGRAM_PATH}/hfs/bin:${CGRU}/bin:${CGRU}/afanasy/bin:${PATH}
@@ -42,10 +58,11 @@ export CGRU_VERSION=1.6.5
 	########### realflow
 	export RF_2012_PATH=/mnt/opt/realflow64_6.0.2.0085
 
-	########### Afanasy
-	
-	export AF_ROOT=${CGRU}/afanasy
-	export PATH=${AF_ROOT}/bin:${CGRU}/software_setup/bin:${PATH}
-	export AF_PYTHON=${AF_ROOT}/bin:${AF_ROOT}/python
-	export HOUDINI_CGRU_PATH=${CGRU}/plugins/houdini
-	export PYTHONPATH=${AF_PYTHON}:${PYTHONPATH}
+
+fi
+
+if [ $OSNAME == "Darwin" ] 
+	then
+
+
+fi
