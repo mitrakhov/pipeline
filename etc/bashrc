@@ -16,10 +16,9 @@ export AF_PYTHON=${AF_ROOT}/bin:${AF_ROOT}/python
 export HOUDINI_CGRU_PATH=${CGRU}/plugins/houdini
 export PYTHONPATH=${AF_PYTHON}:${PYTHONPATH}
 
+OSNAME=`uname`
 
-
-if [ "$OSNAME" == "Linux" ]; 
-	then
+if [ "$OSNAME" == "Linux" ]; then
 	
 
 	export PROGRAM_PATH=/mnt/opt
@@ -61,8 +60,7 @@ if [ "$OSNAME" == "Linux" ];
 
 fi
 
-if [ "$OSNAME" == "Darwin" ]; 
-	then
+if [ "$OSNAME" == "Darwin" ]; then
 	echo $OSNAME
 
 fi
