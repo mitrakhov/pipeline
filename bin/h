@@ -7,7 +7,7 @@ OSNAME=`uname`
 
 if [ $OSNAME == "Darwin" ] 
 	then
-      	#source ${CPIPELINE}/software/houdini/houdini.var
+      	source ${CPIPELINE}/software/houdini/houdini.var
 	/Applications/Houdini\ 12.1.125/Houdini\ FX.app/Contents/MacOS/hmaster 
 	
 fi	
