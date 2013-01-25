@@ -18,7 +18,7 @@ export PYTHONPATH=${AF_PYTHON}:${PYTHONPATH}
 
 
 
-if [ "$OSNAME" == "Linux" ] 
+if [ "$OSNAME" == "Linux" ]; 
 	then
 	
 
@@ -61,7 +61,7 @@ if [ "$OSNAME" == "Linux" ]
 
 fi
 
-if [ "$OSNAME" == "Darwin" ] 
+if [ "$OSNAME" == "Darwin" ]; 
 	then
 	echo $OSNAME
 
