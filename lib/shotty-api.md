@@ -91,6 +91,16 @@ and you get shot FOO_001_003
 
 **001_003** shot id
 
+### Get shots
+
+````
+shots = api.shot.get(project__slug='TST', scene__name='FOO')
+
+for shot in shots['objects']:
+	scene = shot['scene']['name'].upper()
+	shot_name = ('%s_%s') % (scene, shot['name'])
+	print shot_name
+````
 
 
 
