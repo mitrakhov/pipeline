@@ -4,7 +4,7 @@
 ## Dependencies
 Required:
 * [Slumber](https://github.com/dstufft/slumber)
-
+Install it with easy_install or pip
 ````
 easy_install slumber
 ````
@@ -17,6 +17,8 @@ api = slumber.API(url, auth=('shotty', 'chimney'))
 ````
 
 ### Get project by short name
+Currently project creation is possible only via the web interface
+
 ````
 project = api.project.get(slug='TST')
 ````
@@ -62,3 +64,34 @@ data = {
 api.sequence.post(data)
 
 ````
+
+### Get Sequnce object
+
+````
+sequence = api.sequence.get(project=project['objects'][0]['resource_uri'], name='FOO')
+or
+sequence = api.sequence.get(project__slug='TST', name='FOO')
+````
+
+### Create shot 
+
+````
+data = {
+	"name": '001_003',
+	"description": 'Remove or add something!',
+	"project":str(project['objects'][0]['resource_uri']),
+	"scene": str(sequence['objects'][0]['resource_uri']),
+ }
+
+shot = api.shot.post(data)
+````		
+and you get shot FOO_001_003
+
+**FOO** - sequence name
+
+**001_003** shot id
+
+
+
+
+
