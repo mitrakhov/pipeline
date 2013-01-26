@@ -17,7 +17,9 @@ api = slumber.API(url, auth=('shotty', 'chimney'))
 ````
 
 ### Get project by short name
+````
 project = api.project.get(slug='TST')
+````
 
 ### Create Sequence for project
 ````
