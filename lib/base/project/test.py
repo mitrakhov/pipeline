@@ -11,6 +11,5 @@ ShotgunDB(site, scriptName, scriptKey).createProject(pName)
 sg = os.listdir('/tmp')
 
 def test():
-    
     return sg
 
