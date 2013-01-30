@@ -3,6 +3,7 @@
 ########### Common
 
 export REPO=/mnt/karramba
+export PROGRAM_PATH=/mnt/opt
 export CPIPELINE=/usr/pipeline
 export CGRU=${PROGRAM_PATH}/cgru
 export CGRU_LOCATION=${CGRU}
@@ -21,7 +22,6 @@ OSNAME=`uname`
 if [ "$OSNAME" == "Linux" ]; 
     then
 
-	export PROGRAM_PATH=/mnt/opt
 	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CPIPELINE}/lib/openVDB/lib:${CPIPELINE}/lib/Field3D/lib
 
 
