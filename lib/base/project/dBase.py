@@ -1,13 +1,11 @@
 from shotgun_api3 import Shotgun
 
-site = 'https://chimneypot.shotgunstudio.com'    
-scriptName = 'createProject'
-scriptKey = '90699580e396b61d3acfb71e0595adde7458dfd4'
-
-
-def createProject(prName):
-    sg.create('Project', {'name':prName})
-
-
-        
-        
+class DBase(object):
+	"""Wrapper for database, currently it's Shotgun"""
+	def __init__(self, sgSite, scriptName, scriptKey):
+		self.db = Shotgun(sgSite, scriptName, scriptKey)
+		
+		
+	def createObject(self, objName, objType):
+		sg.create(objType, {'name':objName})
+		    
