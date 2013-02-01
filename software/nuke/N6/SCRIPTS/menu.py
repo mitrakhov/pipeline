@@ -31,8 +31,9 @@ nuke.load("TimeO")
 n.addCommand('TimeOffset2', "TimeOff()", "Ctrl+Shift+T")
 nuke.load("exrUnpack")
 n.addCommand('Unpack EXR', "exrUnpack()", "Ctrl+Shift+E")
-nuke.load('dailies')
-n.addCommand('CreateDailies (old)', 'Dailies()')
+nuke.load('checkIfNotOnAServer')
+n.addCommand('Check if not on a server', 'checkIfNotOnAServer()')
+
 
 nuke.load('exr2tif')
 n.addCommand('Exr2Tif', 'exr2tif()')
