@@ -25,6 +25,7 @@ def sopRopAndRead_MantraToAfanasy():
             file_read.parm("file").set("`chs(\"../"+rop_output.name()+"/sopoutput\")`")
             
 def sopToAfanasyAndRead():
+    #rop geometry via renderfarm
     sel = hou.selectedNodes()
     for n in range(0,len(sel)):
         current = sel[n]
