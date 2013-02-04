@@ -3,7 +3,9 @@
 OS: Linux, for Nuke5.x
 uses DJV for *.mov creation
 Written by Anton Mitrakhov
-The Chimney Pot'''
+The Chimney Pot
+
+'''
 
 import os
 from time import strftime
