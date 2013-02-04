@@ -340,3 +340,15 @@ def assignEnvVars():
         env_assets = env_project + "/film/assets/"
         os.environ.update({"ASSETS": env_assets})
         hou.hscript("set -g ASSETS = '" + env_assets + "'")
+
+"""
+Writes camera data to Comment section of selected Mantra nodes    
+
+"""
+def writeCamToMantra():
+    camData = ''
+    sel = hou.selectedNodes()
+    for n in range(0,len(sel)):
+        current = sel[n]
+        cam = hou.node(current.parm("camera"))
+        camData += "camera/focal:" + cam.parm("focal") + ' '
