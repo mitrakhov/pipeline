@@ -51,16 +51,16 @@ def sopToAfanasyAndRead():
 def createNullOut():
     sel = hou.selectedNodes()
     for n in range(0,len(sel)):
-	current = sel[n]
-	null_out = current.createOutputNode("null","OUT")
-	null_out.setColor(hou.Color((0,0,0)))
-	null_out.setDisplayFlag(1)
-	null_out.setRenderFlag(1)
+        current = sel[n]
+        null_out = current.createOutputNode("null","OUT")
+        null_out.setColor(hou.Color((0,0,0)))
+        null_out.setDisplayFlag(1)
+        null_out.setRenderFlag(1)
 
 def cleanUIAttribs():
     existing = hou.hscript("viewoptls")[0].split('\n')
     for attrib in existing:
-	hou.hscript("viewoptrm '"+attrib+"'")
+        hou.hscript("viewoptrm '"+attrib+"'")
 
 def updateSourcesButton():
     import hou
@@ -350,10 +350,5 @@ def writeCamToMantra():
     sel = hou.selectedNodes()
     for n in range(0,len(sel)):
         current = sel[n]
-<<<<<<< HEAD
-        cam = hou.node(current.parm("camera"))
-        camData += "camera/focal:" + cam.parm("focal") + ' '
-=======
         cam = hou.node(str(current.parm("camera")))
         camData += "camera/focal:" + str(cam.parm("focal")) + ' '
->>>>>>> fc0cd72b39ba2f09d170b39347b75026e6dd0cf8
