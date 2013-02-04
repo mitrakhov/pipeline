@@ -28,6 +28,7 @@
 *.html
 *.psd
 *.css
+.DS_Store
 
 #lib folders
 lib/openVDB/
