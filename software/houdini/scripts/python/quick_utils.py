@@ -346,9 +346,16 @@ Writes camera data to Comment section of selected Mantra nodes
 
 """
 def writeCamToMantra():
-    camData = ''
+    cameraData = ''
     sel = hou.selectedNodes()
     for n in range(0,len(sel)):
-        current = sel[n]
-        cam = hou.node(str(current.parm("camera")))
-        camData += "camera/focal:" + str(cam.parm("focal")) + ' '
+        if str(sel[n].type().name()) == "ifd":
+            ifd = sel[n]
+            cam = hou.node(ifd.parm("camera").evalAsString())
+            cameraData = '`chs(\"' + str(cam.path()) + '/focal\")`' + ',' + '`chs(\"' + str(cam.path()) + '/aperture\")`'
+            ifd.parm("vm_image_comment").set(str(cameraData))
+            ifd.parm("vm_image_comment").hide(1)
+        #camData += "camera/focal:" + cam.parm("focal").evalAsString() + ' '
+
+        else:
+            print 'Not Mantra node selected'
