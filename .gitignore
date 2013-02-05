@@ -38,6 +38,9 @@ lib/shotgun/
 #src folders
 src/
 
+#houdini prefs
+jump.pref
+
 #houdini folders
 software/houdini/dso/
 software/houdini/gallery/
