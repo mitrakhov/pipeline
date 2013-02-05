@@ -345,7 +345,7 @@ def assignEnvVars():
 Writes camera data to Comment section of selected Mantra nodes    
 
 """
-def writeCamToMantra():
+def writeCamToExr():
     cameraData = ''
     sel = hou.selectedNodes()
     for n in range(0,len(sel)):
