@@ -35,10 +35,12 @@ def sopToAfanasyAndRead():
         geo = ropnet.createNode("geometry", "fetch_geo")
         af = geo.createOutputNode("afanasy","af_geo")
         geo.parm("soppath").set(geo.relativePathTo(null))
-        file_read.parm("file").set("`chs(\"../"+ropnet.name()+"/"+geo.name()+"/sopoutput\")`")
+        #file_read.parm("file").set("`chs(\"../"+ropnet.name()+"/"+geo.name()+"/sopoutput\")`")
+        geo.parm("sopoutput").set("`chs(\"../../"+file_read.name()+"/file\")`")
+        geo.parm("trange").set("normal")
         af.setParmExpressions({"trange": "ch(\"../"+geo.name()+"/trange\")"})
         af.setParmExpressions({"f1": "ch(\"../"+geo.name()+"/f1\")", "f2": "ch(\"../"+geo.name()+"/f2\")", "f3": "ch(\"../"+geo.name()+"/f3\")"})
-        af.setParmExpressions({"take": "ch(\"../"+geo.name()+"/take\")"})
+        af.parm("take").set("`chs(\"../"+geo.name()+"/take\")`")
         af.parm("platform").set("Linux")
         af.parm("enable_extended_parameters").set(1)
         af.parm("hosts_mask").set("*")
@@ -46,6 +48,7 @@ def sopToAfanasyAndRead():
         movenodes = []
         movenodes.append(ropnet)
         toolutils.moveNodesToGoodPosition(movenodes)
+        current.parent().layoutChildren(ropnet)
         
 
 def createNullOut():
