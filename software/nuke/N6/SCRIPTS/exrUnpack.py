@@ -13,11 +13,11 @@ def exrUnpack():
         sh = nuke.createNode('Shuffle', inpanel=False)       
         sh.knob('in').setValue(i)
         
-        nmList = [x for x in shList if x[:len(i)] == i]
+        nmList = [x for x in shList if x.startswith(i)]
         
         if nmList:
             nmList.sort()
-            lastNumb = nmList[-1].split(i)[-1].rsplit('.',1)[-1]
+            lastNumb = nmList[-1].rsplit('.',1)[-1]
             if lastNumb.isdigit():
                 shName = i + '.' + str(int(lastNumb)+1)
             else:
