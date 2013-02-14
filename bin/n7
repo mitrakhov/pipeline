@@ -7,7 +7,7 @@ OSNAME=`uname`
 echo $OSNAME
 
 
-
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HFS/dsolib
 
 export NUKE_CGRU_PATH="${CGRU_LOCATION}/plugins/nuke"
 export NUKE_AF_PATH=$AF_ROOT/plugins/nuke
