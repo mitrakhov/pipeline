@@ -31,7 +31,7 @@
 			<label>Caches</label>
 		<scriptItem>
 			<label>Write Objects to Alembic</label>
-			<scriptPath>$HOUDINI_SCRIPT_PATH/scripts/python/menu/writeObjectsToAlembic.py</scriptPath>
+			<scriptPath>${PIPEH}/scripts/python/menu/writeObjectsToAlembic.py</scriptPath>
 		</scriptItem>
 		</subMenu>
     </subMenu>
