@@ -1,30 +1,38 @@
 import os
 import hou
 
-def makeCachePath(object):
+def makeCachePath(mode, object):
     sceneName = hou.getenv('HIPNAME').rsplit('.v',1)[0]
     dataPath = hou.getenv('DATA')
     geoPath = dataPath + "/geo"
     scenePath = geoPath + "/" + sceneName
-    startVersion = 0
-
-    if not os.path.exists(scenePath): os.mkdir(scenePath)
-
     nodePath = scenePath + "/" + object.name()
-    if not os.path.exists(nodePath): os.mkdir(nodePath)
-    if not os.listdir(nodePath):
-        versionPath = nodePath + "/" + str(startVersion).zfill(4)
-        os.mkdir(versionPath)
-        #print versionPath
-    else:
-        currentVersion = int(max(os.listdir(nodePath)))
-        if os.path.exists(nodePath + "/" + str(startVersion).zfill(4)):
-            versionPath = nodePath + "/" + str(currentVersion + 1).zfill(4)
+    startVersion = 0
+    
+    #mode 0 - get cache info
+    if mode == 0:
+        cachesList = []
+        if os.path.exists(nodePath):
+            for n in sorted(os.listdir(nodePath)):
+                cachesList.append(nodePath + '/' + n)
+            return cachesList
+        
+    if mode == 2:
+        versionPath = ''
+        #mkdir cache for current scene
+        if not os.path.exists(scenePath): os.mkdir(scenePath)
+        #mkdir cache for current node
+        if not os.path.exists(nodePath): os.mkdir(nodePath)
+        
+        if not os.listdir(nodePath):
+            versionPath = nodePath + "/" + str(startVersion).zfill(4)
             os.mkdir(versionPath)
-            #print versionPath
-
-    return versionPath
-
+        else:
+            currentVersion = int(max(os.listdir(nodePath)))
+            if os.path.exists(nodePath + "/" + str(startVersion).zfill(4)):
+                versionPath = nodePath + "/" + str(currentVersion + 1).zfill(4)
+                os.mkdir(versionPath)
+        return versionPath
 
 
 def abcCacheWrite(startFrame, endFrame, subFrame):
@@ -35,9 +43,8 @@ def abcCacheWrite(startFrame, endFrame, subFrame):
 
     message = ''
     for n in selectedNodes:
-        cachePath = makeCachePath(n)
-        print cachePath
-        message += 'NODE' + " - " + n.path() + " > " + "CACHE - $DATA/geo/" + cachePath.split('geo/')[1] + "/" + n.name() + ".abc" + '\n' + '\n'
+        cachePath = makeCachePath(2, n)       
+        message += 'NODE' + ' - ' + n.path() + ' > ' + 'CACHE - $DATA/geo/' + cachePath.split('geo/')[1] + '/' + n.name() + '.abc' + '\n'
         alembic = hou.node(ropnet.path()).createNode("alembic")
         alembic.setName(n.name()+"_alembic")
     

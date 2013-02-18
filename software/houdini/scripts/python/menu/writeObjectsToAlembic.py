@@ -1,7 +1,6 @@
 import cache_utils
 reload(cache_utils)
 
-#
 rfstart = int(hou.playbar.playbackRange()[0])
 rfend = int(hou.playbar.playbackRange()[1])
 
