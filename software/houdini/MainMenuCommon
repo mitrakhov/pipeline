@@ -24,39 +24,21 @@
     <subMenu id="takes_menu_mm" platform="mbsd">
     </subMenu>
 
+    <!-- ========================= Pipeline Menu ========================= -->
+    <subMenu id="pipeline_menu">
+	<label>Pipeline</label>
+		<subMenu>
+			<label>Caches</label>
+		<scriptItem>
+			<label>Write Objects to Alembic</label>
+			<scriptPath>$HOUDINI_SCRIPT_PATH/scripts/python/menu/writeObjectsToAlembic.py</scriptPath>
+		</scriptItem>
+		</subMenu>
+    </subMenu>
+
     <!-- ========================= HELP Menu ========================= -->
     <subMenu id = "help_menu">
     </subMenu>
     
-    <!-- ========================= Pipeline Menu ========================= -->
-    <subMenu id="pipeline_menu">
-    <label>Pipeline</label>
-    
-    <scriptItem id="pipe_newAsset">
-    <label>New Asset</label> 
-    <scriptCode><![CDATA[import asset_browser
-reload(asset_browser)
-from ui_asset_browser import Ui_AssetBrowser
-if __name__ == '__main__':
-    window = asset_browser.AssetBrowserMain(QMainWindow, Ui_AssetBrowser)]]></scriptCode>
-  </scriptItem>
-
-      <scriptItem id="pipe_checkIn">
-        <label>Check In</label> 
-        <scriptCode><![CDATA[import cvci
-reload(cvci)
-cvci.vci()]]></scriptCode>
-      </scriptItem>
-
-      <scriptItem id="pipe_checkOut">
-      <label>Check Out</label>
-      <scriptCode><![CDATA[import cvco
-reload(cvco)
-cvco.vco()]]></scriptCode>
-    </scriptItem>
-
-    </subMenu>
-
-
   </menuBar>
 </mainMenu>

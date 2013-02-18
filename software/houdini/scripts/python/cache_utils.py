@@ -1,5 +1,7 @@
+import os
+import hou
+
 def makeCachePath(object):
-    import os
     sceneName = hou.getenv('HIPNAME').rsplit('.v',1)[0]
     dataPath = hou.getenv('DATA')
     geoPath = dataPath + "/geo"
