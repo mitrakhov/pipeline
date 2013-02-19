@@ -34,6 +34,7 @@
 lib/openVDB/
 lib/tbb41_20121003oss/
 lib/shotgun/
+lib/PyQt4/
 
 #src folders
 src/
