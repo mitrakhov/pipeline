@@ -47,7 +47,7 @@ if [ "$OSNAME" == "Linux" ];
 	
 	########### 3delight
 	export DELIGHT=${PROGRAM_PATH}/3delight
-	#export LD_LIBRARY_PATH=${DELIGHT}/lib:${PROGRAM_PATH}/massive/bin
+	export LD_LIBRARY_PATH=${DELIGHT}/lib:${PROGRAM_PATH}/massive/bin:${LD_LIBRARY_PATH}
 	export DL_SHADERS_PATH=${DELIGHT}/shaders
 	export DL_SEARCH_PATH=${DELIGHT}/shaders
 	export DL_DISPLAYS_PATH=${DELIGHT}/displays
