@@ -27,7 +27,7 @@ if [ "$OSNAME" == "Linux" ];
 
 	export PATH=${CPIPELINE}/bin:${PROGRAM_PATH}/3delight/bin:${PROGRAM_PATH}/hfs/bin:${CGRU}/bin:${CGRU}/afanasy/bin:${PATH}
 		
-	export PYTHONPATH=${CGRU}/lib/python:${PROGRAM_PATH}/hfs/houdini/scripts/python:${CPIPELINE}/lib/shotgun:${PROGRAM_PATH}/python-2.6.4/lib/python2.6/site-packages:${PYTHONPATH}:/mnt/data/backup/tfx_pipeline/com
+	export PYTHONPATH=${CGRU}/lib/python:${PROGRAM_PATH}/hfs/houdini/scripts/python:${CPIPELINE}/lib/shotgun:${PROGRAM_PATH}/python-2.6.4/lib/python2.6/site-packages:${PYTHONPATH}
 	
 
 	
