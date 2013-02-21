@@ -29,7 +29,7 @@ export VFL=${CPIPELINE}/software/houdini/vfl
 
 export HOUDINI_HOME_DIR=houdini12.1
 
-#export PYTHONPATH=${AF_ROOT}/python:${AF_ROOT}/bin:${CPIPELINE}/com:${CPIPELINE}/bin:${PYTHONPATH}
+export PYTHONPATH=${PIPEH}/python:${PYTHONPATH}
 
 
 # Setup CGRU houdini scripts location:
