@@ -1,8 +1,8 @@
 import hou
 import os
 import toolutils
-#import filesys
-#import massive_cdl as mc
+import filesys
+import massive_cdl as mc
 #reload(mc)
 
 def _checkHip():
