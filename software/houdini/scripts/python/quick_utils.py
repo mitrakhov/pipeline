@@ -33,12 +33,16 @@ def sopToAfanasyAndRead():
         null = current.createOutputNode("null","BAKE")
         file_read = null.createOutputNode("file","file_read")
         ropnet = current.parent().createNode("ropnet","rop")
+        ropnet.parm("execute").hide(1)
+        ropnet.parm("renderdialog").hide(1)
         geo = ropnet.createNode("geometry", "fetch_geo")
         af = geo.createOutputNode("afanasy","af_geo")
         geo.parm("soppath").set(geo.relativePathTo(null))
+        geo.setParmExpressions({"f1": "$RFSTART", "f2": "$RFEND"})
         #file_read.parm("file").set("`chs(\"../"+ropnet.name()+"/"+geo.name()+"/sopoutput\")`")
         geo.parm("sopoutput").set("`chs(\"../../"+file_read.name()+"/file\")`")
         geo.parm("trange").set("normal")
+        geo.parm("alfprogress").set(1)
         af.setParmExpressions({"trange": "ch(\"../"+geo.name()+"/trange\")"})
         af.setParmExpressions({"f1": "ch(\"../"+geo.name()+"/f1\")", "f2": "ch(\"../"+geo.name()+"/f2\")", "f3": "ch(\"../"+geo.name()+"/f3\")"})
         af.parm("take").set("`chs(\"../"+geo.name()+"/take\")`")
@@ -46,10 +50,13 @@ def sopToAfanasyAndRead():
         af.parm("enable_extended_parameters").set(1)
         af.parm("hosts_mask").set("*")
         af.setColor(hou.Color((0,0,0)))
-        movenodes = []
-        movenodes.append(ropnet)
+        #movenodes = []
+        #movenodes.append(ropnet)
         #toolutils.moveNodesToGoodPosition(movenodes)
-        current.parent().layoutChildren(movenodes)
+        #current.parent().layoutChildren(movenodes)
+        null_pos = null.position()
+        ropnet.setPosition(null_pos)
+        ropnet.move([2,0.2])
         
 
 def createNullOut():
