@@ -27,7 +27,7 @@ if [ "$OSNAME" == "Linux" ];
 
 	export PATH=${CPIPELINE}/bin:${PROGRAM_PATH}/3delight/bin:${PROGRAM_PATH}/hfs/bin:${CGRU}/bin:${CGRU}/afanasy/bin:${PATH}
 		
-	export PYTHONPATH=${CGRU}/lib/python:${PROGRAM_PATH}/hfs/houdini/scripts/python:${CPIPELINE}/lib/shotgun:${PYTHONPATH}
+	export PYTHONPATH=${CGRU}/lib/python:${PROGRAM_PATH}/hfs/houdini/scripts/python:${CPIPELINE}/lib/shotgun:/mnt/data/backup/tfx_pipeline/com:${PYTHONPATH}
 	
 
 	
@@ -47,7 +47,7 @@ if [ "$OSNAME" == "Linux" ];
 	
 	########### 3delight
 	export DELIGHT=${PROGRAM_PATH}/3delight
-	#export LD_LIBRARY_PATH=${DELIGHT}/lib:${PROGRAM_PATH}/massive/bin
+	export LD_LIBRARY_PATH=${DELIGHT}/lib:${PROGRAM_PATH}/massive/bin:${LD_LIBRARY_PATH}
 	export DL_SHADERS_PATH=${DELIGHT}/shaders
 	export DL_SEARCH_PATH=${DELIGHT}/shaders
 	export DL_DISPLAYS_PATH=${DELIGHT}/displays

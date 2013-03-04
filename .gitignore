@@ -14,7 +14,6 @@
 *.dylib
 *.ER
 *.OU
-*.ui
 *.backup
 *.otl
 *.lic
@@ -34,6 +33,7 @@
 lib/openVDB/
 lib/tbb41_20121003oss/
 lib/shotgun/
+lib/PyQt4/
 
 #src folders
 src/
@@ -47,6 +47,7 @@ software/houdini/gallery/
 software/houdini/icons/
 software/houdini/otl/
 software/houdini/presets/
+software/houdini/python/
 
 #nuke folders
 software/nuke/LIC/

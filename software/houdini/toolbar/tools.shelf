@@ -56,8 +56,12 @@ utils.separateObject()]]></script>
   <tool name="bakeObjectToWorld" label="Bake Object To World" icon="bakeObjectToWorld">
     <script scriptType="python"><![CDATA[import utils
 reload(utils)
-i, buff = hou.ui.readMultiInput("Input framerange", ("Start","End"),title="Bake object to world") 
-utils.bakeObjectToWorld(int(buff[0]),int(buff[1]))]]></script>
+
+rfstart = int(hou.playbar.playbackRange()[0])
+rfend = int(hou.playbar.playbackRange()[1])
+
+i, buff = hou.ui.readMultiInput("Input framerange", ("Start","End"), title="Bake object to world", buttons = ('Ok', 'Cancel'), default_choice = 0, close_choice = 1, initial_contents = ( str(rfstart), str(rfend) )  )
+if i ==  0: utils.bakeObjectToWorld(int(buff[0]),int(buff[1]))]]></script>
   </tool>
 
   <tool name="updateCdl" label="Update massive CDL" icon="updateCDL">
@@ -99,8 +103,9 @@ adddoputils.resizeFluidSops(kwargs)]]></script>
       <keyword>Resize fluid using sop container</keyword>
     </keywordList>
   </tool>
-  
-  <tool name="TexturesToAbc" label="TexToAbc" icon="loadTexToAlembic" help="Imports the textures from a pre-exported XML file on disk into Alembic Archive on the object level.">
+
+  <tool name="TexturesToAbc" label="TexToAbc" icon="loadTexToAlembic">
+    <helpText><![CDATA[Imports the textures from a pre-exported XML file on disk into Alembic Archive on the object level.]]></helpText>
     <script scriptType="python"><![CDATA[import utils
 #utils.importDataFromXmlToAbc()
 # Import textures from XML file on disk to Alembic Archive
@@ -194,13 +199,13 @@ importDataFromXmlToAbc()]]></script>
       <keyword>Import textures from XML file on disk to Alembic Archive</keyword>
     </keywordList>
   </tool>
-  
-  <tool name="PImportAbc" label="PImport Alembic" icon="loadTexToAlembic" help="Imports the Alembic Archive with the textures from XML file. Convinient for shading.">
+
+  <tool name="PImportAbc" label="PImport Alembic" icon="loadTexToAlembic">
+    <helpText><![CDATA[Imports the Alembic Archive with the textures from XML file. Convinient for shading.]]></helpText>
     <script scriptType="python"><![CDATA[import utils
 utils.pImportAbcWithTextures()]]></script>
     <keywordList>
       <keyword>Import textures from XML file on disk to Alembic Archive</keyword>
     </keywordList>
   </tool>
-  
 </shelfDocument>
