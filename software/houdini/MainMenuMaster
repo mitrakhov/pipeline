@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mainMenu>
+
+<addScriptItem id="h.increment_and_save">
+        <parent>file_menu</parent>
+        <label>Increment And Save</label>
+        <scriptCode><![CDATA[import re, os
+hipFile = hou.expandString('$HIPNAME')
+hipPath = hou.expandString('$HIP')
+patternVersion = re.compile ('([^v]*$)')
+if re.search (patternVersion, hipFile):
+	hipVersion = re.search (patternVersion, hipFile).group(1)
+	noVersion = hipFile.replace(hipVersion, '')
+	hipVersion = hipVersion.replace('.hip', '')
+	if not hipVersion.isdigit():
+		hipVersion = None
+		hou.ui.displayMessage("The version of the .hip file could not be recognized. Recommended pattern is *.v####.hip", buttons=('OK',))
+	else:
+		hipVersion = int(hipVersion)
+		hipVersion +=1
+		newHipFileName = noVersion + '%04d.hip'%(hipVersion)
+		newFile = hipPath + '/' + newHipFileName
+		if os.path.exists(newFile):
+			if hou.ui.displayMessage("File named %s already exists, are you sure you want to overwrite?"%newHipFileName, buttons=("Yes", "No")) == 1:
+				1
+			else:
+				hou.hipFile.save(newFile)
+		else:
+			hou.hipFile.save(newFile)
+		]]></scriptCode>
+        <insertBefore>file_menu_sep_2</insertBefore>
+    </addScriptItem>
+
+</mainMenu>
