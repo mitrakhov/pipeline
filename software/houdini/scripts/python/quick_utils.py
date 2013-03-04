@@ -21,6 +21,7 @@ def sopRopAndRead_MantraToAfanasy():
         else:
             file_read = current.createOutputNode("file","file_read")
             rop_output = current.createOutputNode("rop_geometry","rop_geo")
+            rop_output.setParmExpressions({"f1": "$RFSTART", "f2": "$RFEND"})
             rop_output.parm("alfprogress").set(1)
             #file_read.setParmExpressions({"file": "`chs(\"../"+rop_output.name()+"sopoutput\")`"})
             file_read.parm("file").set("`chs(\"../"+rop_output.name()+"/sopoutput\")`")
