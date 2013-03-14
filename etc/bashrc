@@ -22,8 +22,11 @@ OSNAME=`uname`
 if [ "$OSNAME" == "Linux" ]; 
     then
 
-	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CPIPELINE}/lib/openVDB/lib:${CPIPELINE}/lib/Field3D/lib
+	#ALIASES
+	alias sublim="/mnt/opt/SublimeText2/sublime_text"
+	
 
+	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CPIPELINE}/lib/openVDB/lib:${CPIPELINE}/lib/Field3D/lib
 
 	export PATH=${CPIPELINE}/bin:${PROGRAM_PATH}/3delight/bin:${PROGRAM_PATH}/hfs/bin:${CGRU}/bin:${CGRU}/afanasy/bin:${PATH}
 		
