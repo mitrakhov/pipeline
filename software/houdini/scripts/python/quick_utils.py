@@ -349,7 +349,7 @@ def assignEnvVars():
                 os.environ.update({"DATA": env_data})
                 hou.hscript("set -g DATA = '" + env_data + "'")
 
-        env_assets = env_project + "/film/assets/"
+        env_assets = env_project + "/film/assets"
         os.environ.update({"ASSETS": env_assets})
         hou.hscript("set -g ASSETS = '" + env_assets + "'")
 
