@@ -8,6 +8,7 @@ echo $OSNAME
 
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/mnt/opt/hfs12.1.185/dsolib
+export HOUDINI_DISABLE_IMAGE_DSO=1
 
 export NUKE_CGRU_PATH="${CGRU_LOCATION}/plugins/nuke"
 export NUKE_AF_PATH=$AF_ROOT/plugins/nuke
