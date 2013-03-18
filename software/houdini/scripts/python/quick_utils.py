@@ -327,7 +327,17 @@ sources - points, not prims
 
 def assignEnvVars():
     import os
-    vars = hou.ui.readMultiInput("Input values. Project name and the names of the sequence and shot.", ("Project name", "Sequence name", "Shot name"), title="Assign environment variables", help="")
+    
+    sHipPath = hou.getenv('HIP').split('/')
+    if sHipPath[2] == "karramba":
+        pName = sHipPath[3]
+        seqName = sHipPath[6]
+        shName = sHipPath[8]
+    else:
+        pName = ""
+        seqName = ""
+        shName = ""
+    vars = hou.ui.readMultiInput("Input values. Project name and the names of the sequence and shot.", ("Project name", "Sequence name", "Shot name"), title="Assign environment variables", buttons = ('Save', 'Cancel'), default_choice = 0, close_choice = 1, initial_contents = ( pName, seqName, shName ))
     # if project was set
     if str(vars[1][0]) != "":
         env_project = "/mnt/karramba/" + str(vars[1][0])
@@ -349,7 +359,7 @@ def assignEnvVars():
                 os.environ.update({"DATA": env_data})
                 hou.hscript("set -g DATA = '" + env_data + "'")
 
-        env_assets = env_project + "/film/assets/"
+        env_assets = env_project + "/film/assets"
         os.environ.update({"ASSETS": env_assets})
         hou.hscript("set -g ASSETS = '" + env_assets + "'")
 
