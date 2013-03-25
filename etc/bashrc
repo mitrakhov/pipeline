@@ -23,7 +23,7 @@ if [ "$OSNAME" == "Linux" ];
     then
 
 	#ALIASES
-	alias sublim="/mnt/opt/SublimeText2/sublime_text"
+	alias sublime = "/mnt/opt/SublimeText2/sublime_text"
 	
 
 	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CPIPELINE}/lib/openVDB/lib:${CPIPELINE}/lib/Field3D/lib
