@@ -35,7 +35,7 @@ def makeCachePath(mode, object):
         return versionPath
 
 
-def abcCacheWrite(startFrame, endFrame, subFrame):
+def abcCacheWrite(startFrame, endFrame, subFrame, mode):
 
     selectedNodes = hou.selectedNodes()
     parent = selectedNodes[0].parent()
@@ -43,7 +43,12 @@ def abcCacheWrite(startFrame, endFrame, subFrame):
 
     message = ''
     for n in selectedNodes:
-        cachePath = makeCachePath(2, n)       
+
+        if mode == 0:
+            cachePath = makeCachePath(2, n)
+        else:
+            cachePath = makeCachePath(0, n)[-1]
+
         message += 'NODE' + ' - ' + n.path() + ' > ' + 'CACHE - $DATA/geo/' + cachePath.split('geo/')[1] + '/' + n.name() + '.abc' + '\n'
         alembic = hou.node(ropnet.path()).createNode("alembic")
         alembic.setName(n.name()+"_alembic")
