@@ -5,3 +5,5 @@ h.enable_sim	"Enable/Disable Simulations"	"Toggle cooking of simulations"	 F4
 h.pane.wsheet.tool:NullOut	NullOut	"Shelf Tool: NullOut"	 Alt+N
 h.pane.wsheet.tool:RopAndRead	RopAndRead	"Shelf Tool: RopAndRead"	 Alt+R
 h.pane.wsheet.tool:AfAndRead	AfanasyAndRead	"Shelf Tool: AfanasyAndRead"	 Alt+Ctrl+R
+
+h.increment_and_save	"Increment And Save"	"Custom Menu Operation: Increment And Save"	 Alt+S
