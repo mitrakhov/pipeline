@@ -23,9 +23,7 @@ if [ "$OSNAME" == "Linux" ];
     then
 
 	#ALIASES
-	alias sublime="/mnt/opt/SublimeText2/sublime_text"
 	alias katana="/mnt/opt/Katana1.1v6/katana"
-	alias xnview="/mnt/opt/XnView/xnview.sh"
 	
 
 	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CPIPELINE}/lib/openVDB/lib:${CPIPELINE}/lib/Field3D/lib
