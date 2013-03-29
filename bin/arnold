@@ -1,0 +1,5 @@
+#!/bin/bash
+export SHADER_PATH=/mnt/opt/MtoA-0.22.0-linux64-2013/shaders
+export ARNOLD=/mnt/opt/MtoA-0.22.0-linux64-2013/bin/kick
+
+${ARNOLD} -l ${SHADER_PATH} -g 2.2 "$@"
