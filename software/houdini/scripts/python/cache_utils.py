@@ -39,32 +39,42 @@ def makeCachePath(object, mode):
         return versionPath
 
 
-def abcCacheWrite(startFrame, endFrame, subFrame, mode):
+def cacheWrite(startFrame, endFrame, subFrame, format, mode):
 
     selectedNodes = hou.selectedNodes()
     parent = selectedNodes[0].parent()
     ropnet = hou.node(parent.path()).createNode("ropnet")
 
     message = ''
+
     for n in selectedNodes:
 
-        if mode == 'add':
-            cachePath = makeCachePath(n, 'add')
-        else:
-            cachePath = makeCachePath(n, 'get')[-1]
+        if mode == 'version': cachePath = makeCachePath(n, 'add')
+        if mode == 'overwrite': cachePath = makeCachePath(n, 'get')[-1]
+           
+        if format == 'abc': cacheProperty = ['abc', 'alembic', 'filename', '.abc', 'objects']
+        if format == 'bgeo': cacheProperty = ['$F4.bgeo', 'geometry', 'sopoutput', '.$F4.bgeo', 'soppath']
 
-        message += 'NODE' + ' - ' + n.path() + ' > ' + 'CACHE - $DATA/geo/' + cachePath.split('geo/')[1] + '/' + n.name() + '.abc' + '\n'
-        alembic = hou.node(ropnet.path()).createNode("alembic")
-        alembic.setName(n.name()+"_alembic")
+
+        message += 'NODE' + ' - ' + n.path() + ' > ' + 'CACHE - $DATA/geo/' + cachePath.split('geo/')[1] + '/' + n.name() + '.' + cacheProperty[0] + '\n'
+        
+        
+        ropNode = hou.node(ropnet.path()).createNode(cacheProperty[1])
+
+        ropNode.setName(n.name()+"_ropNode")
     
-        hou.node(alembic.path()).parm("trange").set(1)
-        hou.node(alembic.path()).parm("f1").set(startFrame)
-        hou.node(alembic.path()).parm("f2").set(endFrame)
-        hou.node(alembic.path()).parm("f3").set(1.0/subFrame)
-        hou.node(alembic.path()).parm("filename").set(cachePath + "/" + n.name() + ".abc")
-        hou.node(alembic.path()).parm("objects").set(n.path())
+        hou.node(ropNode.path()).parm("trange").set(1)
+        hou.node(ropNode.path()).parm("f1").set(startFrame)
+        hou.node(ropNode.path()).parm("f2").set(endFrame)
+        hou.node(ropNode.path()).parm("f3").set(1.0/subFrame)
+        
+        
+        hou.node(ropNode.path()).parm(cacheProperty[2]).set(os.path.join(cachePath, n.name() + cacheProperty[3]))
+        
+        
+        hou.node(ropNode.path()).parm(cacheProperty[4]).set(n.path())
 
-        submitButton = alembic.parm("execute")
+        submitButton = ropNode.parm("execute")
         hou.Parm.pressButton(submitButton)
 
     hou.ui.displayMessage(message)
