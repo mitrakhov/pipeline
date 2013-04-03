@@ -1,0 +1,46 @@
+#!/bin/bash 
+
+if [ $USER == "root" ] 
+	then
+		echo "Maya can't run by root user!"
+		exit 
+fi
+
+OSNAME=`uname`                                                                                                                                                                                                                                   
+echo $OSNAME
+
+
+if [ $OSNAME == "Linux" ] 
+	then
+
+
+#export PYTHONPATH=/usr/autodesk/maya2012-x64/lib/python2.6:/usr/autodesk/maya2012-x64/lib/python2.6/site-packages:/usr/autodesk/maya2011-x64/lib/python2.6/lib-dynload:${CPIPELINE}/bin:${CPIPELINE}/com:${CPIPELINE}/bin/db:/usr/lib64/python2.6/site-packages:/usr/pipeline/software/maya/scripts/python:export PYTHONPATH=${AF_PYTHON}:${PYTHONPATH}:${AF_ROOT}\plugins\maya\python
+
+
+
+# export AF_ROOT=/cg/tools/cgru/afanasy/tags/1.0.0
+# export PYTHONPATH=${AF_ROOT}/python:${AF_ROOT}/bin:${PYTHONPATH}
+# export PATH=${AF_ROOT}/bin:${PATH}:/mnt/opt/3delight:/mnt/opt/3delight/lib
+
+# 2013
+export MAYA_LOCATION=/usr/autodesk/maya2013-x64/bin
+export PATH=${MAYA_LOCATION}/bin:$PATH
+
+# export MAYA_PLUG_IN_PATH=${CPIPELINE}/software/maya/linux/2012/plugin:${MAYA_PLUG_IN_PATH}:${DELIGHT}/maya/2012/plug-ins:/usr/pipeline/software/maya/linux/2012
+
+# automatically load plugins located in MAYA_CGRU_LOCATION/mll/MAYA_VERSION directory
+# export MAYA_CGRU_PLUG_INS_AUTOLOAD=1
+
+
+# Add CGRU icons to Maya:
+#export XBMLANGPATH=${MAYA_CGRU_LOCATION}/icons/%B:${XBMLANGPATH}
+# Add CGRU scripts to Maya scripts path:
+#export MAYA_SCRIPT_PATH=${MAYA_CGRU_LOCATION}/mel/AETemplates:${MAYA_CGRU_LOCATION}/mel/_native/${MAYA_VERSION}:${MAYA_SCRIPT_PATH}:/usr/pipeline/software/maya/mel/other:/usr/pipeline/software/maya/scripts/python
+## Add CGRU plugins to Maya plugins path:
+#export MAYA_PLUG_IN_PATH=${MAYA_CGRU_LOCATION}/mll/:${MAYA_PLUG_IN_PATH}
+
+#LANG=C
+/usr/autodesk/maya2013-x64/bin/maya2013 -command "cstartup();"
+#/mnt/opt/maya2012-x64/bin/maya2012 -command "cstartup();"
+
+fi
