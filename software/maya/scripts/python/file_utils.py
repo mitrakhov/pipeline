@@ -16,4 +16,5 @@ def exportSelectedToObj():
 
     objects = selected()
     for n in objects:
+        select(n)
         exportSelected(exportPath + "/" + n + ".obj", type = "OBJexport", options = "materials=0")
