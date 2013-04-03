@@ -55,9 +55,7 @@ class Projects(QDialog):
         projName = unicode(projString)
         projId = self.projectsDict[projName]
         self.sequencesDict = self.db.getSequences(projId)
-        # self.sequencesBox.blockSignals(True)
         self.sequencesBox.clear()
-        # self.sequencesBox.blockSignals(False)
         self.sequencesBox.addItems(self.sequencesDict.keys())
 
     def updateShots(self, seqString):
