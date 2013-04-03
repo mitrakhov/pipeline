@@ -5,6 +5,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from functools import partial
 from dBase import DBase
+import time
 
 class Projects(QDialog):
 
@@ -28,8 +29,8 @@ class Projects(QDialog):
         self.projectsBox.addItems(self.projectsDict.keys())
 
         #combo boxes connections
-        self.connect(self.projectsBox, SIGNAL("currentIndexChanged(int)"), self.updateSequences)
-        self.connect(self.sequencesBox, SIGNAL("currentIndexChanged(int)"), self.updateShots)
+        self.connect(self.projectsBox, SIGNAL("currentIndexChanged(QString)"), self.updateSequences)
+        self.connect(self.sequencesBox, SIGNAL("currentIndexChanged(QString)"), self.updateShots)
 
         #labels
         projectLabel = QLabel("Project:")
@@ -49,21 +50,21 @@ class Projects(QDialog):
 
         self.setLayout(layout)
 
-    def updateSequences(self):
+    def updateSequences(self, projString):
 
-        projName = unicode(self.projectsBox.currentText())
+        projName = unicode(projString)
         projId = self.projectsDict[projName]
         self.sequencesDict = self.db.getSequences(projId)
         self.sequencesBox.clear()
-        self.shotsBox.clear()
         self.sequencesBox.addItems(self.sequencesDict.keys())
 
-    def updateShots(self):
-
-        seqName = unicode(self.sequencesBox.currentText())
-        seqId = self.sequencesDict[seqName]
-        self.shotsBox.clear()
-        self.shotsBox.addItems(self.db.getShots(seqId).keys())
+    def updateShots(self, seqString):
+        
+        if seqString:
+            self.shotsBox.clear()
+            seqName = unicode(seqString)
+            seqId = self.sequencesDict[seqName]
+            self.shotsBox.addItems(self.db.getShots(seqId).keys())
 
 
 if __name__ == '__main__':
