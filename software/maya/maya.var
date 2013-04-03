@@ -1,0 +1,13 @@
+#!/bin/bash
+umask 0000
+
+OSNAME=`uname`                                                                                                                                                                                                                                   
+echo $OSNAME
+
+
+if [ $OSNAME == "Linux" ] 
+	then
+		export MPIPE=${CPIPELINE}/software/maya
+		export PYTHONPATH=${MPIPE}/scripts/python
+
+fi
