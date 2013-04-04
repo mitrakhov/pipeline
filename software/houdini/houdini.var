@@ -10,104 +10,104 @@ if [ $OSNAME == "Linux" ]
         
 #        export AF_ROOT=/cg/tools/cgru/afanasy/tags/1.0.0
 
-export HOUDINI_OLD=hfs
+	export HOUDINI_OLD=hfs
 
-export HIH=${HFS}/houdini
-export HFS=${HFS}
-export H=${HFS}
-export HB=${H}/bin
-export HDSO=${H}/dsolib
-export HD=${H}/demo
-export HH=${H}/houdini
-export HHC=${HH}/config
-export HT=${H}/toolkit
-export HSB=${HH}/sbin
-export HPIPE=${CPIPELINE}/software/houdini
-export VEX=${CPIPELINE}/software/houdini/vex
-export VFL=${CPIPELINE}/software/houdini/vfl
-
-
-export HOUDINI_HOME_DIR=houdini12.5
-
-export PYTHONPATH=${HPIPE}/python:${PYTHONPATH}
+	export HIH=${HFS}/houdini
+	export HFS=${HFS}
+	export H=${HFS}
+	export HB=${H}/bin
+	export HDSO=${H}/dsolib
+	export HD=${H}/demo
+	export HH=${H}/houdini
+	export HHC=${HH}/config
+	export HT=${H}/toolkit
+	export HSB=${HH}/sbin
+	export HPIPE=${CPIPELINE}/software/houdini
+	export VEX=${CPIPELINE}/software/houdini/vex
+	export VFL=${CPIPELINE}/software/houdini/vfl
 
 
-# Setup CGRU houdini scripts location:
-export HOUDINI_CGRU_PATH=$CGRU_LOCATION/plugins/houdini
+	export HOUDINI_HOME_DIR=houdini12.5
 
-# Set Afanasy houdini scripts and otls location:
-export HOUDINI_AF_PATH=$AF_ROOT/plugins/houdini
-
-# Set Python path to afanasy submission script:
-export PYTHONPATH=$HOUDINI_AF_PATH:${HPIPE}/python/PyQt4:$PYTHONPATH
-
-# Define OTL scan path:
-HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
-
-export HOUDINI_PATH=${HOME}/${HOUDINI_HOME_DIR}:${HPIPE}:${HFS}/houdini
-export HOUDINI_OTLSCAN_PATH=${HPIPE}/otl:${HPIPE}/otl/dop:${HPIPE}/otl/obj:${HPIPE}/otl/rop:${HPIPE}/otl/shop:${HPIPE}/otl/shop/delight:${HPIPE}/otl/sop:${HPIPE}/otl/pop:${HPIPE}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
-export HOUDINI_OTLSEARCH_PATH=${HPIPE}/otl/shop
-export HOUDINI_SCRIPT_PATH=${HPIPE}/scripts:${HOME}/${HOUDINI_HOME_DIR}/scripts:${HFS}/houdini/scripts
-export HOUDINI_TOOLBAR_PATH=${HPIPE}/toolbar:${HFS}/houdini:$HOME/${HOUDINI_HOME_DIR}/toolbar
-export HOUDINI_GALLERY_PATH=${HPIPE}/gallery:${HOME}/${HOUDINI_HOME_DIR}/gallery:${HFS}/houdini/gallery
-export HOUDINI_SOHO_PATH=${HPIPE}/soho:${HOME}/${HOUDINI_HOME_DIR}/soho:${HFS}/houdini/soho
-export HOUDINI_VEX_PATH=${HPIPE}/vex:${HPIPE}/vex/include:${HOME}/${HOUDINI_HOME_DIR}/vex/include:${HFS}/houdini/vex/^
-export HOUDINI_DSO_PATH=${HPIPE}/dso:${HOME}/${HOUDINI_HOME_DIR}/dso:${HFS}/houdini/dso
-export HOUDINI_DESK_PATH=$HOME/${HOUDINI_HOME_DIR}/desktop:${HFS}/houdini/desktop
-export HOUDINI_UI_ICON_PATH=${HH}/config/Icons:${HPIPE}/icons
-export HOUDINI_MDISPLAY_WAIT_TIME=120
-
-export HOUDINI_DEFAULT_RIB_RENDERER=3Delight9.0
-export HSCRIPT_ALLOW_BACKGROUND_RENDER=1
-export HOUDINI_SHOW_OLD_SHOPS=1
+	export PYTHONPATH=${HPIPE}/python:${PYTHONPATH}
 
 
-#echo $PYTHONPATH
-#export CGRU_LOCATION=${HPIPE}
+	# Setup CGRU houdini scripts location:
+	export HOUDINI_CGRU_PATH=$CGRU_LOCATION/plugins/houdini
 
-export HOUDINI_LOCATION=${HFS}
+	# Set Afanasy houdini scripts and otls location:
+	export HOUDINI_AF_PATH=$AF_ROOT/plugins/houdini
 
-wd=$PWD
-cd $HOUDINI_LOCATION
-source houdini_setup_bash
-cd $wd
+	# Set Python path to afanasy submission script:
+	export PYTHONPATH=$HOUDINI_AF_PATH:${HPIPE}/python/PyQt4:$PYTHONPATH
 
-#source $CGRU_LOCATION/bin/afenv.sh
+	# Define OTL scan path:
+	HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
 
-#export HOUDINI_CGRU_VERSION="10"
-#export HOUDINI_CGRU_PATH=$CGRU_LOCATION
-#export HOUDINI_AF_PATH=${HPIPE}
+	export HOUDINI_PATH=${HOME}/${HOUDINI_HOME_DIR}:${HPIPE}:${HFS}/houdini
+	export HOUDINI_OTLSCAN_PATH=${HPIPE}/otl:${HPIPE}/otl/dop:${HPIPE}/otl/obj:${HPIPE}/otl/rop:${HPIPE}/otl/shop:${HPIPE}/otl/shop/delight:${HPIPE}/otl/sop:${HPIPE}/otl/pop:${HPIPE}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
+	export HOUDINI_OTLSEARCH_PATH=${HPIPE}/otl/shop
+	export HOUDINI_SCRIPT_PATH=${HPIPE}/scripts:${HOME}/${HOUDINI_HOME_DIR}/scripts:${HFS}/houdini/scripts
+	export HOUDINI_TOOLBAR_PATH=${HPIPE}/toolbar:${HFS}/houdini:$HOME/${HOUDINI_HOME_DIR}/toolbar
+	export HOUDINI_GALLERY_PATH=${HPIPE}/gallery:${HOME}/${HOUDINI_HOME_DIR}/gallery:${HFS}/houdini/gallery
+	export HOUDINI_SOHO_PATH=${HPIPE}/soho:${HOME}/${HOUDINI_HOME_DIR}/soho:${HFS}/houdini/soho
+	export HOUDINI_VEX_PATH=${HPIPE}/vex:${HPIPE}/vex/include:${HOME}/${HOUDINI_HOME_DIR}/vex/include:${HFS}/houdini/vex/^
+	export HOUDINI_DSO_PATH=${HPIPE}/dso:${HOME}/${HOUDINI_HOME_DIR}/dso:${HFS}/houdini/dso
+	export HOUDINI_DESK_PATH=$HOME/${HOUDINI_HOME_DIR}/desktop:${HFS}/houdini/desktop
+	export HOUDINI_UI_ICON_PATH=${HH}/config/Icons:${HPIPE}/icons
+	export HOUDINI_MDISPLAY_WAIT_TIME=120
 
-#echo ${HOUDINI_AF_PATH} ${HOUDINI_SOHO_PATH}
+	export HOUDINI_DEFAULT_RIB_RENDERER=3Delight9.0
+	export HSCRIPT_ALLOW_BACKGROUND_RENDER=1
+	export HOUDINI_SHOW_OLD_SHOPS=1
 
-#export LD_LIBRARY_PATH=${PROGRAM_PATH}/naiad-0.6.0.51-x86_64/server/lib:${LD_LIBRARY_PATH}
-#echo ${LD_LIBRARY_PATH}
-#export NAIAD_PATH=${PROGRAM_PATH}/naiad-0.6.0.51-x86_64
 
-#cd /opt/cgru/examples/houdini
-#source setup_houdini.sh
+	#echo $PYTHONPATH
+	#export CGRU_LOCATION=${HPIPE}
 
-#${HFS}/bin/hmaster "$@"
+	export HOUDINI_LOCATION=${HFS}
+
+	wd=$PWD
+	cd $HOUDINI_LOCATION
+	source houdini_setup_bash
+	cd $wd
+
+	#source $CGRU_LOCATION/bin/afenv.sh
+
+	#export HOUDINI_CGRU_VERSION="10"
+	#export HOUDINI_CGRU_PATH=$CGRU_LOCATION
+	#export HOUDINI_AF_PATH=${HPIPE}
+
+	#echo ${HOUDINI_AF_PATH} ${HOUDINI_SOHO_PATH}
+
+	#export LD_LIBRARY_PATH=${PROGRAM_PATH}/naiad-0.6.0.51-x86_64/server/lib:${LD_LIBRARY_PATH}
+	#echo ${LD_LIBRARY_PATH}
+	#export NAIAD_PATH=${PROGRAM_PATH}/naiad-0.6.0.51-x86_64
+
+	#cd /opt/cgru/examples/houdini
+	#source setup_houdini.sh
+
+	#${HFS}/bin/hmaster "$@"
 fi
 
 
 if [ $OSNAME == "Darwin" ] 
 	then
 
-export HPIPE=${CPIPELINE}/software/houdini
+	export HPIPE=${CPIPELINE}/software/houdini
 
-# Setup CGRU houdini scripts location:
-export HOUDINI_CGRU_PATH=$CGRU_LOCATION/plugins/houdini
+	# Setup CGRU houdini scripts location:
+	export HOUDINI_CGRU_PATH=$CGRU_LOCATION/plugins/houdini
 
-# Set Afanasy houdini scripts and otls location:
-export HOUDINI_AF_PATH=$AF_ROOT/plugins/houdini
+	# Set Afanasy houdini scripts and otls location:
+	export HOUDINI_AF_PATH=$AF_ROOT/plugins/houdini
 
-# Set Python path to afanasy submission script:
-export PYTHONPATH=$HOUDINI_AF_PATH:$PYTHONPATH
+	# Set Python path to afanasy submission script:
+	export PYTHONPATH=$HOUDINI_AF_PATH:$PYTHONPATH
 
-# Define OTL scan path:
-HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
+	# Define OTL scan path:
+	HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
 
-export HOUDINI_OTLSCAN_PATH=${HPIPE}/otl:${HPIPE}/otl/dop:${HPIPE}/otl/obj:${HPIPE}/otl/rop:${HPIPE}/otl/shop:${HPIPE}/otl/shop/delight:${HPIPE}/otl/sop:${HPIPE}/otl/pop:${HPIPE}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
+	export HOUDINI_OTLSCAN_PATH=${HPIPE}/otl:${HPIPE}/otl/dop:${HPIPE}/otl/obj:${HPIPE}/otl/rop:${HPIPE}/otl/shop:${HPIPE}/otl/shop/delight:${HPIPE}/otl/sop:${HPIPE}/otl/pop:${HPIPE}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
 
 fi

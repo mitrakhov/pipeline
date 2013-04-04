@@ -31,7 +31,7 @@
 			<label>Caches</label>
 		<scriptItem>
 			<label>Write Objects to Cache</label>
-			<scriptPath>${PIPEH}/scripts/python/menu/writeObjectsToAlembic.py</scriptPath>
+			<scriptPath>${HPIPE}/scripts/python/menu/cacheWriteMenu.py</scriptPath>
 		</scriptItem>
 		</subMenu>
     </subMenu>
