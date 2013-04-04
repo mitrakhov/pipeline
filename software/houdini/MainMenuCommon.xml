@@ -30,7 +30,7 @@
 		<subMenu>
 			<label>Caches</label>
 		<scriptItem>
-			<label>Write Objects to Alembic</label>
+			<label>Write Objects to Cache</label>
 			<scriptPath>${PIPEH}/scripts/python/menu/writeObjectsToAlembic.py</scriptPath>
 		</scriptItem>
 		</subMenu>
