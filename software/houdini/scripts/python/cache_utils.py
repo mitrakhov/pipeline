@@ -29,17 +29,20 @@ def makeCachePath(object, mode):
         if not os.path.exists(nodePath): os.mkdir(nodePath)
         
         if not os.listdir(nodePath):
-            versionPath = os.path.join(nodePath, str(startVersion).zfill(3))
+            versionPath = os.path.join(nodePath, str(startVersion).zfill(4))
             os.mkdir(versionPath)
         else:
             currentVersion = int(max(os.listdir(nodePath)))
-            if os.path.exists(os.path.join(nodePath, str(startVersion).zfill(3))):
-                versionPath = os.path.join(nodePath, str(currentVersion + 1).zfill(3))
+            if os.path.exists(os.path.join(nodePath, str(startVersion).zfill(4))):
+                versionPath = os.path.join(nodePath, str(currentVersion + 1).zfill(4))
                 os.mkdir(versionPath)
         return versionPath
 
 
 def cacheWrite(startFrame, endFrame, subFrame, format, mode):
+#expected format abc(Alembic), bgeo(Houdini bgeo)
+#expected mode add,
+
 
     selectedNodes = hou.selectedNodes()
     parent = selectedNodes[0].parent()

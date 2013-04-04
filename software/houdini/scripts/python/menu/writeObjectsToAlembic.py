@@ -1,6 +1,6 @@
 import cache_utils
-import string
 reload(cache_utils)
+import string
 
 
 formatIndex = hou.ui.selectFromList(choices = ['Alembic', 'Houdini bgeo'], default_choices = (0,), exclusive = True, title = 'Select Format')
