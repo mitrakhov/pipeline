@@ -22,14 +22,14 @@ export HH=${H}/houdini
 export HHC=${HH}/config
 export HT=${H}/toolkit
 export HSB=${HH}/sbin
-export PIPEH=${CPIPELINE}/software/houdini
+export HPIPE=${CPIPELINE}/software/houdini
 export VEX=${CPIPELINE}/software/houdini/vex
 export VFL=${CPIPELINE}/software/houdini/vfl
 
 
-export HOUDINI_HOME_DIR=houdini12.1
+export HOUDINI_HOME_DIR=houdini12.5
 
-export PYTHONPATH=${PIPEH}/python:${PYTHONPATH}
+export PYTHONPATH=${HPIPE}/python:${PYTHONPATH}
 
 
 # Setup CGRU houdini scripts location:
@@ -39,22 +39,22 @@ export HOUDINI_CGRU_PATH=$CGRU_LOCATION/plugins/houdini
 export HOUDINI_AF_PATH=$AF_ROOT/plugins/houdini
 
 # Set Python path to afanasy submission script:
-export PYTHONPATH=$HOUDINI_AF_PATH:${PIPEH}/python/PyQt4:$PYTHONPATH
+export PYTHONPATH=$HOUDINI_AF_PATH:${HPIPE}/python/PyQt4:$PYTHONPATH
 
 # Define OTL scan path:
 HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
 
-export HOUDINI_PATH=${HOME}/${HOUDINI_HOME_DIR}:${PIPEH}:${HFS}/houdini
-export HOUDINI_OTLSCAN_PATH=${PIPEH}/otl:${PIPEH}/otl/dop:${PIPEH}/otl/obj:${PIPEH}/otl/rop:${PIPEH}/otl/shop:${PIPEH}/otl/shop/delight:${PIPEH}/otl/sop:${PIPEH}/otl/pop:${PIPEH}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
-export HOUDINI_OTLSEARCH_PATH=${PIPEH}/otl/shop
-export HOUDINI_SCRIPT_PATH=${PIPEH}/scripts:${HOME}/${HOUDINI_HOME_DIR}/scripts:${HFS}/houdini/scripts
-export HOUDINI_TOOLBAR_PATH=${PIPEH}/toolbar:${HOME}/${HOUDINI_HOME_DIR}:${HFS}/houdini
-export HOUDINI_GALLERY_PATH=${PIPEH}/gallery:${HOME}/${HOUDINI_HOME_DIR}/gallery:${HFS}/houdini/gallery
-export HOUDINI_SOHO_PATH=${PIPEH}/soho:${HOME}/${HOUDINI_HOME_DIR}/soho:${HFS}/houdini/soho
-export HOUDINI_VEX_PATH=${PIPEH}/vex:${PIPEH}/vex/include:${HOME}/${HOUDINI_HOME_DIR}/vex/include:${HFS}/houdini/vex/^
-export HOUDINI_DSO_PATH=${PIPEH}/dso:${HOME}/${HOUDINI_HOME_DIR}/dso:${HFS}/houdini/dso
+export HOUDINI_PATH=${HOME}/${HOUDINI_HOME_DIR}:${HPIPE}:${HFS}/houdini
+export HOUDINI_OTLSCAN_PATH=${HPIPE}/otl:${HPIPE}/otl/dop:${HPIPE}/otl/obj:${HPIPE}/otl/rop:${HPIPE}/otl/shop:${HPIPE}/otl/shop/delight:${HPIPE}/otl/sop:${HPIPE}/otl/pop:${HPIPE}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
+export HOUDINI_OTLSEARCH_PATH=${HPIPE}/otl/shop
+export HOUDINI_SCRIPT_PATH=${HPIPE}/scripts:${HOME}/${HOUDINI_HOME_DIR}/scripts:${HFS}/houdini/scripts
+export HOUDINI_TOOLBAR_PATH=${HPIPE}/toolbar:${HFS}/houdini
+export HOUDINI_GALLERY_PATH=${HPIPE}/gallery:${HOME}/${HOUDINI_HOME_DIR}/gallery:${HFS}/houdini/gallery
+export HOUDINI_SOHO_PATH=${HPIPE}/soho:${HOME}/${HOUDINI_HOME_DIR}/soho:${HFS}/houdini/soho
+export HOUDINI_VEX_PATH=${HPIPE}/vex:${HPIPE}/vex/include:${HOME}/${HOUDINI_HOME_DIR}/vex/include:${HFS}/houdini/vex/^
+export HOUDINI_DSO_PATH=${HPIPE}/dso:${HOME}/${HOUDINI_HOME_DIR}/dso:${HFS}/houdini/dso
 export HOUDINI_DESK_PATH=$HOME/${HOUDINI_HOME_DIR}/desktop:${HFS}/houdini/desktop
-export HOUDINI_UI_ICON_PATH=${HH}/config/Icons:${PIPEH}/icons
+export HOUDINI_UI_ICON_PATH=${HH}/config/Icons:${HPIPE}/icons
 export HOUDINI_MDISPLAY_WAIT_TIME=120
 
 export HOUDINI_DEFAULT_RIB_RENDERER=3Delight9.0
@@ -63,7 +63,7 @@ export HOUDINI_SHOW_OLD_SHOPS=1
 
 
 #echo $PYTHONPATH
-#export CGRU_LOCATION=${PIPEH}
+#export CGRU_LOCATION=${HPIPE}
 
 export HOUDINI_LOCATION=${HFS}
 
@@ -76,7 +76,7 @@ cd $wd
 
 #export HOUDINI_CGRU_VERSION="10"
 #export HOUDINI_CGRU_PATH=$CGRU_LOCATION
-#export HOUDINI_AF_PATH=${PIPEH}
+#export HOUDINI_AF_PATH=${HPIPE}
 
 #echo ${HOUDINI_AF_PATH} ${HOUDINI_SOHO_PATH}
 
@@ -94,7 +94,7 @@ fi
 if [ $OSNAME == "Darwin" ] 
 	then
 
-export PIPEH=${CPIPELINE}/software/houdini
+export HPIPE=${CPIPELINE}/software/houdini
 
 # Setup CGRU houdini scripts location:
 export HOUDINI_CGRU_PATH=$CGRU_LOCATION/plugins/houdini
@@ -108,6 +108,6 @@ export PYTHONPATH=$HOUDINI_AF_PATH:$PYTHONPATH
 # Define OTL scan path:
 HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
 
-export HOUDINI_OTLSCAN_PATH=${PIPEH}/otl:${PIPEH}/otl/dop:${PIPEH}/otl/obj:${PIPEH}/otl/rop:${PIPEH}/otl/shop:${PIPEH}/otl/shop/delight:${PIPEH}/otl/sop:${PIPEH}/otl/pop:${PIPEH}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
+export HOUDINI_OTLSCAN_PATH=${HPIPE}/otl:${HPIPE}/otl/dop:${HPIPE}/otl/obj:${HPIPE}/otl/rop:${HPIPE}/otl/shop:${HPIPE}/otl/shop/delight:${HPIPE}/otl/sop:${HPIPE}/otl/pop:${HPIPE}/otl/vop:${HOUDINI_AF_OTLSCAN_PATH}:${HFS}/houdini/otls
 
 fi
