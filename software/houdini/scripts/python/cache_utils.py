@@ -48,6 +48,8 @@ def cacheWrite(startFrame, endFrame, subFrame, format, mode):
     parent = selectedNodes[0].parent()
     ropnet = hou.node(parent.path()).createNode("ropnet")
 
+    hou.setFrame(startFrame)
+
     message = ''
 
     for n in selectedNodes:
