@@ -10,10 +10,17 @@ imagePath = sys.argv[1]
 #imagePath = '/mnt/karramba/zeroTheorem/film/sequences/077/shots/077_630/data/render/explosion/stones/0000/stones.0004.exr'
 
 
+#dir that contain seq
 path = imagePath.rsplit('/', 1)[0]
+
+#full name of image file
 imageName = imagePath.rsplit('/', 1)[1]
-layerName = imageName.rsplit('.', -1)[0]
-digitPadding = imageName.split('.')[1]
+
+#finded padding of the image
+digitPadding = imageName.split('.')[-2]
+
+#path to the seq with padding
 digitPath = os.path.join(path, imageName.replace(digitPadding, '*'))
 
-os.system(rvio + ' ' + digitPath + ' -filegamma 0.45' + ' -o ' + os.environ['HOME'] + '/' + 'LAYER-' + layerName + '.mov' + ' -outparams jpeg_quality=50')
+layerName = imageName.rsplit('.', -1)[0]
+os.system(rvio + ' ' + digitPath + ' -v' + ' -filegamma 0.45' + ' -rthreads 8' + ' -o ' + os.environ['HOME'] + '/' + 'LAYER-' + layerName + '.mov' + ' -outparams jpeg_quality=50')
