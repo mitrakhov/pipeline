@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+#convert seq to mov and put to the home user
+
+import os
+import sys
+
+rvio = 'rvio'
+imagePath = sys.argv[1]
+#imagePath = '/mnt/karramba/zeroTheorem/film/sequences/077/shots/077_630/data/render/explosion/stones/0000/stones.0004.exr'
+
+
+path = imagePath.rsplit('/', 1)[0]
+imageName = imagePath.rsplit('/', 1)[1]
+layerName = imageName.rsplit('.', -1)[0]
+digitPadding = imageName.split('.')[1]
+digitPath = os.path.join(path, imageName.replace(digitPadding, '#'))
+
+os.system(rvio + ' ' + digitPath + ' -filegamma 0.45' + ' -o ' + os.environ['HOME'] + '/' + 'LAYER-' + layerName + '.mov' + ' -outparams jpeg_quality=50')
