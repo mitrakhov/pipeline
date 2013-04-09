@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+#open seq from afwatch with rv player
+
+import os
+import sys
+
+rv = 'rv'
+imagePath = sys.argv[1]
+
+
+path = imagePath.rsplit('/', 1)[0]
+imageName = imagePath.rsplit('/', 1)[1]
+digitPadding = imageName.split('.')[1]
+digitPath = os.path.join(path, imageName.replace(digitPadding, '#'))
+
+os.system(rv + ' ' + digitPath)
