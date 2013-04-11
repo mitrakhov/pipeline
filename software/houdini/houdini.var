@@ -39,7 +39,7 @@ if [ $OSNAME == "Linux" ]
 	export HOUDINI_AF_PATH=$AF_ROOT/plugins/houdini
 
 	# Set Python path to afanasy submission script:
-	export PYTHONPATH=$HOUDINI_AF_PATH:${HPIPE}/python/PyQt4:$PYTHONPATH
+	export PYTHONPATH=$HOUDINI_AF_PATH:/usr/pipeline/software/houdini/python:$PYTHONPATH
 
 	# Define OTL scan path:
 	HOUDINI_AF_OTLSCAN_PATH=$HIH/otls:$HOUDINI_AF_PATH:$HH/otls
