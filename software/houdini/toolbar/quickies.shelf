@@ -13,6 +13,8 @@
     <memberTool name="cleanUIAttribs"/>
     <memberTool name="assignEnvVars"/>
     <memberTool name="writeCamToExr"/>
+    <memberTool name="hideSelected"/>
+    <memberTool name="unhideSelected"/>
   </toolshelf>
 
   <tool name="RopAndRead" label="RopAndRead" icon="SOP_file">
@@ -57,12 +59,28 @@ quick_utils.assignEnvVars()]]></script>
       <keyword>Assign environment variables, such as $PROJECT etc.</keyword>
     </keywordList>
   </tool>
-  
+
   <tool name="writeCamToExr" label="writeCamToExr" icon="OBJ_camera">
     <script scriptType="python"><![CDATA[import quick_utils 
 quick_utils.writeCamToExr()]]></script>
     <keywordList>
       <keyword>Write Camera data to Comment section of selected Mantra nodes.</keyword>
+    </keywordList>
+  </tool>
+
+  <tool name="hideSelected" label="Hide Selected" icon="hide.png">
+    <script scriptType="python"><![CDATA[import quick_utils 
+quick_utils.hideSelected(True)]]></script>
+    <keywordList>
+      <keyword>Write Camera data to Comment section of selected Mantra nodes.</keyword>
+    </keywordList>
+  </tool>
+
+  <tool name="unhideSelected" label="Unhide Selected" icon="SOP_visibility">
+    <script scriptType="python"><![CDATA[import quick_utils 
+quick_utils.hideSelected(False)]]></script>
+    <keywordList>
+      <keyword>Unhide Selected</keyword>
     </keywordList>
   </tool>
 </shelfDocument>

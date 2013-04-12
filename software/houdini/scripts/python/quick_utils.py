@@ -381,3 +381,11 @@ def writeCamToExr():
 
         else:
             print 'Not Mantra node selected'
+
+def hideSelected(hide):
+    obj = hou.selectedNodes()
+    for n in obj:
+        if hide:
+            n.setDisplayFlag(0)
+        else:
+            n.setDisplayFlag(1)
