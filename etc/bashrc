@@ -30,7 +30,7 @@ if [ "$OSNAME" == "Linux" ];
 
 	export PATH=${CPIPELINE}/bin:${PROGRAM_PATH}/3delight/bin:${PROGRAM_PATH}/hfs/bin:${CGRU}/bin:${CGRU}/afanasy/bin:${PATH}
 		
-	export PYTHONPATH=${CGRU}/lib/python:${CPIPELINE}/com:${CPIPELINE}/lib/shotgun::${PYTHONPATH}
+	export PYTHONPATH=${CGRU}/lib/python:${CPIPELINE}/com:${CPIPELINE}/lib/shotgun:${PYTHONPATH}
 	
 
 	
