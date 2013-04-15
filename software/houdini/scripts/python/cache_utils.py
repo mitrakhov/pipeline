@@ -4,7 +4,8 @@ import hou
 def makeCachePath(object, mode):
     #get all path from HOUDINI VARIABLES
 
-    sceneName = hou.getenv('HIPNAME').rsplit('.v',1)[0]
+    #sceneName = hou.getenv('HIPNAME').rsplit('.v',1)[0]
+    sceneName = hou.getenv('HIPNAME')
     dataPath = hou.getenv('DATA')
     geoPath = os.path.join(dataPath, "geo")
     scenePath = os.path.join(geoPath, sceneName)
