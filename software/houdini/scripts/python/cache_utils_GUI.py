@@ -182,9 +182,8 @@ def loadObjectsFromCacheDialog():
                     #print cacheScene.getNodePath(str(n))
                 #print self.selectedObjects
                 for n, m in zip(self.selectedObjects.keys(), self.selectedObjects.values()):
-                    #print cacheScene.getData('cube', '0001')
-                    print cacheScene.getData(n, m)
-                    #print n, m
+                    path = cacheScene.getData(n, m)
+                print path
    
 
         app = pyqt_thread_helper.getApplication()

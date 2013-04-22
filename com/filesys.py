@@ -67,8 +67,17 @@ class cache(object):
 
         if version:
             for n in cachesDict.values()[0]:
-                if version in n: return n
+                if version in n:
+                    firstFile = sorted(os.listdir(n))[0]
+                    padding = firstFile.rsplit(self.node)[-1].rsplit('.')[1]
+                    digitPath = os.path.join(n, firstFile.replace(padding, '$F4'))
+
+                    return digitPath
+                    
         else: return cachesDict
+
+
+
 
 
     def getAllSceneData(self, fullPath):
