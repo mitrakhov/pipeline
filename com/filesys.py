@@ -53,16 +53,22 @@ class cache(object):
         return versionPath
 
 
-    def getData(self, node):
+    def getData(self, node, version = None):
         self.node = node
-
-        nodePath = self.getNodePath(self.node)
+        cachesDict = {}
         cachesList = []
+        nodePath = self.getNodePath(self.node)
+
         if os.path.exists(nodePath):
             for n in sorted(os.listdir(nodePath)):
                 fullPath = os.path.join(nodePath, n)
                 cachesList.append(fullPath)
-            return {self.node:cachesList}
+            cachesDict[self.node] = cachesList
+
+        if version:
+            for n in cachesDict.values()[0]:
+                if version in n: return n
+        else: return cachesDict
 
 
     def getAllSceneData(self, fullPath):
