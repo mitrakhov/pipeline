@@ -1,15 +1,18 @@
+from PyQt4 import QtCore
+from PyQt4 import QtGui
 import pyqt_thread_helper
+
 import sys
 import os
 
-def writeObjectsToCache_Menu():   
+import hou
+import filesys
+import cache_utils
+
+
+def writeObjectsToCacheDialog():   
      
     def writeObjectsToCacheDiaglogInThread():
-        from PyQt4 import QtCore
-        from PyQt4 import QtGui
-
-        import hou
-        import cache_utils
 
         class Form(QtGui.QDialog):
             def __init__(self, parent = None): 
@@ -94,38 +97,37 @@ def writeObjectsToCache_Menu():
 
 
 
-def loadObjectsFromCache_Menu():
+def loadObjectsFromCacheDialog():
 
     def loadObjectsFromCacheDiaglogInThread():
-        from PyQt4 import QtCore
-        from PyQt4 import QtGui
-        
-        import filesys
-        import hou
+        scenePath = os.path.join(hou.getenv('HIP'), hou.getenv('HIPNAME'))
+        dataPath = hou.getenv('CACHE')
+        cacheScene = filesys.cache(scenePath, dataPath)
+        #cacheScene = filesys.cache('/home/sim/Documents/untitled.v005.hip', '/home/sim/Documents/geo')
+        OBJ = cacheScene.getAllSceneData(fullPath = False)
+        #OBJ = {'ash':['0000'], 'stone':['0000', '0001'], 'smoke':['0000', '0001'], 'dust':['0000', '0001', '0002', '0003']}
+        #print cacheScene.getData('cube', '0001')
+
 
         class Form(QtGui.QDialog):
+            combo = {}
+            selectedObjects = {}
             def __init__(self, parent = None): 
                 QtGui.QWidget.__init__(self, parent, QtCore.Qt.WindowStaysOnTopHint)
+                self.objs = []
+                self.vers = []
            
                 layout = QtGui.QVBoxLayout()
 
                 self.setGeometry(150, 300, 250, 50)
                 self.setStyleSheet("background-color: rgb(50, 50, 50);")
                 self.setWindowTitle("Load Objects from Cache")
-
                 objColumnLayout = QtGui.QGridLayout()
-
-                scenePath = os.path.join(hou.getenv('HIP'), hou.getenv('HIPNAME'))
-                dataPath = hou.getenv('CACHE')
-                cacheScene = filesys.cache(scenePath, dataPath)
-                #cacheScene = filesys.cache('/home/sim/Documents/untitled.v005.hip', '/home/sim/Documents/geo')
-                OBJ = cacheScene.getAllSceneData(fullPath = False)
 
                 columnName = ('Object', 'Version')
                 for n in columnName:
                     self.columnNameLabel = QtGui.QLabel(n)
                     objColumnLayout.addWidget(self.columnNameLabel, 0, columnName.index(n))
-
 
                 for k, v in zip(OBJ.keys(), OBJ.values()):
                     self.kLabel = QtGui.QLabel(k)
@@ -133,16 +135,20 @@ def loadObjectsFromCache_Menu():
                     lineNum = sorted(OBJ.keys()).index(k) + 1
 
                     objColumnLayout.addWidget(self.kLabel, lineNum, 0)
-                    #objColumnLayout.addWidget(self.vLabel, lineNum, 1)
 
                     self.vComboBox = QtGui.QComboBox()
+                    self.combo[k] = self.vComboBox
+                    self.vComboBox.setObjectName(k + '_ComboBox')
                     self.vComboBox.addItems(v)
-                    self.vComboBox.setCurrentIndex(int(max(v)))
+                    self.vComboBox.setCurrentIndex(len(v)-1)
                     objColumnLayout.addWidget(self.vComboBox, lineNum, 1)
-                    self.connect(self.vComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateUi)
+                    self.connect(self.vComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.selectVersions)
 
-                    vCheckBox = QtGui.QCheckBox()
-                    objColumnLayout.addWidget(vCheckBox, lineNum, 2)
+                    self.vCheckBox = QtGui.QCheckBox()
+                    self.vCheckBox.setObjectName(k)
+                    self.vCheckBox.clicked.connect(self.selectObjects)
+
+                    objColumnLayout.addWidget(self.vCheckBox, lineNum, 2)
                 layout.addLayout(objColumnLayout)
 
                 buttonsLayout = QtGui.QHBoxLayout()
@@ -159,16 +165,26 @@ def loadObjectsFromCache_Menu():
                 buttonsLayout.addWidget(cancelButton)
 
                 layout.addLayout(buttonsLayout) 
-
-             
                 self.setLayout(layout)
 
-            def updateUi(self):
-                    print str(self.vComboBox.currentText())
 
-                
-            def pushOk(self):
-                cache_utils.cacheWrite(self.startFrameSpinBox.value(), self.endFrameSpinBox.value(), 1, str(self.selectFormatComboBox.currentText()), str(self.selectWriteModeComboBox.currentText()))
+            def selectObjects(self):
+                sender = self.sender()
+                self.objs.append(sender.objectName())
+
+            def selectVersions(self):
+                sender = self.sender()
+                print str(sender.currentText())
+
+            def pushOk(self):      
+                for n in self.objs:
+                    self.selectedObjects[str(n)] = str(self.combo[str(n)].currentText())
+                    #print cacheScene.getNodePath(str(n))
+                #print self.selectedObjects
+                for n, m in zip(self.selectedObjects.keys(), self.selectedObjects.values()):
+                    #print cacheScene.getData('cube', '0001')
+                    print cacheScene.getData(n, m)
+                    #print n, m
    
 
         app = pyqt_thread_helper.getApplication()
