@@ -182,8 +182,15 @@ def loadObjectsFromCacheDialog():
                     #print cacheScene.getNodePath(str(n))
                 #print self.selectedObjects
                 for n, m in zip(self.selectedObjects.keys(), self.selectedObjects.values()):
-                    path = cacheScene.getData(n, m)
-                print path
+                    filePath = cacheScene.getData(n, m)
+                    print filePath
+                    node = hou.node('/obj').createNode('geo', n + '_CACHE')
+                    node.children()[0].destroy()
+                    if filePath.rsplit('.')[-1] == 'bgeo':
+                        bgeoLoader = hou.node(node.path()).createNode('file')
+                        bgeoLoader.parm('file').set(filePath)
+                    #abcLoader = hou.node(node.path()).createNode('alembic')
+               
    
 
         app = pyqt_thread_helper.getApplication()
