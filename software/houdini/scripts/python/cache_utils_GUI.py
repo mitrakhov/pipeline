@@ -101,12 +101,11 @@ def loadObjectsFromCacheDialog():
 
     def loadObjectsFromCacheDiaglogInThread():
         scenePath = os.path.join(hou.getenv('HIP'), hou.getenv('HIPNAME'))
-        dataPath = hou.getenv('CACHE')
+        dataPath = os.path.join(hou.getenv('DATA'), 'geo')
         cacheScene = filesys.cache(scenePath, dataPath)
-        #cacheScene = filesys.cache('/home/sim/Documents/untitled.v005.hip', '/home/sim/Documents/geo')
+        #EXAMPLE cacheScene = filesys.cache('/home/sim/Documents/untitled.v005.hip', '/home/sim/Documents/geo')
         OBJ = cacheScene.getAllSceneData(fullPath = False)
-        #OBJ = {'ash':['0000'], 'stone':['0000', '0001'], 'smoke':['0000', '0001'], 'dust':['0000', '0001', '0002', '0003']}
-        #print cacheScene.getData('cube', '0001')
+        #EXAMPLE OBJ = {'ash':['0000'], 'stone':['0000', '0001'], 'smoke':['0000', '0001'], 'dust':['0000', '0001', '0002', '0003']}
 
 
         class Form(QtGui.QDialog):
@@ -179,17 +178,18 @@ def loadObjectsFromCacheDialog():
             def pushOk(self):      
                 for n in self.objs:
                     self.selectedObjects[str(n)] = str(self.combo[str(n)].currentText())
-                    #print cacheScene.getNodePath(str(n))
-                #print self.selectedObjects
                 for n, m in zip(self.selectedObjects.keys(), self.selectedObjects.values()):
                     filePath = cacheScene.getData(n, m)
-                    print filePath
+                    #print filePath.split('data')[1]
                     node = hou.node('/obj').createNode('geo', n + '_CACHE')
                     node.children()[0].destroy()
-                    if filePath.rsplit('.')[-1] == 'bgeo':
-                        bgeoLoader = hou.node(node.path()).createNode('file')
+                    ext = filePath.rsplit('.')[-1]
+                    if ext == 'bgeo':
+                        bgeoLoader = hou.node(node.path()).createNode('file', node_name = 'bgeoLoader')
                         bgeoLoader.parm('file').set(filePath)
-                    #abcLoader = hou.node(node.path()).createNode('alembic')
+                    if ext == 'abc':
+                        abcLoader = hou.node(node.path()).createNode('alembic', node_name = 'abcLoader')
+                        abcLoader.parm('fileName').set(filePath)
                
    
 
@@ -199,10 +199,3 @@ def loadObjectsFromCacheDialog():
         app.exec_()
 
     pyqt_thread_helper.queueCommand(loadObjectsFromCacheDiaglogInThread)
-
-
-#node = hou.node('/obj').createNode('geo', 'NODE')
-#node.children()[0].destroy()
-#bgeoLoader = hou.node(node.path()).createNode('file')
-#abcLoader = hou.node(node.path()).createNode('alembic')
-#bgeoLoader.parm('file').set('/home/vlad/')

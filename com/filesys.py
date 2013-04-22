@@ -57,6 +57,7 @@ class cache(object):
         self.node = node
         cachesDict = {}
         cachesList = []
+        filePath = ''
         nodePath = self.getNodePath(self.node)
 
         if os.path.exists(nodePath):
@@ -69,15 +70,17 @@ class cache(object):
             for n in cachesDict.values()[0]:
                 if version in n:
                     firstFile = sorted(os.listdir(n))[0]
-                    padding = firstFile.rsplit(self.node)[-1].rsplit('.')[1]
-                    digitPath = os.path.join(n, firstFile.replace(padding, '$F4'))
+                    ext = firstFile.rsplit('.')[-1]
+                    #print ext
+                    if ext == 'bgeo':
+                        padding = firstFile.rsplit(self.node)[-1].rsplit('.')[1]
+                        filePath = os.path.join(n, firstFile.replace(padding, '$F4'))
+                    if ext == 'abc':
+                        filePath = os.path.join(n, firstFile)
 
-                    return digitPath
+                    return filePath
                     
         else: return cachesDict
-
-
-
 
 
     def getAllSceneData(self, fullPath):
