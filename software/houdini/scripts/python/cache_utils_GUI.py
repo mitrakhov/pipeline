@@ -100,9 +100,12 @@ def writeObjectsToCacheDialog():
 def loadObjectsFromCacheDialog():
 
     def loadObjectsFromCacheDiaglogInThread():
-        scenePath = os.path.join(hou.getenv('HIP'), hou.getenv('HIPNAME'))
+        scenePath = os.path.join(hou.getenv('HIP'), hou.getenv('HIPNAME').rsplit('.v',1)[0])
         dataPath = os.path.join(hou.getenv('DATA'), 'geo')
         cacheScene = filesys.cache(scenePath, dataPath)
+      
+        shotCachesList = os.listdir(cacheScene.getDataPath())
+
         #EXAMPLE cacheScene = filesys.cache('/home/sim/Documents/untitled.v005.hip', '/home/sim/Documents/geo')
         OBJ = cacheScene.getAllSceneData(fullPath = False)
         #EXAMPLE OBJ = {'ash':['0000'], 'stone':['0000', '0001'], 'smoke':['0000', '0001'], 'dust':['0000', '0001', '0002', '0003']}
@@ -118,36 +121,43 @@ def loadObjectsFromCacheDialog():
            
                 layout = QtGui.QVBoxLayout()
 
-                self.setGeometry(150, 300, 250, 50)
+                self.setGeometry(150, 300, 300, 50)
                 self.setStyleSheet("background-color: rgb(50, 50, 50);")
                 self.setWindowTitle("Load Objects from Cache")
                 objColumnLayout = QtGui.QGridLayout()
 
-                columnName = ('Object', 'Version')
+                columnName = ('Scene', 'Object', 'Version')
                 for n in columnName:
                     self.columnNameLabel = QtGui.QLabel(n)
                     objColumnLayout.addWidget(self.columnNameLabel, 0, columnName.index(n))
+
+                
+                for n in shotCachesList:
+                    self.shotCacheComboBox = QtGui.QComboBox()
+                    self.shotCacheComboBox.addItems(n)
+                    objColumnLayout.addWidget(self.shotCacheComboBox, 1, 0)
+                    self.connect(self.shotCacheComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateUI)
 
                 for k, v in zip(OBJ.keys(), OBJ.values()):
                     self.kLabel = QtGui.QLabel(k)
                     self.vLabel = QtGui.QLabel(max(v))
                     lineNum = sorted(OBJ.keys()).index(k) + 1
 
-                    objColumnLayout.addWidget(self.kLabel, lineNum, 0)
+                    objColumnLayout.addWidget(self.kLabel, lineNum, 1)
 
                     self.vComboBox = QtGui.QComboBox()
                     self.combo[k] = self.vComboBox
                     self.vComboBox.setObjectName(k + '_ComboBox')
                     self.vComboBox.addItems(v)
                     self.vComboBox.setCurrentIndex(len(v)-1)
-                    objColumnLayout.addWidget(self.vComboBox, lineNum, 1)
+                    objColumnLayout.addWidget(self.vComboBox, lineNum, 2)
                     self.connect(self.vComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.selectVersions)
 
                     self.vCheckBox = QtGui.QCheckBox()
                     self.vCheckBox.setObjectName(k)
                     self.vCheckBox.clicked.connect(self.selectObjects)
 
-                    objColumnLayout.addWidget(self.vCheckBox, lineNum, 2)
+                    objColumnLayout.addWidget(self.vCheckBox, lineNum, 3)
                 layout.addLayout(objColumnLayout)
 
                 buttonsLayout = QtGui.QHBoxLayout()
@@ -166,6 +176,9 @@ def loadObjectsFromCacheDialog():
                 layout.addLayout(buttonsLayout) 
                 self.setLayout(layout)
 
+            def updateUI(self):
+                sender = self.sender()
+                print str(sender.currentText())
 
             def selectObjects(self):
                 sender = self.sender()

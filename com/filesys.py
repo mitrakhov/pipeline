@@ -18,11 +18,13 @@ class cache(object):
     def getDataPath(self):
         return self.dataPath
 
-    def getSceneName(self):
-        return self.scenePath.rsplit('/')[-1]
-
+    def getSceneName(self, noversion = None):
+        if noversion:
+            return self.scenePath.rsplit('/')[-1].rsplit('.v')[0]
+        else: return self.scenePath.rsplit('/')[-1]
+    
     def getSceneDataPath(self):
-        return os.path.join(self.dataPath, self.getSceneName())
+        return os.path.join(self.dataPath, self.getSceneName(noversion = True))
 
     def getNodePath(self, node):
         self.node = node
@@ -59,7 +61,7 @@ class cache(object):
         cachesList = []
         filePath = ''
         nodePath = self.getNodePath(self.node)
-
+        
         if os.path.exists(nodePath):
             for n in sorted(os.listdir(nodePath)):
                 fullPath = os.path.join(nodePath, n)
