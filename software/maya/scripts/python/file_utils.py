@@ -7,7 +7,7 @@ def exportSelectedToObj():
     if path:
         workDir = path.rsplit('/', 1)[0]
         sceneLabel = path.rsplit('/', 1)[1]
-        exportPath = os.path.join(workDir, sceneLabel.rsplit('.mb', 1)[0])
+        exportPath = os.path.join(workDir, sceneLabel.rsplit('.v', 1)[0])
 
     if not os.path.exists(exportPath):
         os.mkdir(exportPath)
