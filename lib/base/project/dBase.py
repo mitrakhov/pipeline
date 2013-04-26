@@ -15,7 +15,7 @@ class DBase(object):
         self.db = Shotgun(sgSite, scriptName, scriptKey)
         
         
-    def getProjects(self, status='Active', owner='kiev'):
+    def getProjectsDict(self, status='Active', owner='kiev'):
         
         filters = [ ['sg_status', 'is', status],
                 ['sg_project_owner', 'is', owner]
@@ -26,18 +26,18 @@ class DBase(object):
 
         return projectDict
 
-    def getSequences(self, projectId):
+    def getSequencesDict(self, projId):
 
-        filters = [['project','is',{'type':'Project','id':projectId}]]
+        filters = [['project','is',{'type':'Project','id':projId}]]
         fields = ['code', 'id']
         sequencesListRaw = self.db.find("Sequence", filters, fields)
         sequencesDict = {x['code']:x['id'] for x in sequencesListRaw}
 
         return sequencesDict
     
-    def getShots(self, sequenceId):
+    def getShots(self, seqId):
 
-        filters = [['sg_sequence','is',{'type':'Sequence','id':sequenceId}]]
+        filters = [['sg_sequence','is',{'type':'Sequence','id':seqId}]]
         fields = ['code', 'id']
         sequencesListRaw = self.db.find("Shot", filters, fields)
         sequencesDict = {x['code']:x['id'] for x in sequencesListRaw}
@@ -55,10 +55,60 @@ class DBase(object):
         newProj = self.db.create('Project', data)
 
         return newProj
+
+    def addSequence(self, seqName, projId):
+
+        data = {
+            'project': {'type': 'Project', 'id': projId},
+            'code': seqName
+            }
+
+        newSeq = self.db.create('Sequence', data)
+
+        return newSeq
+
+    def addShot(self, shName, seqId, projId):
+
+        data = {
+            'project': {'type': 'Project', 'id': projId},
+            'sg_sequence': {'type': 'Sequence', 'id': seqId},
+            'code': shName
+            }
+
+        newSh = self.db.create('Shot', data)
+
+        return newSh       
+
+
+
+    def getProject(self, projId):
         
+        filters = [['id', 'is', projId]]
+        fields = ['name']
+        proj = self.db.find_one("Project", filters, fields)
+
+        return proj
+
+    def getSequence(self, seqId):
+        
+        filters = [['id', 'is', seqId]]
+        fields = ['code', 'project', 'shots']
+        seq = self.db.find_one("Sequence", filters, fields)
+
+        return seq
+
+    def getShot(self, shId):
+
+        filters = [['id', 'is', shId]]
+        fields = ['code', 'project', 'sg_sequence', 'tasks']
+        sh = self.db.find_one("Shot", filters, fields)
+
+        return sh
+
+
 
 
 
 if __name__ == '__main__':
     a = DBase()
-    print a.getShots(219)
+    print a.getShot(3799)
