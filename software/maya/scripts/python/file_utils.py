@@ -1,7 +1,7 @@
 from pymel.core import *
 import os
-# import maya.cmds as cmds
-# from xml.dom.minidom import parse, getDOMImplementation, Document
+import maya.cmds as cmds
+from xml.dom.minidom import parse, getDOMImplementation, Document
 
 
 def exportSelectedToObj():
