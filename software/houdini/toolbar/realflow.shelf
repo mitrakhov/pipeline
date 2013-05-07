@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <toolshelf name="RealFlow" label="RealFlow">
+    <memberTool name="sop_rf_mesh_import"/>
+    <memberTool name="sop_rf_particle_import"/>
+    <memberTool name="sop_rf_sd_import"/>
+    <memberTool name="driver_rf_particle_export"/>
+    <memberTool name="driver_rf_sd_export"/>
+    <memberTool name="driver_rf_mesh_export"/>
+  </toolshelf>
+</shelfDocument>

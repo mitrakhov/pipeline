@@ -54,7 +54,7 @@ if [ $OSNAME == "Linux" ]
 	export HOUDINI_VEX_PATH=${HPIPE}/vex:${HPIPE}/vex/include:${HOME}/${HOUDINI_HOME_DIR}/vex/include:${HFS}/houdini/vex/^
 	export HOUDINI_DSO_PATH=${HPIPE}/dso:${HOME}/${HOUDINI_HOME_DIR}/dso:${HFS}/houdini/dso
 	export HOUDINI_DESK_PATH=$HOME/${HOUDINI_HOME_DIR}/desktop:${HFS}/houdini/desktop
-	export HOUDINI_UI_ICON_PATH=${HH}/config/Icons:${HPIPE}/icons
+	export HOUDINI_UI_ICON_PATH=${HH}/config/Icons:${HPIPE}/icons:${HOME}/${HOUDINI_HOME_DIR}/config/Icons
 	export HOUDINI_MDISPLAY_WAIT_TIME=120
 
 	export HOUDINI_DEFAULT_RIB_RENDERER=3Delight9.0
