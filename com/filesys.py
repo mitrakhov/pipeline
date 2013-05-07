@@ -1,42 +1,54 @@
 import os
 
-class cache(object):
-    def __init__(self, scenePath, dataPath, parent=None):
-        self.scenePath = scenePath
+class data(object):
+    def __init__(self, levelName, dataPath, parent = None):
+        self.levelName = levelName
         self.dataPath = dataPath
 
 
-    def setScenePath(self, scenePath):
-        self.scenePath = scenePath
+    def setlevelName(self, levelName):
+        self.levelName = levelName
 
-    def getScenePath(self):
-        return self.scenePath
+
+    def getlevelName(self):
+        return self.levelName
+
 
     def setDataPath(self, dataPath):
         self.dataPath = dataPath
 
+
     def getDataPath(self):
         return self.dataPath
+ 
 
-    def getSceneName(self, noversion = None):
-        if noversion:
-            return self.scenePath.rsplit('/')[-1].rsplit('.v')[0]
-        else: return self.scenePath.rsplit('/')[-1]
-    
     def getSceneDataPath(self):
-        return os.path.join(self.dataPath, self.getSceneName(noversion = True))
+        return [ os.path.join(self.dataPath, x) for x in os.listdir(self.dataPath) ]
+
+
+    def getSceneName(self):
+        return [x.rsplit('/')[-1] for x in self.getSceneDataPath()]
+
 
     def getNodePath(self, node):
         self.node = node
-        return os.path.join(self.getSceneDataPath(), self.node)
+        nodePath = []
+        for n in self.getSceneDataPath():
+            nodePath.append(os.path.join(n, self.node))
+        return nodePath
 
 
-    def addData(self, node):
+    #add data to current scene
+    def addData(self, currentSceneName, node):
         self.node = node
-
-        sceneDataPath = self.getSceneDataPath()
-        nodePath = self.getNodePath(self.node)
-       
+        self.currentSceneName = currentSceneName
+        sceneDataPath = ''
+        
+        for n, m in zip(self.getSceneDataPath(), self.getNodePath(self.node)):
+            if self.currentSceneName in n:
+                sceneDataPath = n
+                nodePath = m
+     
         startVersion = 0
         versionPath = ''
         #mkdir cache for current scene
@@ -55,43 +67,50 @@ class cache(object):
         return versionPath
 
 
-    def getData(self, node, version = None):
-        self.node = node
-        cachesDict = {}
-        cachesList = []
-        filePath = ''
-        nodePath = self.getNodePath(self.node)
-        
-        if os.path.exists(nodePath):
-            for n in sorted(os.listdir(nodePath)):
-                fullPath = os.path.join(nodePath, n)
-                cachesList.append(fullPath)
-            cachesDict[self.node] = cachesList
+    #get data for the current scene, get data from dict data[NODENAME][numberOfVersion][file]
+    #format example 
+    #print data['fire'][-1][-1]
+    def getData(self, currentSceneName):
+        self.currentSceneName = currentSceneName     
+        sceneDataPath = ''
+        nodeDict = {}     
 
-        if version:
-            for n in cachesDict.values()[0]:
-                if version in n:
-                    firstFile = sorted(os.listdir(n))[0]
-                    ext = firstFile.rsplit('.')[-1]
-                    #print ext
-                    if ext == 'bgeo':
-                        padding = firstFile.rsplit(self.node)[-1].rsplit('.')[1]
-                        filePath = os.path.join(n, firstFile.replace(padding, '$F4'))
+        for n in self.getSceneDataPath():
+            if self.currentSceneName in n:
+                sceneDataPath = n
+
+        nodes = sorted(os.listdir(sceneDataPath))
+
+        for node in nodes:
+            nodePath = os.path.join(sceneDataPath, node)
+            versions = os.listdir(nodePath)
+            cachesList = []
+            for version in sorted(versions):
+                #cachesList.append(version)
+                filePath = os.path.join(sceneDataPath, node, version)
+                
+                files = sorted(os.listdir(filePath))
+                if files:
+                    ext = files[0].rsplit('.')[-1]
                     if ext == 'abc':
-                        filePath = os.path.join(n, firstFile)
+                        fullPath = os.path.join(filePath, files[0])
 
-                    return filePath
-                    
-        else: return cachesDict
+                    elif ext == 'bgeo':
+                         file = files[0].replace('.' + ext, '').rsplit('.')[0] + '.$F4.bgeo'
+                         fullPath = os.path.join(filePath, file)
+                    cachesList.append([version, fullPath])
+
+            nodeDict[node] = cachesList
+
+        return nodeDict
 
 
-    def getAllSceneData(self, fullPath):
-        self.fullPath = fullPath
-        caches = {}
-        for n in sorted(os.listdir(self.getSceneDataPath())):
-            list = []
-            for m in self.getData(n).values()[0]:
-                if self.fullPath == True: list.append(m)
-                else: list.append(m.rsplit('/')[-1])
-            caches[n] = list
-        return caches
+    #get all data from the level, get data from dict data[SCENENAME][NODENAME][numberOfVersion]
+    #format example 
+    #print data['debris']['fire'][-1][-1]
+    def getAllData(self):
+        scenesDict = {}
+
+        for n in self.getSceneName():
+            scenesDict[n] = self.getData(n)
+        return scenesDict

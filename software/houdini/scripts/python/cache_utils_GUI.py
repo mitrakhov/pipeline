@@ -1,9 +1,13 @@
+import sys
+import os
+
+sys.path.append('/usr/pipeline/com')
+sys.path.append('/usr/pipeline/software/houdini/scripts/python')
+sys.path.append('/mnt/opt/hfs/houdini/python2.6libs')
+
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 import pyqt_thread_helper
-
-import sys
-import os
 
 import hou
 import filesys
@@ -37,7 +41,7 @@ def writeObjectsToCacheDialog():
                 self.selectFormatComboBox.addItems(formats)
                 self.selectFormatComboBox.setFocus()
                 layout.addWidget(self.selectFormatComboBox, 0, 1)
-                self.connect(self.selectFormatComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateUi)
+                self.connect(self.selectFormatComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.selectScene)
                 
                 #framerange
                 self.frameRangeLabel = QtGui.QLabel('Frame Range')
@@ -46,13 +50,13 @@ def writeObjectsToCacheDialog():
                 self.startFrameSpinBox = QtGui.QSpinBox()
                 self.startFrameSpinBox.setRange(int(frameRange[0]), int(frameRange[1]))
                 self.startFrameSpinBox.setValue(int(frameRange[0]))
-                self.connect(self.startFrameSpinBox, QtCore.SIGNAL("valueChanged()"), self.updateUi)
+                self.connect(self.startFrameSpinBox, QtCore.SIGNAL("valueChanged()"), self.selectScene)
                 layout.addWidget(self.startFrameSpinBox, 1, 1)
                 
                 self.endFrameSpinBox = QtGui.QSpinBox()
                 self.endFrameSpinBox.setRange(int(frameRange[0]), int(frameRange[1]))
                 self.endFrameSpinBox.setValue(int(frameRange[1]))
-                self.connect(self.startFrameSpinBox, QtCore.SIGNAL("valueChanged()"), self.updateUi)
+                self.connect(self.startFrameSpinBox, QtCore.SIGNAL("valueChanged()"), self.selectScene)
                 layout.addWidget(self.endFrameSpinBox, 1, 2)
 
                 #mode
@@ -62,7 +66,7 @@ def writeObjectsToCacheDialog():
                 self.selectWriteModeComboBox = QtGui.QComboBox()
                 self.selectWriteModeComboBox.addItems(writeMode)
                 layout.addWidget(self.selectWriteModeComboBox, 2, 1)
-                self.connect(self.selectWriteModeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateUi)
+                self.connect(self.selectWriteModeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.selectScene)
                 
                 #ok button
                 okButton = QtGui.QPushButton('Ok', self)
@@ -78,7 +82,7 @@ def writeObjectsToCacheDialog():
 
                 self.setLayout(layout)
 
-            def updateUi(self):
+            def selectScene(self):
                     print ('Format  - ' + str(self.selectFormatComboBox.currentText()))
                     print ('Mode - ' + str(self.selectWriteModeComboBox.currentText()))
                     print ('Frame range - ' + str(self.startFrameSpinBox.value()) + ', ' + str(self.endFrameSpinBox.value()))
@@ -96,28 +100,42 @@ def writeObjectsToCacheDialog():
 
 
 
-
 def loadObjectsFromCacheDialog():
 
     def loadObjectsFromCacheDiaglogInThread():
-        scenePath = os.path.join(hou.getenv('HIP'), hou.getenv('HIPNAME').rsplit('.v',1)[0])
-        dataPath = os.path.join(hou.getenv('DATA'), 'geo')
-        cacheScene = filesys.cache(scenePath, dataPath)
-      
-        shotCachesList = os.listdir(cacheScene.getDataPath())
+        # sceneName = hou.getenv('HIPNAME').rsplit('.v',1)[0]
+        # dataPath = os.path.join(hou.getenv('DATA'), 'geo')
+        
+        # CACHES = {}
+        # shotCachesList = []
+        # shotCachesList.append(os.listdir(dataPath))
 
-        #EXAMPLE cacheScene = filesys.cache('/home/sim/Documents/untitled.v005.hip', '/home/sim/Documents/geo')
-        OBJ = cacheScene.getAllSceneData(fullPath = False)
-        #EXAMPLE OBJ = {'ash':['0000'], 'stone':['0000', '0001'], 'smoke':['0000', '0001'], 'dust':['0000', '0001', '0002', '0003']}
+        # for n in shotCachesList[0]:
+        #     cacheScene = filesys.cache(n, dataPath)
+        #     for n, m in zip(cacheScene.getAllSceneData(fullPath = False).keys(), cacheScene.getAllSceneData(fullPath = False).values()):
+        #         CACHES[n] = m
 
+        # print CACHES
+        # OBJ = cacheScene.getAllSceneData(fullPath = False)
+        # print OBJ
+        selectedScene = []
+        shotName = 'sh_107_112'
+        dataPath = '/home/vlad/Documents/sh_107_112/data/cache'
+        shotCache = filesys.data(shotName, dataPath )
 
-        class Form(QtGui.QDialog):
+        DATA = shotCache.getAllData()
+
+        #class Form(QtGui.QDialog):
+        class Form(QtGui.QWidget):
             combo = {}
-            selectedObjects = {}
+            
+            #selectedObjects = {}
             def __init__(self, parent = None): 
                 QtGui.QWidget.__init__(self, parent, QtCore.Qt.WindowStaysOnTopHint)
-                self.objs = []
-                self.vers = []
+                # self.objs = []
+                # self.vers = []
+                # self.OBJ1 = {}
+                # self.cacheScene1 = filesys.cache(sceneName, dataPath)
            
                 layout = QtGui.QVBoxLayout()
 
@@ -130,34 +148,39 @@ def loadObjectsFromCacheDialog():
                 for n in columnName:
                     self.columnNameLabel = QtGui.QLabel(n)
                     objColumnLayout.addWidget(self.columnNameLabel, 0, columnName.index(n))
-
                 
-                for n in shotCachesList:
-                    self.shotCacheComboBox = QtGui.QComboBox()
-                    self.shotCacheComboBox.addItems(n)
-                    objColumnLayout.addWidget(self.shotCacheComboBox, 1, 0)
-                    self.connect(self.shotCacheComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.updateUI)
+                self.sceneComboBox = QtGui.QComboBox()
+                self.sceneComboBox.addItems(shotCache.getSceneName())
+                objColumnLayout.addWidget(self.sceneComboBox, 1, 0)
+                self.connect(self.sceneComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.selectScene)
 
-                for k, v in zip(OBJ.keys(), OBJ.values()):
-                    self.kLabel = QtGui.QLabel(k)
-                    self.vLabel = QtGui.QLabel(max(v))
-                    lineNum = sorted(OBJ.keys()).index(k) + 1
+                print self.sceneComboBox.currentIndex()
 
-                    objColumnLayout.addWidget(self.kLabel, lineNum, 1)
+                #print self.sceneComboBox.currentIndexChanged()
 
-                    self.vComboBox = QtGui.QComboBox()
-                    self.combo[k] = self.vComboBox
-                    self.vComboBox.setObjectName(k + '_ComboBox')
-                    self.vComboBox.addItems(v)
-                    self.vComboBox.setCurrentIndex(len(v)-1)
-                    objColumnLayout.addWidget(self.vComboBox, lineNum, 2)
-                    self.connect(self.vComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.selectVersions)
 
-                    self.vCheckBox = QtGui.QCheckBox()
-                    self.vCheckBox.setObjectName(k)
-                    self.vCheckBox.clicked.connect(self.selectObjects)
+                #for k, v in zip(shotCache.getSceneName(), OBJ.values()):
+                #for k in selectedScene:
+                    #self.kLabel = QtGui.QLabel(k)
+                    # self.vLabel = QtGui.QLabel(max(v))
+                    # lineNum = sorted(OBJ.keys()).index(k) + 1
 
-                    objColumnLayout.addWidget(self.vCheckBox, lineNum, 3)
+                    #objColumnLayout.addWidget(self.kLabel, lineNum, 1)
+
+                    # self.vComboBox = QtGui.QComboBox()
+                    # self.combo[k] = self.vComboBox
+                    # self.vComboBox.setObjectName(k + '_ComboBox')
+                    # self.vComboBox.addItems(v)
+                    # #self.vComboBox.setCurrentIndex(len(v)-1)
+                    # objColumnLayout.addWidget(self.vComboBox, lineNum, 2)
+                    # #self.connect(self.vComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.selectVersions)
+
+                    # self.vCheckBox = QtGui.QCheckBox()
+                    # self.vCheckBox.setObjectName(k)
+                    # self.vCheckBox.clicked.connect(self.selectObjects)
+
+                    # objColumnLayout.addWidget(self.vCheckBox, lineNum, 3)
+
                 layout.addLayout(objColumnLayout)
 
                 buttonsLayout = QtGui.QHBoxLayout()
@@ -176,9 +199,9 @@ def loadObjectsFromCacheDialog():
                 layout.addLayout(buttonsLayout) 
                 self.setLayout(layout)
 
-            def updateUI(self):
+            def selectScene(self):
                 sender = self.sender()
-                print str(sender.currentText())
+                selectedScene = shotCache.getData(str(sender.currentText())).keys()
 
             def selectObjects(self):
                 sender = self.sender()
@@ -193,7 +216,6 @@ def loadObjectsFromCacheDialog():
                     self.selectedObjects[str(n)] = str(self.combo[str(n)].currentText())
                 for n, m in zip(self.selectedObjects.keys(), self.selectedObjects.values()):
                     filePath = cacheScene.getData(n, m)
-                    #print filePath.split('data')[1]
                     node = hou.node('/obj').createNode('geo', n + '_CACHE')
                     node.children()[0].destroy()
                     ext = filePath.rsplit('.')[-1]
@@ -212,3 +234,6 @@ def loadObjectsFromCacheDialog():
         app.exec_()
 
     pyqt_thread_helper.queueCommand(loadObjectsFromCacheDiaglogInThread)
+
+
+loadObjectsFromCacheDialog()
