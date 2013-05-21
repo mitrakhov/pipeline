@@ -8,7 +8,7 @@ echo $OSNAME
 if [ $OSNAME == "Linux" ] 
 	then
 		export MPIPE=${CPIPELINE}/software/maya
-		export PYTHONPATH=${MPIPE}/scripts/python
-		export MAYA_SCRIPT_PATH=${MPIPE}/scripts/mel
+		export PYTHONPATH=${MPIPE}/scripts/python:${PYTHONPATH}
+		export MAYA_SCRIPT_PATH=${MPIPE}/scripts/mel:${MAYA_SCRIPT_PATH}
 
 fi

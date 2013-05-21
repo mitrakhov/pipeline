@@ -6,9 +6,8 @@ if (`menu -exists $showCMenuCtrl`)
 string $name = "CPipeline";
 global string $gMainWindow;
 $showCMenuCtrl = `menu -p $gMainWindow -to true -l $name`;
-//menuItem -p $showCMenuCtrl -l "Export selected to Abc with textures" -c ("source ".mel"; ");
-menuItem -l "Export selected to Abc with textures" -ecr 0 -c "python(\"import file_utils; reload(file_utils); file_utils.exportAbcXml();\");" -ann "exportAbcXml";
-menuItem -l "Export selected to series of obj" -ecr 0 -c "python(\"import file_utils; reload(file_utils); file_utils.exportSelectedToObj();\");" -ann "exportSelectedToObj";
+menuItem -l "Export Selection To Alembic ..." -ecr 0 -c "python(\"import file_utils; reload(file_utils); file_utils.exportAbcXml();\");" -ann "exportAbcXml";
+menuItem -l "Export Selection To Obj" -ecr 0 -c "python(\"import file_utils; reload(file_utils); file_utils.exportSelectedToObj();\");" -ann "exportSelectedToObj";
 }
 ;
 editMenuUpdate MayaWindow|mainEditMenu;

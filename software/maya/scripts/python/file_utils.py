@@ -10,7 +10,7 @@ def exportSelectedToObj():
     if path:
         workDir = path.rsplit('/', 1)[0]
         sceneLabel = path.rsplit('/', 1)[1]
-        exportPath = os.path.join(workDir, sceneLabel.rsplit('.v', 1)[0])
+        exportPath = os.path.join(workDir, sceneLabel.rsplit('.mb', 1)[0])
 
     if not os.path.exists(exportPath):
         os.mkdir(exportPath)
@@ -136,7 +136,7 @@ def exportGeoToAbc():
     file_name = fileDialog2(ff='*.abc', fm=0, cap='Export geometry to .abc file')[0]
     print file_name
     print 'AbcExport -j "-fr 1 24 -uvWrite' + rootstring + ' -file ' + file_name + '"'
-    mel.eval('AbcExport -j "-fr 1 24 -uvWrite' + rootstring + ' -file ' + file_name + '";')
+    mel.eval('AbcExport -j "-fr 1 24 -uvWrite rootstring -file ' + file_name + '";')
     mel.eval('group; xform -os -piv 0 0 0; setAttr "group1.scaleZ" 100; setAttr "group1.scaleX" 100; setAttr "group1.scaleY" 100; makeIdentity -apply true -t 0 -r 0 -s 1 -n 0; ungroup;')
     return file_name
 
