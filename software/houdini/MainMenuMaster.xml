@@ -19,7 +19,7 @@ if re.search (patternVersion, hipFile):
 	else:
 		hipVersion = int(hipVersion)
 		hipVersion +=1
-		newHipFileName = noVersion + '%04d.hip'%(hipVersion)
+		newHipFileName = noVersion + '%03d.hip'%(hipVersion)
 		newFile = hipPath + '/' + newHipFileName
 		if os.path.exists(newFile):
 			if hou.ui.displayMessage("File named %s already exists, are you sure you want to overwrite?"%newHipFileName, buttons=("Yes", "No")) == 1:

@@ -710,7 +710,7 @@ def pImportAbcWithTextures():
         i = len(nodes)-2
         object_short_name = str(nodes[i])
         #print "path: " + str(temp_root)
-        #print "geo: " + object_short_name
+        print "geo: " + object_short_name
         geometry = temp_root.createNode("geo", object_short_name)
         geometry.children()[0].destroy()
         alembic = geometry.createNode("alembic", str(nodes[i]))
@@ -728,6 +728,7 @@ def pImportAbcWithTextures():
             if is_first:
                 shader_template = hou.galleries.galleryEntries("mantrasurface")[0]
                 shader = shader_template.createChildNode(hou.node("shop"))
+                shader.setName(abc_name, True)
                 stat_newshader += 1
                 is_first = False
             # assign material
@@ -735,33 +736,42 @@ def pImportAbcWithTextures():
             # create local material parameters 
             applyLocalOverrides(geometry)
 
-            # assign textures
+            # assign textures, enable maps where needed
             if geometry.parm("baseColorMap") is not None:
-                geometry.parm("baseColorMap").set(str(texture_path_color))
-            if geometry.parm("baseSpecMap") is not None:
-                geometry.parm("baseSpecMap").set(str(texture_path_spec))
-            if geometry.parm("baseDispMap") is not None:
-                geometry.parm("baseDispMap").set(str(texture_path_bump))
+            	if texture_path_color != "":
+                	geometry.parm("baseColorMap").set(str(texture_path_color))
+                	geometry.parm("useColorMap").set(1)
+            if geometry.parm("specMap1") is not None:
+            	if texture_path_spec != "":
+                	geometry.parm("specMap1").set(str(texture_path_spec))
+                	geometry.parm("useSpecMap1").set(1)
+            if geometry.parm("displacementMap") is not None:
+            	if texture_path_bump != "":
+                	geometry.parm("displacementMap").set(str(texture_path_bump))
+                	# geometry.parm("enableDispMap").set(1)
             # delete ogl_envmap
             if geometry.parm("ogl_envmap") is not None:
                 geometry.parm("ogl_envmap").set("")
-            # enable color map
-            if texture_path_color != "":
-                geometry.parm("useColorMap").set(1)
             
         # create a material for each object 
         if mode==1:
             shader_template = hou.galleries.galleryEntries("mantrasurface")[0]
             shader = shader_template.createChildNode(hou.node("shop"))
-            shader.setName(object_short_name)
+            shader.setName(object_short_name, True)
             stat_newshader += 1
             # assign textures
             if shader.parm("baseColorMap") is not None:
-                shader.parm("baseColorMap").set(str(texture_path_color))
-            if shader.parm("baseSpecMap") is not None:
-                shader.parm("baseSpecMap").set(str(texture_path_spec))
-            if shader.parm("baseDispMap") is not None:
-                shader.parm("baseDispMap").set(str(texture_path_bump))
+            	if texture_path_color != "":
+	                shader.parm("baseColorMap").set(str(texture_path_color))
+	                shader.parm("useColorMap").set(1)
+            if shader.parm("specMap1") is not None:
+            	if texture_path_spec != "":
+                	shader.parm("specMap1").set(str(texture_path_spec))
+                	shader.parm("useSpecMap1").set(1)
+            if shader.parm("displacementMap") is not None:
+            	if texture_path_bump != "":
+                	shader.parm("displacementMap").set(str(texture_path_bump))
+                	# shader.parm("enableDispMap").set(1)
             # assign material
             geometry.parm("shop_materialpath").set(shader.path())
 
