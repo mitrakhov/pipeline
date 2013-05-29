@@ -14,7 +14,7 @@ def sopRopAndRead_MantraToAfanasy():
             af.parm("take").set("`chs(\"../"+current.name()+"/take\")`")
             af.parm("platform").set("Linux")
             af.parm("enable_extended_parameters").set(1)
-            af.parm("hosts_mask").set("tcp*")
+            af.parm("hosts_mask").set("tcp.*")
             af.setColor(hou.Color((0,0,0)))	
         
         #if Geometry node selected
