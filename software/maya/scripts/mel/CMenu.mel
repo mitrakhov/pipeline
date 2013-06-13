@@ -8,6 +8,7 @@ global string $gMainWindow;
 $showCMenuCtrl = `menu -p $gMainWindow -to true -l $name`;
 menuItem -l "Export Selection To Alembic ..." -ecr 0 -c "python(\"import file_utils; reload(file_utils); file_utils.exportAbcXml();\");" -ann "exportAbcXml";
 menuItem -l "Export Selection To Obj" -ecr 0 -c "python(\"import file_utils; reload(file_utils); file_utils.exportSelectedToObj();\");" -ann "exportSelectedToObj";
+menuItem -l "Export Selection To MDD" -ecr 0 -c "python(\"import fx_mdd_obj_exporter; reload(fx_mdd_obj_exporter); fx_mdd_obj_exporter.runUI();\");" -ann "exportSelectedToMDD";
 }
 ;
 editMenuUpdate MayaWindow|mainEditMenu;
