@@ -17,6 +17,7 @@
     <memberTool name="SopsResizeFluid"/>
     <memberTool name="TexturesToAbc"/>
     <memberTool name="PImportAbc"/>
+    <memberTool name="StarCraft"/>
   </toolshelf>
 
   <tool name="addNodePrefix" label="Add Node Prefix" icon="PLASMA_App">
@@ -207,5 +208,10 @@ utils.pImportAbcWithTextures()]]></script>
     <keywordList>
       <keyword>Import textures from XML file on disk to Alembic Archive</keyword>
     </keywordList>
+  </tool>
+
+  <tool name="StarCraft" label="StarCraft" icon="sc.png">
+    <script scriptType="python"><![CDATA[import os
+os.system('wine /mnt/opt/StarCraft/StarCraft.exe')]]></script>
   </tool>
 </shelfDocument>
