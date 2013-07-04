@@ -25,6 +25,7 @@ def sopRopAndRead_MantraToAfanasy():
             rop_output.parm("alfprogress").set(1)
             #file_read.setParmExpressions({"file": "`chs(\"../"+rop_output.name()+"sopoutput\")`"})
             file_read.parm("file").set("`chs(\"../"+rop_output.name()+"/sopoutput\")`")
+            rop_output.parm("sopoutput").set("$DATA/cache/$SCENENAME/`opname(\"..\")`/0000/`opname(\"..\")`.$F4.bgeo")
             
 def sopToAfanasyAndRead():
     #rop geometry via renderfarm
@@ -33,6 +34,7 @@ def sopToAfanasyAndRead():
         current = sel[n]
         null = current.createOutputNode("null","BAKE")
         file_read = null.createOutputNode("file","file_read")
+        file_read.parm("file").set("$DATA/cache/$SCENENAME/`opname(\"..\")`/0000/`opname(\"..\")`.$F4.bgeo")
         ropnet = current.parent().createNode("ropnet","rop")
         ropnet.parm("execute").hide(1)
         ropnet.parm("renderdialog").hide(1)
@@ -337,6 +339,9 @@ def assignEnvVars():
         pName = ""
         seqName = ""
         shName = ""
+
+    scName = hou.getenv('HIPNAME').rsplit('.v')[0]
+
     vars = hou.ui.readMultiInput("Input values. Project name and the names of the sequence and shot.", ("Project name", "Sequence name", "Shot name"), title="Assign environment variables", buttons = ('Save', 'Cancel'), default_choice = 0, close_choice = 1, initial_contents = ( pName, seqName, shName ))
     # if project was set
     if str(vars[1][0]) != "":
@@ -359,9 +364,14 @@ def assignEnvVars():
                 os.environ.update({"DATA": env_data})
                 hou.hscript("set -g DATA = '" + env_data + "'")
 
+
         env_assets = env_project + "/film/assets"
         os.environ.update({"ASSETS": env_assets})
         hou.hscript("set -g ASSETS = '" + env_assets + "'")
+
+        os.environ.update({"SCENENAME": scName})
+        hou.hscript("set -g SCENENAME = '" + scName + "'")
+
 
 """
 Writes camera data to Comment section of selected Mantra nodes    
