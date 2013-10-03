@@ -7,4 +7,4 @@ OSNAME=`uname`
 echo $OSNAME
 
 
-${PROGRAM_PATH}/rv-x86-64-3.12.17/bin/rvio $*
+${PROGRAM_PATH}/rv-Linux-x86-64-4.0.7/bin/rvio $*
