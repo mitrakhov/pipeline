@@ -21,16 +21,16 @@ def exportSelectedToObj():
     for n in objects:
         select(n)
         
-        setAttr(n + '.scaleX', 0.01)
-        setAttr(n + '.scaleY', 0.01)
-        setAttr(n + '.scaleZ', 0.01)
+        #setAttr(n + '.scaleX', 0.01)
+        #setAttr(n + '.scaleY', 0.01)
+        #setAttr(n + '.scaleZ', 0.01)
         
         
         exportSelected(os.path.join(exportPath, n + ".obj"), type = "OBJexport", options = "groups=1;ptgroups=0;materials=0;smoothing=1;normals=1" )
         
-        setAttr(n + '.scaleX', 1)
-        setAttr(n + '.scaleY', 1)
-        setAttr(n + '.scaleZ', 1)
+        #setAttr(n + '.scaleX', 1)
+        #setAttr(n + '.scaleY', 1)
+        #setAttr(n + '.scaleZ', 1)
 
 
 def exportTexturesToXml(abc_file):
