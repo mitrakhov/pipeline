@@ -1,3 +1,5 @@
+from pymel.core import *
+
 def bakeObjectAnimToWorld(object, startFrame, endFrame):
     try:
         object[0]
