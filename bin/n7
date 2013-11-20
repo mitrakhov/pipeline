@@ -34,4 +34,4 @@ export NUKE_TEMP_DIR=/var/tmp/nuke
 
 echo $NUKE_PATH
 
-${PROGRAM_PATH}/Nuke7.0v2/Nuke7.0 --nukex $*
+${PROGRAM_PATH}/Nuke7.0v9/Nuke7.0 --nukex $*
