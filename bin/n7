@@ -31,6 +31,7 @@ export NUKE_PATH=${CPIPELINE}/software/nuke/N6/SCRIPTS:${NUKE_CGRU_PATH}:${NUKE_
 #export OFX_PLUGIN_PATH=${PROGRAM_PATH}/OFX/nuke/OFX
 #export FOUNDRY_LICENSE_FILE=${CPIPELINE}/software/nuke/LIC
 export NUKE_TEMP_DIR=/var/tmp/nuke
+export RLM_LICENSE=${CPIPELINE}/software/nuke/LIC/foundry_client.lic 
 
 echo $NUKE_PATH
 
