@@ -1,3 +1,4 @@
 #!/bin/bash
 #export LD_LIBARARY_PATH= 
+export RLM_LICENSE=/usr/pipeline/software/nuke/LIC/foundry_client.lic
 /mnt/opt/Mari2.5v1/mari
