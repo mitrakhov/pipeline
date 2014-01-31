@@ -8,5 +8,5 @@ echo $OSNAME
 
 #export FOUNDRY_LICENSE_FILE=
 
-
-${PROGRAM_PATH}/Hiero1.0v3/bin/Hiero1.0v3 $*
+export RLM_LICENSE=/usr/pipeline/software/nuke/LIC/foundry_client.lic
+${PROGRAM_PATH}/Hiero1.8v1/bin/Hiero1.8v1 $*
