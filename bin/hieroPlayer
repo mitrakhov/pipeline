@@ -1,0 +1,11 @@
+#!/bin/bash
+
+umask 0000
+
+
+OSNAME=`uname`                                                                                                                                                                                                                                   
+echo $OSNAME
+
+
+export RLM_LICENSE=/usr/pipeline/software/nuke/LIC/foundry_client.lic
+${PROGRAM_PATH}/HieroPlayer1.8v1/bin/HieroPlayer1.8v1 $*
