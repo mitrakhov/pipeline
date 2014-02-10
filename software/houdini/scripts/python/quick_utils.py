@@ -342,7 +342,7 @@ def assignEnvVars():
 
     scName = hou.getenv('HIPNAME').rsplit('.v')[0]
 
-    vars = hou.ui.readMultiInput("Input values. Project name and the names of the sequence and shot.", ("Project name", "Sequence name", "Shot name"), title="Assign environment variables", buttons = ('Save', 'Cancel'), default_choice = 0, close_choice = 1, initial_contents = ( pName, seqName, shName ))
+    vars = hou.ui.readMultiInput("Input values. Project name and the names of the sequence and shot.", ("Project name", "Sequence name", "Shot name"), title="Assign environment variables", buttons = ('Save', 'Cancel'), default_choice = 0, close_choice = 1, initial_contents = ( str(pName), str(seqName), str(shName) ))
     # if project was set
     if str(vars[1][0]) != "":
         env_project = "/mnt/karramba/" + str(vars[1][0])
@@ -369,8 +369,8 @@ def assignEnvVars():
         os.environ.update({"ASSETS": env_assets})
         hou.hscript("set -g ASSETS = '" + env_assets + "'")
 
-        os.environ.update({"SCENENAME": scName})
-        hou.hscript("set -g SCENENAME = '" + scName + "'")
+        os.environ.update({"SCENENAME": str(scName)})
+        hou.hscript("set -g SCENENAME = '" + str(scName) + "'")
 
 
 """
