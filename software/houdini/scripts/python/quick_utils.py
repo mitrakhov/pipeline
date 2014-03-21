@@ -401,6 +401,9 @@ def hideSelected(hide):
         else:
             n.setDisplayFlag(1)
 
+#from subprocess import Popen
+#Popen( [ "foo.exe", "arg1", "arg2", "arg3" )
+
 def runRopInTerminal():
     writeNode = None
     try:
