@@ -1,5 +1,6 @@
+import commands
+import os
 import hou
-import toolutils
 
 def sopRopAndRead_MantraToAfanasy():
     sel = hou.selectedNodes()
@@ -401,35 +402,32 @@ def hideSelected(hide):
             n.setDisplayFlag(1)
 
 def runRopInTerminal():
+    writeNode = None
     try:
         hou.selectedNodes()[0]
     except IndexError:
         hou.ui.displayMessage(text = 'Select Rop Node')
     else:
-        writeNode = ''
         if len(hou.selectedNodes()) == 1:
 
             if hou.selectedNodes()[0].type().name() in ('dopio', 'filecache'):
-                writeNode = hou.node(''.join([hou.selectedNodes()[0].path(), '/render']))
-                #return writeNode
+            	writeNode = hou.node(''.join([hou.selectedNodes()[0].path(), '/render']))
 
             else:
                 if hou.selectedNodes()[0].type().name() == 'rop_geometry':
                     writeNode = hou.selectedNodes()[0]
-                    #return writeNode
 
                 else:
                     hou.ui.displayMessage(text = 'Select Rop Node')
         else:
             hou.ui.displayMessage(text = 'Select Rop Node')
 
-    
-    if writeNode != '':
+    if writeNode != None:
         file = open("/tmp/file_tmp.py", "w")
         file.write("hou.hipFile.load(" + "'" + hou.hipFile.name() + "'" + ")\n")
-        file.write("writeNode = hou.node(" + "'" + writeNode.path() + "'" + ")\n")
-        file.write("writeNode.parm('execute').pressButton()\n")
-        file.close()
+    	file.write("writeNode = hou.node(" + "'" + writeNode.path() + "'" + ")\n")
+    	file.write("writeNode.parm('execute').pressButton()\n")
+    	file.close()
 
-        commands.getstatusoutput("xterm -e '/Volumes/Resources/Repository/sofrware/installed_software/houdini/13.0.338/bin/hython /tmp/file_tmp.py'")
-        os.remove("/tmp/file_tmp.py")
+    	commands.getstatusoutput("xterm -e '/Volumes/Resources/Repository/sofrware/installed_software/houdini/13.0.338/bin/hython /tmp/file_tmp.py'")
+    	os.remove("/tmp/file_tmp.py")
